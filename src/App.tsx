@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Globe2, Info } from 'lucide-react';
-import type { Country, ClusterType, AdviceContext, AdviceResult } from './types';
+import type { Country, ClusterType, AdviceContext, AdviceResult, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
 import { CountrySelector } from './components/CountrySelector';
 import { DimensionRadar } from './components/DimensionRadar';
@@ -8,7 +8,8 @@ import { DimensionBar } from './components/DimensionBar';
 import { ComparisonTable } from './components/ComparisonTable';
 import { AdviceContextSelector } from './components/AdviceContextSelector';
 import { AdviceCardList } from './components/AdviceCardList';
-import { generateAdvice } from './advice';
+import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
+import { generateAdvice, generateBilateralNegotiationAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
 
@@ -18,14 +19,32 @@ function App() {
   const [showInfo, setShowInfo] = useState(false);
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
 
-  // 첫 번째 선택된 국가에 대한 조언 생성
+  // 양국 간 협상 모드 감지
+  const isBilateralNegotiationMode =
+    selectedContext === 'NEGOTIATION' && selectedCountries.length >= 2;
+
+  // 첫 번째 선택된 국가에 대한 조언 생성 (단일 국가 모드)
   const adviceResult = useMemo<AdviceResult | null>(() => {
     if (selectedCountries.length === 0 || !selectedContext) {
       return null;
     }
+    // 양국 간 협상 모드에서는 단일 조언 표시 안함
+    if (isBilateralNegotiationMode) {
+      return null;
+    }
     const profile = countryToProfile(selectedCountries[0]);
     return generateAdvice(profile, selectedContext);
-  }, [selectedCountries, selectedContext]);
+  }, [selectedCountries, selectedContext, isBilateralNegotiationMode]);
+
+  // 양국 간 협상 조언 생성
+  const bilateralAdvice = useMemo<BilateralAdviceResult | null>(() => {
+    if (!isBilateralNegotiationMode) {
+      return null;
+    }
+    const profileA = countryToProfile(selectedCountries[0]);
+    const profileB = countryToProfile(selectedCountries[1]);
+    return generateBilateralNegotiationAdvice(profileA, profileB);
+  }, [selectedCountries, isBilateralNegotiationMode]);
 
   const handleCountrySelect = (country: Country) => {
     if (selectedCountries.length < 3) {
@@ -113,6 +132,14 @@ function App() {
                 onCountryRemove={handleCountryRemove}
                 filterCluster={filterCluster}
               />
+              {/* 양국 간 협상 모드 안내 */}
+              {selectedCountries.length >= 2 && selectedContext === 'NEGOTIATION' && (
+                <div className="mt-3 p-2 bg-indigo-50 rounded-lg border border-indigo-100">
+                  <p className="text-xs text-indigo-700">
+                    <strong>양국 간 협상 모드:</strong> 2개 국가가 선택되어 상호 협상 조언이 활성화됩니다.
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Context selector - 상황 선택 */}
@@ -121,7 +148,12 @@ function App() {
               onContextSelect={handleContextSelect}
             />
 
-            {/* Advice section - 조언 표시 */}
+            {/* 양국 간 협상 조언 (2개 국가 + NEGOTIATION 선택 시) */}
+            {bilateralAdvice && (
+              <BilateralNegotiationAdvice advice={bilateralAdvice} />
+            )}
+
+            {/* 단일 국가 조언 표시 */}
             {adviceResult && (
               <div className="fade-in">
                 <AdviceCardList advice={adviceResult} />
@@ -137,6 +169,15 @@ function App() {
                     해당 국가에 맞는 문화 조언이 표시됩니다
                   </p>
                 </div>
+              </div>
+            )}
+
+            {/* 협상 모드에서 1개 국가만 선택 시 안내 */}
+            {selectedCountries.length === 1 && selectedContext === 'NEGOTIATION' && (
+              <div className="bg-amber-50 rounded-xl border border-amber-200 p-4">
+                <p className="text-sm text-amber-800">
+                  <strong>팁:</strong> 국가를 하나 더 선택하면 양국 간 협상 조언을 받을 수 있습니다.
+                </p>
               </div>
             )}
 
