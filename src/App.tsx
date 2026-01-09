@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Globe2, Info } from 'lucide-react';
-import type { Country, ClusterType } from './types';
+import type { Country, ClusterType, AdviceContext, AdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
 import { CountrySelector } from './components/CountrySelector';
 import { DimensionRadar } from './components/DimensionRadar';
 import { DimensionBar } from './components/DimensionBar';
 import { ComparisonTable } from './components/ComparisonTable';
+import { AdviceContextSelector } from './components/AdviceContextSelector';
+import { AdviceCardList } from './components/AdviceCardList';
+import { generateAdvice } from './advice';
+import { countryToProfile } from './utils/profileConverter';
 import './index.css';
 
 function App() {
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
+
+  // 첫 번째 선택된 국가에 대한 조언 생성
+  const adviceResult = useMemo<AdviceResult | null>(() => {
+    if (selectedCountries.length === 0 || !selectedContext) {
+      return null;
+    }
+    const profile = countryToProfile(selectedCountries[0]);
+    return generateAdvice(profile, selectedContext);
+  }, [selectedCountries, selectedContext]);
 
   const handleCountrySelect = (country: Country) => {
     if (selectedCountries.length < 3) {
@@ -27,6 +41,10 @@ function App() {
     setFilterCluster(cluster);
   };
 
+  const handleContextSelect = (context: AdviceContext | null) => {
+    setSelectedContext(context);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -39,7 +57,7 @@ function App() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-800">Hofstede 문화 차원 비교</h1>
-                <p className="text-sm text-gray-500">국가별 문화 특성을 시각적으로 비교하세요</p>
+                <p className="text-sm text-gray-500">국가별 문화 특성을 시각적으로 비교하고 조언을 받으세요</p>
               </div>
             </div>
             <button
@@ -57,7 +75,8 @@ function App() {
               <h3 className="font-semibold text-blue-800 mb-2">Hofstede 문화 차원 이론</h3>
               <p className="text-sm text-blue-700 mb-2">
                 Geert Hofstede의 문화 차원 이론은 국가 간 문화적 차이를 6가지 차원으로 분석합니다.
-                이 도구는 Huib Wursten의 "Mental Images" 연구를 기반으로 국가들을 6개의 문화 클러스터로 분류합니다.
+                이 도구는 Huib Wursten의 "Mental Images" 연구를 기반으로 국가들을 6개의 문화 클러스터로 분류하고,
+                상황별 문화 조언을 제공합니다.
               </p>
               <div className="flex flex-wrap gap-2 text-xs">
                 <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded">PDI: 권력 거리</span>
@@ -75,7 +94,7 @@ function App() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left sidebar - Cluster Map */}
           <aside className="lg:col-span-3">
-            <div className="sticky top-24">
+            <div className="sticky top-24 space-y-6">
               <ClusterMap
                 selectedCluster={filterCluster}
                 onClusterSelect={handleClusterSelect}
@@ -85,7 +104,7 @@ function App() {
 
           {/* Main content area */}
           <div className="lg:col-span-9 space-y-6">
-            {/* Country selector and charts */}
+            {/* Country selector */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
               <h2 className="text-lg font-bold text-gray-800 mb-4">국가 선택</h2>
               <CountrySelector
@@ -95,6 +114,31 @@ function App() {
                 filterCluster={filterCluster}
               />
             </div>
+
+            {/* Context selector - 상황 선택 */}
+            <AdviceContextSelector
+              selectedContext={selectedContext}
+              onContextSelect={handleContextSelect}
+            />
+
+            {/* Advice section - 조언 표시 */}
+            {adviceResult && (
+              <div className="fade-in">
+                <AdviceCardList advice={adviceResult} />
+              </div>
+            )}
+
+            {/* Empty state for advice */}
+            {selectedCountries.length > 0 && !selectedContext && (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="flex items-center justify-center h-32 bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                  <p className="text-gray-500 text-sm text-center">
+                    위에서 상황을 선택하면<br />
+                    해당 국가에 맞는 문화 조언이 표시됩니다
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Charts section */}
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
