@@ -9,7 +9,7 @@ import { ComparisonTable } from './components/ComparisonTable';
 import { AdviceContextSelector } from './components/AdviceContextSelector';
 import { AdviceCardList } from './components/AdviceCardList';
 import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
-import { generateAdvice, generateBilateralNegotiationAdvice } from './advice';
+import { generateAdvice, generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
 
@@ -19,32 +19,32 @@ function App() {
   const [showInfo, setShowInfo] = useState(false);
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
 
-  // 양국 간 협상 모드 감지
-  const isBilateralNegotiationMode =
-    selectedContext === 'NEGOTIATION' && selectedCountries.length >= 2;
+  // 양국 간 비교 모드 감지 (2개 이상 국가 + 컨텍스트 선택 시)
+  const isBilateralMode =
+    selectedContext !== null && selectedCountries.length >= 2;
 
   // 첫 번째 선택된 국가에 대한 조언 생성 (단일 국가 모드)
   const adviceResult = useMemo<AdviceResult | null>(() => {
     if (selectedCountries.length === 0 || !selectedContext) {
       return null;
     }
-    // 양국 간 협상 모드에서는 단일 조언 표시 안함
-    if (isBilateralNegotiationMode) {
+    // 양국 간 비교 모드에서는 단일 조언 표시 안함
+    if (isBilateralMode) {
       return null;
     }
     const profile = countryToProfile(selectedCountries[0]);
     return generateAdvice(profile, selectedContext);
-  }, [selectedCountries, selectedContext, isBilateralNegotiationMode]);
+  }, [selectedCountries, selectedContext, isBilateralMode]);
 
-  // 양국 간 협상 조언 생성
+  // 양국 간 조언 생성 (모든 컨텍스트에서 사용)
   const bilateralAdvice = useMemo<BilateralAdviceResult | null>(() => {
-    if (!isBilateralNegotiationMode) {
+    if (!isBilateralMode || !selectedContext) {
       return null;
     }
     const profileA = countryToProfile(selectedCountries[0]);
     const profileB = countryToProfile(selectedCountries[1]);
-    return generateBilateralNegotiationAdvice(profileA, profileB);
-  }, [selectedCountries, isBilateralNegotiationMode]);
+    return generateBilateralContextAdvice(profileA, profileB, selectedContext);
+  }, [selectedCountries, isBilateralMode, selectedContext]);
 
   const handleCountrySelect = (country: Country) => {
     if (selectedCountries.length < 3) {
@@ -132,11 +132,11 @@ function App() {
                 onCountryRemove={handleCountryRemove}
                 filterCluster={filterCluster}
               />
-              {/* 양국 간 협상 모드 안내 */}
-              {selectedCountries.length >= 2 && selectedContext === 'NEGOTIATION' && (
+              {/* 양국 간 비교 모드 안내 */}
+              {selectedCountries.length >= 2 && selectedContext && (
                 <div className="mt-3 p-2 bg-indigo-50 rounded-lg border border-indigo-100">
                   <p className="text-xs text-indigo-700">
-                    <strong>양국 간 협상 모드:</strong> 2개 국가가 선택되어 상호 협상 조언이 활성화됩니다.
+                    <strong>양국 간 비교 모드:</strong> 2개 국가가 선택되어 상호 비교 조언이 활성화됩니다.
                   </p>
                 </div>
               )}
@@ -148,9 +148,9 @@ function App() {
               onContextSelect={handleContextSelect}
             />
 
-            {/* 양국 간 협상 조언 (2개 국가 + NEGOTIATION 선택 시) */}
-            {bilateralAdvice && (
-              <BilateralNegotiationAdvice advice={bilateralAdvice} />
+            {/* 양국 간 조언 (2개 국가 + 컨텍스트 선택 시) */}
+            {bilateralAdvice && selectedContext && (
+              <BilateralNegotiationAdvice advice={bilateralAdvice} context={selectedContext} />
             )}
 
             {/* 단일 국가 조언 표시 */}
@@ -172,11 +172,11 @@ function App() {
               </div>
             )}
 
-            {/* 협상 모드에서 1개 국가만 선택 시 안내 */}
-            {selectedCountries.length === 1 && selectedContext === 'NEGOTIATION' && (
+            {/* 1개 국가만 선택 시 양국 비교 안내 */}
+            {selectedCountries.length === 1 && selectedContext && (
               <div className="bg-amber-50 rounded-xl border border-amber-200 p-4">
                 <p className="text-sm text-amber-800">
-                  <strong>팁:</strong> 국가를 하나 더 선택하면 양국 간 협상 조언을 받을 수 있습니다.
+                  <strong>팁:</strong> 국가를 하나 더 선택하면 양국 간 비교 조언을 받을 수 있습니다.
                 </p>
               </div>
             )}

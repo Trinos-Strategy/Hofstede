@@ -1,24 +1,40 @@
 /**
- * 양국 간 협상 조언 컴포넌트
- * 두 국가 간의 협상 시 유의사항을 시각적으로 표시합니다.
+ * 양국 간 조언 컴포넌트
+ * 두 국가 간의 상황별 유의사항을 시각적으로 표시합니다.
  */
 
 import { ArrowRight, ArrowLeftRight, Lightbulb, AlertTriangle, CheckCircle2 } from 'lucide-react';
-import type { BilateralAdviceResult } from '../types';
+import type { BilateralAdviceResult, AdviceContext } from '../types';
+import { getContextTitle } from '../advice';
 
 interface BilateralNegotiationAdviceProps {
   advice: BilateralAdviceResult;
+  context?: AdviceContext;
 }
 
-export function BilateralNegotiationAdvice({ advice }: BilateralNegotiationAdviceProps) {
+// 컨텍스트별 색상 테마
+const contextColors: Record<AdviceContext, { gradient: string; headerBorder: string }> = {
+  MEETING_IDEA: { gradient: 'from-emerald-50 to-teal-50', headerBorder: 'border-emerald-100' },
+  DISAGREE_BOSS: { gradient: 'from-orange-50 to-amber-50', headerBorder: 'border-orange-100' },
+  REPORTING: { gradient: 'from-cyan-50 to-blue-50', headerBorder: 'border-cyan-100' },
+  REWARD_RECOGNITION: { gradient: 'from-yellow-50 to-amber-50', headerBorder: 'border-yellow-100' },
+  TEAM_COLLABORATION: { gradient: 'from-violet-50 to-purple-50', headerBorder: 'border-violet-100' },
+  NEGOTIATION: { gradient: 'from-indigo-50 to-purple-50', headerBorder: 'border-indigo-100' },
+  FEEDBACK: { gradient: 'from-pink-50 to-rose-50', headerBorder: 'border-pink-100' },
+  CONFLICT_RESOLUTION: { gradient: 'from-red-50 to-orange-50', headerBorder: 'border-red-100' },
+};
+
+export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: BilateralNegotiationAdviceProps) {
   const { countryA, countryB, fromAtoB, fromBtoA, mutualUnderstanding } = advice;
   const nameA = countryA.nameKo || countryA.name;
   const nameB = countryB.nameKo || countryB.name;
+  const contextInfo = getContextTitle(context);
+  const colors = contextColors[context];
 
   return (
     <div className="space-y-6 fade-in">
       {/* 헤더 */}
-      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100 p-6">
+      <div className={`bg-gradient-to-r ${colors.gradient} rounded-xl border ${colors.headerBorder} p-6`}>
         <div className="flex items-center justify-center gap-4 mb-3">
           <div className="px-4 py-2 bg-white rounded-lg shadow-sm border border-indigo-200">
             <span className="font-bold text-indigo-700">{nameA}</span>
@@ -29,10 +45,10 @@ export function BilateralNegotiationAdvice({ advice }: BilateralNegotiationAdvic
           </div>
         </div>
         <h2 className="text-lg font-bold text-center text-gray-800">
-          양국 간 협상 조언
+          양국 간 {contextInfo.title} 조언
         </h2>
         <p className="text-sm text-center text-gray-600 mt-1">
-          두 국가의 문화 차원을 비교 분석하여 협상 시 유의사항을 제공합니다.
+          {contextInfo.description}
         </p>
       </div>
 
@@ -44,7 +60,7 @@ export function BilateralNegotiationAdvice({ advice }: BilateralNegotiationAdvic
             <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
               <ArrowRight className="w-4 h-4 text-white" />
             </div>
-            <h3 className="font-semibold text-blue-800">
+            <h3 className="font-semibold text-blue-800 text-sm">
               {fromAtoB.titleKo || fromAtoB.title}
             </h3>
           </div>
@@ -66,7 +82,7 @@ export function BilateralNegotiationAdvice({ advice }: BilateralNegotiationAdvic
             <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
               <ArrowRight className="w-4 h-4 text-white" />
             </div>
-            <h3 className="font-semibold text-purple-800">
+            <h3 className="font-semibold text-purple-800 text-sm">
               {fromBtoA.titleKo || fromBtoA.title}
             </h3>
           </div>
@@ -127,7 +143,7 @@ export function BilateralNegotiationAdvice({ advice }: BilateralNegotiationAdvic
 
           {/* 중재 전략 */}
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
-            <h4 className="font-medium text-blue-800 mb-2">협상 성공 전략</h4>
+            <h4 className="font-medium text-blue-800 mb-2">성공 전략</h4>
             <p className="text-sm text-blue-700 leading-relaxed">
               {mutualUnderstanding.bridgingStrategy}
             </p>

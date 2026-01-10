@@ -49,3 +49,9 @@ export {
   generateBilateralNegotiationAdvice,
   analyzeDimensionGaps,
 } from './bilateralNegotiation';
+
+// 양국 간 컨텍스트별 조언
+export {
+  generateBilateralContextAdvice,
+  getContextTitle,
+} from './bilateralContextAdvice';
