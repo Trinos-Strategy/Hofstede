@@ -39,12 +39,12 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
   };
 
   return (
-    <div className="luxury-card rounded-lg p-6">
-      <div className="flex items-center justify-between mb-5">
-        <div className="flex items-center gap-3">
+    <div className="luxury-card rounded-lg p-4 sm:p-6">
+      <div className="flex items-center justify-between mb-4 sm:mb-5">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div className="accent-bar" />
           <h2
-            className="text-lg font-medium text-[#1A1A1A]"
+            className="text-base sm:text-lg font-medium text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             문화 클러스터
@@ -66,7 +66,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
         )}
       </div>
 
-      <p className="text-xs text-[#5A5A5A] mb-5 flex items-center gap-2">
+      <p className="text-[10px] sm:text-xs text-[#5A5A5A] mb-4 sm:mb-5 flex items-center gap-2">
         <Layers className="w-3 h-3" strokeWidth={1.5} />
         클러스터를 클릭하여 필터링하세요
       </p>

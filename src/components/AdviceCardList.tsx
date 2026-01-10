@@ -46,16 +46,16 @@ function AdviceCard({ block, color, index }: AdviceCardProps) {
         duration: 0.5,
         ease: [0.25, 0.1, 0.25, 1]
       }}
-      className="rounded-lg bg-white border border-black/6 p-6 hover:shadow-md hover:border-[#B8956A]/30 transition-all duration-500 border-l-2"
+      className="rounded-lg bg-white border border-black/6 p-4 sm:p-6 hover:shadow-md hover:border-[#B8956A]/30 transition-all duration-500 border-l-2"
       style={{ borderLeftColor: color }}
     >
       <h3
-        className="text-base font-medium mb-5 text-[#1A1A1A]"
+        className="text-sm sm:text-base font-medium mb-4 sm:mb-5 text-[#1A1A1A]"
         style={{ fontFamily: "'Playfair Display', serif" }}
       >
         {block.titleKo || block.title}
       </h3>
-      <ul className="space-y-4">
+      <ul className="space-y-3 sm:space-y-4">
         {(block.bulletsKo || block.bullets).map((bullet, idx) => (
           <motion.li
             key={idx}
@@ -66,10 +66,10 @@ function AdviceCard({ block, color, index }: AdviceCardProps) {
               duration: 0.4,
               ease: [0.25, 0.1, 0.25, 1]
             }}
-            className="flex items-start gap-4 text-sm text-[#5A5A5A] leading-relaxed"
+            className="flex items-start gap-3 sm:gap-4 text-xs sm:text-sm text-[#5A5A5A] leading-relaxed"
           >
             <span
-              className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0"
+              className="mt-1.5 sm:mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0"
               style={{ backgroundColor: color }}
             />
             <span>{bullet}</span>
@@ -90,29 +90,29 @@ export function AdviceCardList({ advice }: AdviceCardListProps) {
   const contextName = contextNames[context];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4 sm:space-y-5">
       {/* 헤더 카드 */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-        className="luxury-card rounded-lg p-6 border-l-2"
+        className="luxury-card rounded-lg p-4 sm:p-6 border-l-2"
         style={{ borderLeftColor: color }}
       >
-        <div className="flex items-center gap-5 mb-4">
-          <div className="text-3xl">{emoji}</div>
+        <div className="flex items-center gap-4 sm:gap-5 mb-3 sm:mb-4">
+          <div className="text-2xl sm:text-3xl">{emoji}</div>
           <div>
             <h2
-              className="text-xl font-medium text-[#1A1A1A]"
+              className="text-lg sm:text-xl font-medium text-[#1A1A1A]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {country.nameKo || country.name}
             </h2>
-            <p className="text-sm mt-1" style={{ color }}>{contextName}</p>
+            <p className="text-xs sm:text-sm mt-1" style={{ color }}>{contextName}</p>
           </div>
         </div>
         {summary && (
-          <p className="text-sm text-[#5A5A5A] leading-relaxed">{summary}</p>
+          <p className="text-xs sm:text-sm text-[#5A5A5A] leading-relaxed">{summary}</p>
         )}
       </motion.div>
 
@@ -131,7 +131,7 @@ interface MultipleAdviceCardListProps {
 export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListProps) {
   if (adviceList.length === 0) {
     return (
-      <div className="text-center py-12 text-[#5A5A5A]">
+      <div className="text-center py-8 sm:py-12 text-[#5A5A5A] text-sm sm:text-base">
         조언을 생성할 국가와 상황을 선택해주세요.
       </div>
     );
@@ -140,35 +140,35 @@ export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListPro
   const country = adviceList[0]?.country;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 sm:space-y-8">
       {/* 국가 헤더 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-        className="luxury-card rounded-lg p-8"
+        className="luxury-card rounded-lg p-4 sm:p-8"
       >
         <h2
-          className="text-xl font-medium text-[#1A1A1A] mb-3"
+          className="text-lg sm:text-xl font-medium text-[#1A1A1A] mb-2 sm:mb-3"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           {country?.nameKo || country?.name} 조직과 일할 때 고려할 점
         </h2>
-        <p className="text-sm text-[#5A5A5A] mb-5 leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#5A5A5A] mb-4 sm:mb-5 leading-relaxed">
           선택하신 국가의 문화 차원을 바탕으로, 다양한 상황에서 유의하면 좋은 행동 힌트를 정리했습니다.
         </p>
-        <div className="flex flex-wrap gap-3">
-          <span className="px-4 py-2 bg-[#B8956A]/10 text-[#9D7E57] rounded-md text-xs font-medium tracking-wide">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
+          <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#B8956A]/10 text-[#9D7E57] rounded-md text-[10px] sm:text-xs font-medium tracking-wide">
             PDI: {country?.dimensions.pdi}
           </span>
-          <span className="px-4 py-2 bg-[#7D8471]/10 text-[#7D8471] rounded-md text-xs font-medium tracking-wide">
+          <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#7D8471]/10 text-[#7D8471] rounded-md text-[10px] sm:text-xs font-medium tracking-wide">
             IDV: {country?.dimensions.idv}
           </span>
-          <span className="px-4 py-2 bg-[#C4886B]/10 text-[#C4886B] rounded-md text-xs font-medium tracking-wide">
+          <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#C4886B]/10 text-[#C4886B] rounded-md text-[10px] sm:text-xs font-medium tracking-wide">
             UAI: {country?.dimensions.uai}
           </span>
           {country?.dimensions.mas !== undefined && (
-            <span className="px-4 py-2 bg-[#6B7B8C]/10 text-[#6B7B8C] rounded-md text-xs font-medium tracking-wide">
+            <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#6B7B8C]/10 text-[#6B7B8C] rounded-md text-[10px] sm:text-xs font-medium tracking-wide">
               MAS: {country.dimensions.mas}
             </span>
           )}

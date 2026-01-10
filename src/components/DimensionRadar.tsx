@@ -25,15 +25,15 @@ const chartColors = [
 export function DimensionRadar({ countries }: DimensionRadarProps) {
   if (countries.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-80 border border-dashed border-black/10 rounded-lg">
+      <div className="flex flex-col items-center justify-center h-60 sm:h-80 border border-dashed border-black/10 rounded-lg">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <span className="text-4xl mb-3 block text-center">📈</span>
+          <span className="text-3xl sm:text-4xl mb-3 block text-center">📈</span>
         </motion.div>
-        <p className="text-[#5A5A5A] text-sm">국가를 선택하면 레이더 차트가 표시됩니다</p>
+        <p className="text-[#5A5A5A] text-xs sm:text-sm">국가를 선택하면 레이더 차트가 표시됩니다</p>
       </div>
     );
   }
@@ -54,7 +54,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-      className="h-80"
+      className="h-60 sm:h-80"
     >
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={data} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>

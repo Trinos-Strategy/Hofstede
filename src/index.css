@@ -503,3 +503,211 @@ a:hover {
 .link-underline:hover::after {
   width: 100%;
 }
+
+/* ============================================
+   Mobile Responsive Design
+   Breakpoints: 768px (tablet), 480px (mobile)
+   ============================================ */
+
+/* Tablet (768px) */
+@media (max-width: 768px) {
+  /* Typography */
+  h1 {
+    font-size: 2.25rem;
+    letter-spacing: 0.02em;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  /* Container */
+  .container-luxury {
+    padding: 0 16px;
+  }
+
+  /* Section Spacing */
+  .section-luxury {
+    padding: 3rem 0;
+  }
+
+  /* Cards */
+  .luxury-card,
+  .matte-card {
+    padding: 1.25rem;
+    border-radius: 8px;
+  }
+
+  /* Buttons - Touch Friendly */
+  .btn-luxury {
+    height: 48px;
+    padding: 0 24px;
+    min-width: 44px;
+  }
+
+  /* Accent Bar */
+  .accent-bar {
+    width: 3px;
+    height: 20px;
+  }
+
+  /* Country Pill */
+  .country-pill {
+    padding: 10px 14px;
+  }
+
+  /* Tag */
+  .tag-luxury {
+    padding: 6px 12px;
+  }
+
+  /* Badge */
+  .badge-gold {
+    padding: 5px 12px;
+  }
+
+  /* Emoji sizing for mobile */
+  .emoji-large {
+    font-size: 1.75rem;
+  }
+
+  .emoji-xl {
+    font-size: 2rem;
+  }
+
+  /* Table Scroll */
+  .modern-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Mobile (480px) */
+@media (max-width: 480px) {
+  /* Typography */
+  h1 {
+    font-size: 1.75rem;
+    letter-spacing: 0.01em;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+
+  body {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  /* Container */
+  .container-luxury {
+    padding: 0 12px;
+  }
+
+  /* Section Spacing */
+  .section-luxury {
+    padding: 2rem 0;
+  }
+
+  /* Cards */
+  .luxury-card,
+  .matte-card {
+    padding: 1rem;
+    border-radius: 6px;
+  }
+
+  /* Buttons */
+  .btn-luxury {
+    height: 44px;
+    padding: 0 20px;
+    font-size: 0.8125rem;
+    width: 100%;
+  }
+
+  /* Divider */
+  .divider-gold {
+    width: 40px;
+    margin: 1.5rem auto;
+  }
+
+  /* Accent Bar */
+  .accent-bar {
+    width: 2px;
+    height: 18px;
+  }
+
+  /* Country Pill */
+  .country-pill {
+    padding: 8px 12px;
+    font-size: 0.8125rem;
+  }
+
+  /* Tag */
+  .tag-luxury {
+    padding: 5px 10px;
+    font-size: 0.6875rem;
+  }
+
+  /* Badge */
+  .badge-gold {
+    padding: 4px 10px;
+    font-size: 0.6875rem;
+  }
+
+  /* Emoji sizing for mobile */
+  .emoji-large {
+    font-size: 1.5rem;
+  }
+
+  .emoji-xl {
+    font-size: 1.75rem;
+  }
+
+  /* Quote */
+  .quote-luxury {
+    font-size: 1rem;
+    padding-left: 1rem;
+  }
+
+  /* Table */
+  .modern-table th,
+  .modern-table td {
+    padding: 10px 12px;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Touch-friendly interactive elements */
+@media (max-width: 768px) {
+  button,
+  a,
+  input,
+  select,
+  .country-pill {
+    min-height: 44px;
+  }
+
+  /* Increase tap target spacing */
+  .flex-wrap.gap-2 {
+    gap: 0.75rem;
+  }
+
+  .flex-wrap.gap-3 {
+    gap: 1rem;
+  }
+
+  /* Chart container sizing */
+  .recharts-responsive-container {
+    min-height: 280px;
+  }
+}

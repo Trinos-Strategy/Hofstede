@@ -87,22 +87,22 @@ function App() {
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-black/5"
       >
-        <div className="max-w-[1140px] mx-auto px-6 py-5">
+        <div className="max-w-[1140px] mx-auto px-4 sm:px-6 py-4 sm:py-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-3 sm:gap-5">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
-                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"
                 style={{ background: 'linear-gradient(135deg, #B8956A, #9D7E57)' }}
               >
-                <Globe2 className="w-6 h-6 text-white" strokeWidth={1.5} />
+                <Globe2 className="w-5 h-5 sm:w-6 sm:h-6 text-white" strokeWidth={1.5} />
               </motion.div>
               <div>
-                <h1 className="text-2xl font-medium tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h1 className="text-lg sm:text-2xl font-medium tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
                   Hofstede Cultural Dimensions
                 </h1>
-                <p className="text-sm text-[#5A5A5A] tracking-wide mt-0.5">
+                <p className="text-xs sm:text-sm text-[#5A5A5A] tracking-wide mt-0.5 hidden sm:block">
                   Cross-Cultural Intelligence for Global Business
                 </p>
               </div>
@@ -128,15 +128,15 @@ function App() {
                 transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
                 className="overflow-hidden"
               >
-                <div className="mt-6 p-8 bg-[#F5F4F0] rounded-lg border border-black/5 relative">
+                <div className="mt-4 sm:mt-6 p-4 sm:p-8 bg-[#F5F4F0] rounded-lg border border-black/5 relative">
                   <button
                     onClick={() => setShowInfo(false)}
-                    className="absolute top-4 right-4 p-2 rounded-lg hover:bg-white/50 transition-colors duration-300"
+                    className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-lg hover:bg-white/50 transition-colors duration-300"
                   >
                     <X className="w-4 h-4 text-[#5A5A5A]" strokeWidth={1.5} />
                   </button>
-                  <div className="flex items-start gap-5">
-                    <div className="text-3xl">📚</div>
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-5">
+                    <div className="text-2xl sm:text-3xl">📚</div>
                     <div>
                       <h3 className="text-lg font-medium text-[#1A1A1A] mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
                         Hofstede 문화 차원 이론
@@ -170,16 +170,16 @@ function App() {
       </motion.header>
 
       {/* Main content */}
-      <main className="max-w-[1140px] mx-auto px-6 py-12">
+      <main className="max-w-[1140px] mx-auto px-4 sm:px-6 py-6 sm:py-12">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8"
         >
           {/* Left sidebar - Cluster Map */}
-          <motion.aside variants={itemVariants} className="lg:col-span-3">
-            <div className="sticky top-32 space-y-8">
+          <motion.aside variants={itemVariants} className="lg:col-span-3 order-2 lg:order-1">
+            <div className="lg:sticky lg:top-24 space-y-5 sm:space-y-8">
               <ClusterMap
                 selectedCluster={filterCluster}
                 onClusterSelect={handleClusterSelect}
@@ -188,15 +188,15 @@ function App() {
           </motion.aside>
 
           {/* Main content area */}
-          <div className="lg:col-span-9 space-y-8">
+          <div className="lg:col-span-9 space-y-5 sm:space-y-8 order-1 lg:order-2">
             {/* Country selector */}
-            <motion.div variants={itemVariants} className="luxury-card rounded-lg p-8">
-              <div className="flex items-center gap-3 mb-6">
+            <motion.div variants={itemVariants} className="luxury-card rounded-lg p-4 sm:p-8">
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                 <div className="accent-bar" />
-                <h2 className="text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
                   국가 선택
                 </h2>
-                <span className="text-xs text-[#5A5A5A] tracking-wide uppercase ml-2">최대 3개</span>
+                <span className="text-[10px] sm:text-xs text-[#5A5A5A] tracking-wide uppercase ml-1 sm:ml-2">최대 3개</span>
               </div>
               <CountrySelector
                 selectedCountries={selectedCountries}
@@ -302,12 +302,12 @@ function App() {
             </AnimatePresence>
 
             {/* Charts section */}
-            <motion.div variants={itemVariants} className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <motion.div variants={itemVariants} className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-8">
               {/* Radar chart */}
-              <div className="luxury-card rounded-lg p-8">
-                <div className="flex items-center gap-3 mb-6">
+              <div className="luxury-card rounded-lg p-4 sm:p-8">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                   <div className="accent-bar" />
-                  <h2 className="text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     레이더 차트
                   </h2>
                 </div>
@@ -315,19 +315,19 @@ function App() {
               </div>
 
               {/* Bar charts */}
-              <div className="luxury-card rounded-lg p-8">
-                <div className="flex items-center gap-3 mb-6">
+              <div className="luxury-card rounded-lg p-4 sm:p-8">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                   <div className="accent-bar" />
-                  <h2 className="text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     차원별 비교
                   </h2>
                 </div>
                 {selectedCountries.length > 0 ? (
                   <DimensionBar countries={selectedCountries} />
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-80 border border-dashed border-black/10 rounded-lg">
-                    <span className="text-4xl mb-3">📊</span>
-                    <p className="text-[#5A5A5A] text-sm">국가를 선택하면 막대 그래프가 표시됩니다</p>
+                  <div className="flex flex-col items-center justify-center h-60 sm:h-80 border border-dashed border-black/10 rounded-lg">
+                    <span className="text-3xl sm:text-4xl mb-3">📊</span>
+                    <p className="text-[#5A5A5A] text-xs sm:text-sm">국가를 선택하면 막대 그래프가 표시됩니다</p>
                   </div>
                 )}
               </div>
@@ -342,13 +342,13 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-20 border-t border-black/5 bg-[#F5F4F0]">
-        <div className="max-w-[1140px] mx-auto px-6 py-16">
-          <div className="flex flex-col items-center gap-8">
+      <footer className="mt-12 sm:mt-20 border-t border-black/5 bg-[#F5F4F0]">
+        <div className="max-w-[1140px] mx-auto px-4 sm:px-6 py-10 sm:py-16">
+          <div className="flex flex-col items-center gap-6 sm:gap-8">
             {/* Logo and Contact */}
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-3 sm:gap-4">
               <h3
-                className="text-2xl font-medium tracking-wide"
+                className="text-xl sm:text-2xl font-medium tracking-wide"
                 style={{
                   fontFamily: "'Playfair Display', serif",
                   background: 'linear-gradient(135deg, #B8956A, #9D7E57)',
@@ -392,7 +392,7 @@ function App() {
 
             {/* Copyright */}
             <p className="text-xs text-[#5A5A5A]/60 tracking-wide">
-              © 2024 Trinos Research Lab. All rights reserved.
+              © 2026 Trinos Research Lab. All rights reserved.
             </p>
           </div>
         </div>

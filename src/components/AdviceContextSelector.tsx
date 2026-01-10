@@ -110,22 +110,22 @@ export function AdviceContextSelector({
   onContextSelect,
 }: AdviceContextSelectorProps) {
   return (
-    <div className="luxury-card rounded-lg p-8">
-      <div className="flex items-center gap-3 mb-3">
+    <div className="luxury-card rounded-lg p-4 sm:p-8">
+      <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
         <div className="accent-bar" />
         <h2
-          className="text-xl font-medium text-[#1A1A1A]"
+          className="text-lg sm:text-xl font-medium text-[#1A1A1A]"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           상황 선택
         </h2>
       </div>
-      <p className="text-sm text-[#5A5A5A] mb-6 flex items-center gap-2">
-        <span className="text-lg">💼</span>
+      <p className="text-xs sm:text-sm text-[#5A5A5A] mb-4 sm:mb-6 flex items-center gap-2">
+        <span className="text-base sm:text-lg">💼</span>
         어떤 상황에서의 조언이 필요한가요?
       </p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
         {contextOptions.map((option, index) => {
           const isSelected = selectedContext === option.key;
           return (
@@ -144,8 +144,8 @@ export function AdviceContextSelector({
                 onContextSelect(isSelected ? null : option.key)
               }
               className={`
-                relative flex flex-col items-center gap-3 p-5 rounded-lg
-                transition-all duration-500 text-center
+                relative flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-lg
+                transition-all duration-500 text-center min-h-[80px] sm:min-h-0
                 ${isSelected
                   ? 'bg-white shadow-md border-b-2'
                   : 'bg-[#F5F4F0] border border-black/5 hover:bg-white hover:shadow-sm'
@@ -157,11 +157,11 @@ export function AdviceContextSelector({
               title={option.description}
             >
               {/* Emoji */}
-              <span className="text-2xl">{option.emoji}</span>
+              <span className="text-xl sm:text-2xl">{option.emoji}</span>
 
               {/* Label */}
               <span
-                className={`text-xs font-medium leading-tight tracking-wide ${
+                className={`text-[10px] sm:text-xs font-medium leading-tight tracking-wide ${
                   isSelected ? 'text-[#1A1A1A]' : 'text-[#5A5A5A]'
                 }`}
               >
