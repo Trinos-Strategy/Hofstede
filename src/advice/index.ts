@@ -43,3 +43,15 @@ export {
   getProfileByCode,
   getProfilesByCultureType,
 } from './sampleProfiles';
+
+// 양국 간 협상 조언
+export {
+  generateBilateralNegotiationAdvice,
+  analyzeDimensionGaps,
+} from './bilateralNegotiation';
+
+// 양국 간 컨텍스트별 조언
+export {
+  generateBilateralContextAdvice,
+  getContextTitle,
+} from './bilateralContextAdvice';

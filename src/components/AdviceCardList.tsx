@@ -3,6 +3,7 @@
  * AdviceResult를 받아 카드 형태로 렌더링합니다.
  */
 
+import { motion } from 'framer-motion';
 import { MessageSquare, Lightbulb, Users, FileText, Award, Handshake, MessageCircle, Scale } from 'lucide-react';
 import type { AdviceResult, AdviceContext, AdviceBlock } from '../types';
 
@@ -18,16 +19,16 @@ const contextIcons: Record<AdviceContext, React.ReactNode> = {
   CONFLICT_RESOLUTION: <Scale className="w-5 h-5" />,
 };
 
-// 컨텍스트별 색상 매핑
-const contextColors: Record<AdviceContext, string> = {
-  MEETING_IDEA: '#3B82F6', // blue
-  DISAGREE_BOSS: '#EF4444', // red
-  REPORTING: '#10B981', // emerald
-  REWARD_RECOGNITION: '#F59E0B', // amber
-  TEAM_COLLABORATION: '#8B5CF6', // violet
-  NEGOTIATION: '#EC4899', // pink
-  FEEDBACK: '#06B6D4', // cyan
-  CONFLICT_RESOLUTION: '#6366F1', // indigo
+// 컨텍스트별 색상 및 그라데이션 매핑
+const contextColors: Record<AdviceContext, { color: string; gradient: string }> = {
+  MEETING_IDEA: { color: '#3B82F6', gradient: 'from-blue-500 to-indigo-500' },
+  DISAGREE_BOSS: { color: '#EF4444', gradient: 'from-red-500 to-orange-500' },
+  REPORTING: { color: '#10B981', gradient: 'from-emerald-500 to-teal-500' },
+  REWARD_RECOGNITION: { color: '#F59E0B', gradient: 'from-amber-500 to-yellow-500' },
+  TEAM_COLLABORATION: { color: '#8B5CF6', gradient: 'from-purple-500 to-violet-500' },
+  NEGOTIATION: { color: '#EC4899', gradient: 'from-pink-500 to-rose-500' },
+  FEEDBACK: { color: '#06B6D4', gradient: 'from-cyan-500 to-blue-500' },
+  CONFLICT_RESOLUTION: { color: '#6366F1', gradient: 'from-indigo-500 to-purple-500' },
 };
 
 // 컨텍스트 한글 이름
@@ -45,29 +46,42 @@ const contextNames: Record<AdviceContext, string> = {
 interface AdviceCardProps {
   block: AdviceBlock;
   color: string;
+  index: number;
 }
 
-function AdviceCard({ block, color }: AdviceCardProps) {
+function AdviceCard({ block, color, index }: AdviceCardProps) {
   return (
-    <div
-      className="rounded-lg border p-4 bg-white hover:shadow-md transition-shadow"
-      style={{ borderLeftWidth: 4, borderLeftColor: color }}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      className="rounded-xl bg-white/5 border border-white/10 p-5 hover:border-white/20 transition-all"
+      style={{ borderLeft: `3px solid ${color}` }}
     >
-      <h3 className="text-base font-semibold mb-3 text-gray-800">
+      <h3 className="text-base font-semibold mb-4 text-white">
         {block.titleKo || block.title}
       </h3>
-      <ul className="space-y-2">
+      <ul className="space-y-3">
         {(block.bulletsKo || block.bullets).map((bullet, idx) => (
-          <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
+          <motion.li
+            key={idx}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.1 + idx * 0.05 }}
+            className="flex items-start gap-3 text-sm text-gray-300"
+          >
             <span
-              className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
-              style={{ backgroundColor: color }}
+              className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0"
+              style={{
+                backgroundColor: color,
+                boxShadow: `0 0 8px ${color}80`,
+              }}
             />
             <span>{bullet}</span>
-          </li>
+          </motion.li>
         ))}
       </ul>
-    </div>
+    </motion.div>
   );
 }
 
@@ -77,36 +91,45 @@ interface AdviceCardListProps {
 
 export function AdviceCardList({ advice }: AdviceCardListProps) {
   const { country, context, blocks, summary } = advice;
-  const color = contextColors[context];
+  const { color, gradient } = contextColors[context];
   const icon = contextIcons[context];
   const contextName = contextNames[context];
 
   return (
     <div className="space-y-4">
       {/* 헤더 카드 */}
-      <div className="rounded-lg border p-4 bg-slate-50">
-        <div className="flex items-center gap-3 mb-2">
-          <div
-            className="w-10 h-10 rounded-lg flex items-center justify-center text-white"
-            style={{ backgroundColor: color }}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-card rounded-2xl p-5"
+        style={{
+          background: `linear-gradient(135deg, ${color}15, transparent)`,
+          borderColor: `${color}30`,
+        }}
+      >
+        <div className="flex items-center gap-4 mb-3">
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white shadow-lg`}
+            style={{ boxShadow: `0 4px 20px ${color}40` }}
           >
             {icon}
-          </div>
+          </motion.div>
           <div>
-            <h2 className="text-lg font-semibold text-gray-800">
+            <h2 className="text-xl font-bold text-white">
               {country.nameKo || country.name}
             </h2>
-            <p className="text-sm text-gray-500">{contextName}</p>
+            <p className="text-sm" style={{ color }}>{contextName}</p>
           </div>
         </div>
         {summary && (
-          <p className="text-sm text-gray-600 mt-2">{summary}</p>
+          <p className="text-sm text-gray-400 leading-relaxed">{summary}</p>
         )}
-      </div>
+      </motion.div>
 
       {/* 조언 블록들 */}
       {blocks.map((block, idx) => (
-        <AdviceCard key={idx} block={block} color={color} />
+        <AdviceCard key={idx} block={block} color={color} index={idx} />
       ))}
     </div>
   );
@@ -130,36 +153,49 @@ export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListPro
   return (
     <div className="space-y-6">
       {/* 국가 헤더 */}
-      <div className="rounded-xl border p-6 bg-gradient-to-r from-slate-50 to-white">
-        <h2 className="text-xl font-bold text-gray-800 mb-2">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-card rounded-2xl p-6"
+        style={{
+          background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent)',
+        }}
+      >
+        <h2 className="text-xl font-bold text-white mb-2">
           {country?.nameKo || country?.name} 조직과 일할 때 고려할 점
         </h2>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-400 mb-4">
           선택하신 국가의 문화 차원을 바탕으로, 다양한 상황에서 유의하면 좋은 행동 힌트를 정리했습니다.
         </p>
-        <div className="flex flex-wrap gap-2 mt-4">
-          <span className="px-2 py-1 bg-orange-100 text-orange-700 rounded text-xs font-medium">
+        <div className="flex flex-wrap gap-2">
+          <span className="px-3 py-1.5 bg-orange-500/20 text-orange-300 rounded-lg text-xs font-medium">
             PDI: {country?.dimensions.pdi}
           </span>
-          <span className="px-2 py-1 bg-cyan-100 text-cyan-700 rounded text-xs font-medium">
+          <span className="px-3 py-1.5 bg-cyan-500/20 text-cyan-300 rounded-lg text-xs font-medium">
             IDV: {country?.dimensions.idv}
           </span>
-          <span className="px-2 py-1 bg-pink-100 text-pink-700 rounded text-xs font-medium">
+          <span className="px-3 py-1.5 bg-pink-500/20 text-pink-300 rounded-lg text-xs font-medium">
             UAI: {country?.dimensions.uai}
           </span>
           {country?.dimensions.mas !== undefined && (
-            <span className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">
+            <span className="px-3 py-1.5 bg-green-500/20 text-green-300 rounded-lg text-xs font-medium">
               MAS: {country.dimensions.mas}
             </span>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {/* 상황별 조언 */}
       {adviceList.map((advice, idx) => (
-        <div key={idx} className="space-y-3">
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: idx * 0.1 }}
+          className="space-y-3"
+        >
           <AdviceCardList advice={advice} />
-        </div>
+        </motion.div>
       ))}
     </div>
   );

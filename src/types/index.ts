@@ -138,3 +138,33 @@ export const clusterToCultureType: Record<ClusterType, CultureType> = {
   solarSystem: 'SOLAR_SYSTEM',
   machine: 'MACHINE',
 };
+
+// ============================================
+// 양국 간 협상 조언 타입 정의
+// ============================================
+
+// 상호 이해 블록
+export type MutualUnderstandingBlock = {
+  title: string;
+  keyDifferences: string[];
+  commonGround: string[];
+  bridgingStrategy: string;
+};
+
+// 양국 간 협상 조언 결과
+export type BilateralAdviceResult = {
+  countryA: CountryProfile;
+  countryB: CountryProfile;
+  fromAtoB: AdviceBlock;
+  fromBtoA: AdviceBlock;
+  mutualUnderstanding: MutualUnderstandingBlock;
+};
+
+// 차원 차이 분석 결과
+export type DimensionGap = {
+  dimension: 'PDI' | 'IDV' | 'UAI' | 'MAS';
+  valueA: number;
+  valueB: number;
+  gap: number;
+  significance: 'low' | 'medium' | 'high';
+};
