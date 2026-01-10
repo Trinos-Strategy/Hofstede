@@ -322,22 +322,46 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="glass-card mt-12 border-b-0 border-x-0 rounded-none">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="text-center">
-            <p className="text-sm text-gray-400">
-              Based on Hofstede's Cultural Dimensions Theory and Huib Wursten's "Mental Images" research
-            </p>
-            <p className="mt-2 text-sm">
-              Data source:{' '}
+      <footer className="mt-12 border-t border-white/10" style={{ backgroundColor: 'rgba(15, 23, 42, 0.8)' }}>
+        <div className="max-w-7xl mx-auto px-4 py-10">
+          <div className="flex flex-col items-center gap-6">
+            {/* Logo and Contact */}
+            <div className="flex flex-col items-center gap-3">
+              <h3 className="text-lg font-bold gradient-text">Trinos Research Lab</h3>
               <a
-                href="https://www.hofstede-insights.com"
+                href="https://mediator.trinos.group/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-purple-400 hover:text-purple-300 transition-colors underline underline-offset-2"
+                className="px-5 py-2 rounded-lg bg-purple-500/20 text-purple-300 hover:bg-purple-500/30 hover:text-purple-200 transition-all text-sm font-medium border border-purple-500/30"
               >
-                Hofstede Insights
+                Contact
               </a>
+            </div>
+
+            {/* Divider */}
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
+            {/* Credits */}
+            <div className="text-center space-y-2">
+              <p className="text-sm text-gray-400">
+                Based on Hofstede's Cultural Dimensions Theory and Huib Wursten's "Mental Images" research
+              </p>
+              <p className="text-sm text-gray-500">
+                Data source:{' '}
+                <a
+                  href="https://www.hofstede-insights.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-purple-400 hover:text-purple-300 transition-colors underline underline-offset-2"
+                >
+                  Hofstede Insights
+                </a>
+              </p>
+            </div>
+
+            {/* Copyright */}
+            <p className="text-xs text-gray-600">
+              © 2024 Trinos Research Lab. All rights reserved.
             </p>
           </div>
         </div>

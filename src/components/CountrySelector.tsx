@@ -136,33 +136,37 @@ export function CountrySelector({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-2 glass-card rounded-xl overflow-hidden"
-            style={{ boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)' }}
+            className="absolute z-50 w-full mt-2 rounded-xl overflow-hidden border border-white/10"
+            style={{
+              backgroundColor: 'rgba(15, 23, 42, 0.98)',
+              backdropFilter: 'blur(24px)',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7)'
+            }}
           >
-            <div className="p-3 border-b border-white/10">
+            <div className="p-3 border-b border-white/10 bg-slate-900/50">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
                   placeholder="국가 검색..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 text-sm
-                    bg-white/5 border border-white/10 rounded-lg
-                    text-white placeholder-gray-500
-                    focus:border-purple-500/50 focus:bg-white/10
+                    bg-slate-800/80 border border-white/10 rounded-lg
+                    text-white placeholder-gray-400
+                    focus:border-purple-500/50 focus:bg-slate-800
                     transition-all duration-200"
                   autoFocus
                 />
               </div>
             </div>
-            <div className="max-h-64 overflow-y-auto">
+            <div className="max-h-64 overflow-y-auto bg-slate-900/30">
               {Object.entries(groupedCountries).map(([cluster, clusterCountries]) => {
                 const info = clusterInfo[cluster as ClusterType];
                 return (
                   <div key={cluster}>
                     <div
-                      className="px-4 py-2 text-xs font-semibold sticky top-0 bg-white/5 backdrop-blur-sm border-b border-white/5"
+                      className="px-4 py-2 text-xs font-semibold sticky top-0 bg-slate-800/90 backdrop-blur-sm border-b border-white/5"
                       style={{ color: info.color }}
                     >
                       {info.icon} {info.nameKo}
@@ -170,7 +174,7 @@ export function CountrySelector({
                     {clusterCountries.map((country) => (
                       <motion.button
                         key={country.code}
-                        whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+                        whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
                         onClick={() => {
                           onCountrySelect(country);
                           setSearchTerm('');
@@ -179,10 +183,10 @@ export function CountrySelector({
                           }
                         }}
                         className="w-full px-4 py-2.5 text-left text-sm flex items-center justify-between
-                          transition-colors duration-150"
+                          transition-colors duration-150 hover:bg-slate-700/50"
                       >
-                        <span className="text-gray-200">{country.nameKo}</span>
-                        <span className="text-xs text-gray-500">{country.name}</span>
+                        <span className="text-gray-100">{country.nameKo}</span>
+                        <span className="text-xs text-gray-400">{country.name}</span>
                       </motion.button>
                     ))}
                   </div>
