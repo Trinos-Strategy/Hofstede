@@ -9,7 +9,6 @@ import {
   Legend,
   Tooltip
 } from 'recharts';
-import { Globe2 } from 'lucide-react';
 import type { Country } from '../types';
 import { dimensionInfo } from '../data/countries';
 
@@ -18,23 +17,23 @@ interface DimensionRadarProps {
 }
 
 const chartColors = [
-  { stroke: '#3B82F6', fill: 'rgba(59, 130, 246, 0.3)' },
-  { stroke: '#10B981', fill: 'rgba(16, 185, 129, 0.3)' },
-  { stroke: '#F59E0B', fill: 'rgba(245, 158, 11, 0.3)' },
+  { stroke: '#B8956A', fill: 'rgba(184, 149, 106, 0.25)' },
+  { stroke: '#7D8471', fill: 'rgba(125, 132, 113, 0.25)' },
+  { stroke: '#C4886B', fill: 'rgba(196, 136, 107, 0.25)' },
 ];
 
 export function DimensionRadar({ countries }: DimensionRadarProps) {
   if (countries.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-80 bg-white/5 rounded-xl border border-dashed border-white/20">
+      <div className="flex flex-col items-center justify-center h-80 border border-dashed border-black/10 rounded-lg">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center mb-3"
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <Globe2 className="w-8 h-8 text-gray-500" />
+          <span className="text-4xl mb-3 block text-center">📈</span>
         </motion.div>
-        <p className="text-gray-400 text-sm">국가를 선택하면 레이더 차트가 표시됩니다</p>
+        <p className="text-[#5A5A5A] text-sm">국가를 선택하면 레이더 차트가 표시됩니다</p>
       </div>
     );
   }
@@ -54,20 +53,20 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
       className="h-80"
     >
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={data} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
-          <PolarGrid stroke="rgba(255, 255, 255, 0.1)" />
+          <PolarGrid stroke="rgba(0, 0, 0, 0.08)" />
           <PolarAngleAxis
             dataKey="dimension"
-            tick={{ fill: '#9ca3af', fontSize: 11 }}
+            tick={{ fill: '#5A5A5A', fontSize: 11 }}
           />
           <PolarRadiusAxis
             angle={90}
             domain={[0, 100]}
-            tick={{ fill: '#6b7280', fontSize: 10 }}
+            tick={{ fill: '#5A5A5A', fontSize: 10 }}
             tickCount={6}
             axisLine={false}
           />
@@ -79,27 +78,27 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
               stroke={chartColors[index % chartColors.length].stroke}
               fill={chartColors[index % chartColors.length].fill}
               strokeWidth={2}
-              animationDuration={500}
-              animationBegin={index * 100}
+              animationDuration={800}
+              animationBegin={index * 150}
             />
           ))}
           <Tooltip
             contentStyle={{
-              backgroundColor: 'rgba(15, 23, 42, 0.95)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '12px',
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid rgba(0, 0, 0, 0.08)',
+              borderRadius: '8px',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
               padding: '12px 16px',
             }}
-            itemStyle={{ color: '#e5e7eb' }}
-            labelStyle={{ color: '#9ca3af', marginBottom: '8px' }}
+            itemStyle={{ color: '#2D2D2D' }}
+            labelStyle={{ color: '#5A5A5A', marginBottom: '8px' }}
             formatter={(value, name) => [value ?? 0, name]}
           />
           <Legend
             wrapperStyle={{ paddingTop: '15px' }}
             formatter={(value, entry) => (
               <span
-                className="text-sm"
+                className="text-sm tracking-wide"
                 style={{ color: entry.color }}
               >
                 {value}

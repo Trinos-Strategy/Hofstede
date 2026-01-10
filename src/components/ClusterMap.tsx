@@ -14,14 +14,19 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.05
+      staggerChildren: 0.08,
+      delayChildren: 0.1
     }
   }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, x: -20 },
-  visible: { opacity: 1, x: 0 }
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.5 }
+  }
 };
 
 export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps) {
@@ -34,29 +39,35 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
   };
 
   return (
-    <div className="glass-card rounded-2xl p-5">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-6 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full" />
-          <h2 className="text-lg font-bold text-white">문화 클러스터</h2>
+    <div className="luxury-card rounded-lg p-6">
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <div className="accent-bar" />
+          <h2
+            className="text-lg font-medium text-[#1A1A1A]"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            문화 클러스터
+          </h2>
         </div>
         {selectedCluster && (
           <motion.button
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.4 }}
             onClick={() => onClusterSelect(null)}
-            className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+            className="p-2 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
             title="필터 초기화"
           >
-            <X className="w-4 h-4 text-gray-400" />
+            <X className="w-4 h-4 text-[#5A5A5A]" strokeWidth={1.5} />
           </motion.button>
         )}
       </div>
 
-      <p className="text-xs text-gray-500 mb-4 flex items-center gap-2">
-        <Layers className="w-3 h-3" />
+      <p className="text-xs text-[#5A5A5A] mb-5 flex items-center gap-2">
+        <Layers className="w-3 h-3" strokeWidth={1.5} />
         클러스터를 클릭하여 필터링하세요
       </p>
 
@@ -64,7 +75,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="space-y-2"
+        className="space-y-3"
       >
         {clusterOrder.map((cluster) => (
           <motion.div key={cluster} variants={itemVariants}>

@@ -4,7 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowLeftRight, Lightbulb, AlertTriangle, CheckCircle2, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowLeftRight } from 'lucide-react';
 import type { BilateralAdviceResult, AdviceContext } from '../types';
 import { getContextTitle } from '../advice';
 
@@ -13,16 +13,16 @@ interface BilateralNegotiationAdviceProps {
   context?: AdviceContext;
 }
 
-// 컨텍스트별 색상 테마
-const contextColors: Record<AdviceContext, { gradient: string; color: string }> = {
-  MEETING_IDEA: { gradient: 'from-emerald-500/20 to-teal-500/10', color: '#10b981' },
-  DISAGREE_BOSS: { gradient: 'from-orange-500/20 to-amber-500/10', color: '#f97316' },
-  REPORTING: { gradient: 'from-cyan-500/20 to-blue-500/10', color: '#06b6d4' },
-  REWARD_RECOGNITION: { gradient: 'from-yellow-500/20 to-amber-500/10', color: '#eab308' },
-  TEAM_COLLABORATION: { gradient: 'from-violet-500/20 to-purple-500/10', color: '#8b5cf6' },
-  NEGOTIATION: { gradient: 'from-indigo-500/20 to-purple-500/10', color: '#6366f1' },
-  FEEDBACK: { gradient: 'from-pink-500/20 to-rose-500/10', color: '#ec4899' },
-  CONFLICT_RESOLUTION: { gradient: 'from-red-500/20 to-orange-500/10', color: '#ef4444' },
+// 컨텍스트별 색상 테마 - 럭셔리 팔레트
+const contextColors: Record<AdviceContext, { color: string; emoji: string }> = {
+  MEETING_IDEA: { color: '#B8956A', emoji: '💡' },
+  DISAGREE_BOSS: { color: '#C4886B', emoji: '🗣️' },
+  REPORTING: { color: '#7D8471', emoji: '📋' },
+  REWARD_RECOGNITION: { color: '#C9A227', emoji: '🏆' },
+  TEAM_COLLABORATION: { color: '#8B7355', emoji: '🤝' },
+  NEGOTIATION: { color: '#9D7E57', emoji: '🎯' },
+  FEEDBACK: { color: '#6B7B8C', emoji: '💬' },
+  CONFLICT_RESOLUTION: { color: '#722F37', emoji: '⚖️' },
 };
 
 export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: BilateralNegotiationAdviceProps) {
@@ -38,66 +38,91 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`glass-card rounded-2xl p-6 bg-gradient-to-br ${colors.gradient}`}
-        style={{ borderColor: `${colors.color}30` }}
+        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        className="luxury-card rounded-lg p-8"
       >
-        <div className="flex items-center justify-center gap-4 mb-4">
+        <div className="flex items-center justify-center gap-5 mb-5">
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="px-5 py-2.5 bg-white/10 backdrop-blur rounded-xl border border-white/20"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.5 }}
+            className="px-6 py-3 bg-[#F5F4F0] rounded-lg border border-black/6"
           >
-            <span className="font-bold text-blue-300">{nameA}</span>
+            <span
+              className="font-medium tracking-wide"
+              style={{ fontFamily: "'Playfair Display', serif", color: '#B8956A' }}
+            >
+              {nameA}
+            </span>
           </motion.div>
           <motion.div
-            animate={{ rotate: [0, 10, -10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            animate={{ rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <ArrowLeftRight className="w-6 h-6" style={{ color: colors.color }} />
+            <ArrowLeftRight className="w-6 h-6" style={{ color: colors.color }} strokeWidth={1.5} />
           </motion.div>
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="px-5 py-2.5 bg-white/10 backdrop-blur rounded-xl border border-white/20"
+            whileHover={{ scale: 1.03 }}
+            transition={{ duration: 0.5 }}
+            className="px-6 py-3 bg-[#F5F4F0] rounded-lg border border-black/6"
           >
-            <span className="font-bold text-purple-300">{nameB}</span>
+            <span
+              className="font-medium tracking-wide"
+              style={{ fontFamily: "'Playfair Display', serif", color: '#7D8471' }}
+            >
+              {nameB}
+            </span>
           </motion.div>
         </div>
-        <h2 className="text-xl font-bold text-center text-white flex items-center justify-center gap-2">
-          <Sparkles className="w-5 h-5" style={{ color: colors.color }} />
+        <h2
+          className="text-xl font-medium text-center text-[#1A1A1A] flex items-center justify-center gap-3"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          <span className="text-2xl">{colors.emoji}</span>
           양국 간 {contextInfo.title} 조언
         </h2>
-        <p className="text-sm text-center text-gray-400 mt-2">
+        <p className="text-sm text-center text-[#5A5A5A] mt-3 leading-relaxed">
           {contextInfo.description}
         </p>
       </motion.div>
 
       {/* 양방향 조언 (2단 레이아웃) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* A → B 조언 */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="glass-card rounded-2xl overflow-hidden"
+          transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="luxury-card rounded-lg overflow-hidden"
         >
-          <div className="bg-gradient-to-r from-blue-500/20 to-blue-500/5 px-5 py-4 flex items-center gap-3 border-b border-white/10">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
-              <ArrowRight className="w-5 h-5 text-white" />
+          <div className="px-6 py-5 flex items-center gap-4 border-b border-black/5 bg-[#F5F4F0]">
+            <div
+              className="w-10 h-10 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: '#B8956A' }}
+            >
+              <ArrowRight className="w-5 h-5 text-white" strokeWidth={1.5} />
             </div>
-            <h3 className="font-semibold text-blue-300 text-sm">
+            <h3
+              className="font-medium text-sm tracking-wide"
+              style={{ color: '#9D7E57', fontFamily: "'Playfair Display', serif" }}
+            >
               {fromAtoB.titleKo || fromAtoB.title}
             </h3>
           </div>
-          <div className="p-5">
-            <ul className="space-y-3">
+          <div className="p-6">
+            <ul className="space-y-4">
               {fromAtoB.bullets.map((bullet, idx) => (
                 <motion.li
                   key={idx}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + idx * 0.05 }}
-                  className="flex items-start gap-3 text-sm text-gray-300"
+                  transition={{
+                    delay: 0.2 + idx * 0.05,
+                    duration: 0.4,
+                    ease: [0.25, 0.1, 0.25, 1]
+                  }}
+                  className="flex items-start gap-4 text-sm text-[#5A5A5A] leading-relaxed"
                 >
-                  <span className="mt-1.5 w-2 h-2 bg-blue-400 rounded-full flex-shrink-0 shadow-sm" style={{ boxShadow: '0 0 8px rgba(96, 165, 250, 0.5)' }} />
+                  <span className="mt-2 w-1.5 h-1.5 bg-[#B8956A] rounded-full flex-shrink-0" />
                   <span>{bullet}</span>
                 </motion.li>
               ))}
@@ -109,28 +134,38 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="glass-card rounded-2xl overflow-hidden"
+          transition={{ delay: 0.2, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="luxury-card rounded-lg overflow-hidden"
         >
-          <div className="bg-gradient-to-r from-purple-500/20 to-purple-500/5 px-5 py-4 flex items-center gap-3 border-b border-white/10">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-              <ArrowRight className="w-5 h-5 text-white" />
+          <div className="px-6 py-5 flex items-center gap-4 border-b border-black/5 bg-[#F5F4F0]">
+            <div
+              className="w-10 h-10 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: '#7D8471' }}
+            >
+              <ArrowRight className="w-5 h-5 text-white" strokeWidth={1.5} />
             </div>
-            <h3 className="font-semibold text-purple-300 text-sm">
+            <h3
+              className="font-medium text-sm tracking-wide"
+              style={{ color: '#7D8471', fontFamily: "'Playfair Display', serif" }}
+            >
               {fromBtoA.titleKo || fromBtoA.title}
             </h3>
           </div>
-          <div className="p-5">
-            <ul className="space-y-3">
+          <div className="p-6">
+            <ul className="space-y-4">
               {fromBtoA.bullets.map((bullet, idx) => (
                 <motion.li
                   key={idx}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + idx * 0.05 }}
-                  className="flex items-start gap-3 text-sm text-gray-300"
+                  transition={{
+                    delay: 0.3 + idx * 0.05,
+                    duration: 0.4,
+                    ease: [0.25, 0.1, 0.25, 1]
+                  }}
+                  className="flex items-start gap-4 text-sm text-[#5A5A5A] leading-relaxed"
                 >
-                  <span className="mt-1.5 w-2 h-2 bg-purple-400 rounded-full flex-shrink-0 shadow-sm" style={{ boxShadow: '0 0 8px rgba(192, 132, 252, 0.5)' }} />
+                  <span className="mt-2 w-1.5 h-1.5 bg-[#7D8471] rounded-full flex-shrink-0" />
                   <span>{bullet}</span>
                 </motion.li>
               ))}
@@ -143,33 +178,49 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="glass-card rounded-2xl overflow-hidden"
+        transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        className="luxury-card rounded-lg overflow-hidden"
       >
-        <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/10 px-5 py-4 flex items-center gap-3 border-b border-white/10">
-          <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-            <Lightbulb className="w-5 h-5 text-white" />
+        <div className="px-6 py-5 flex items-center gap-4 border-b border-black/5 bg-[#F5F4F0]">
+          <div
+            className="w-10 h-10 rounded-lg flex items-center justify-center"
+            style={{ backgroundColor: '#C9A227' }}
+          >
+            <span className="text-lg">💡</span>
           </div>
-          <h3 className="font-semibold text-amber-300">{mutualUnderstanding.title}</h3>
+          <h3
+            className="font-medium"
+            style={{ color: '#9D7E57', fontFamily: "'Playfair Display', serif" }}
+          >
+            {mutualUnderstanding.title}
+          </h3>
         </div>
 
-        <div className="p-5 space-y-4">
+        <div className="p-6 space-y-5">
           {/* 주요 차이점 */}
-          <div className="bg-red-500/10 rounded-xl p-4 border border-red-500/20">
-            <div className="flex items-center gap-2 mb-3">
-              <AlertTriangle className="w-4 h-4 text-red-400" />
-              <h4 className="font-medium text-red-300">주요 문화적 차이</h4>
+          <div className="p-5 rounded-lg bg-[#722F37]/5 border border-[#722F37]/10">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-lg">⚠️</span>
+              <h4
+                className="font-medium text-[#722F37] text-sm"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                주요 문화적 차이
+              </h4>
             </div>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {mutualUnderstanding.keyDifferences.map((diff, idx) => (
                 <motion.li
                   key={idx}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 + idx * 0.05 }}
-                  className="text-sm text-red-200/80 flex items-start gap-2"
+                  transition={{
+                    delay: 0.4 + idx * 0.05,
+                    duration: 0.4
+                  }}
+                  className="text-sm text-[#722F37]/80 flex items-start gap-3 leading-relaxed"
                 >
-                  <span className="mt-1.5 w-1.5 h-1.5 bg-red-400 rounded-full flex-shrink-0" />
+                  <span className="mt-2 w-1 h-1 bg-[#722F37]/60 rounded-full flex-shrink-0" />
                   <span>{diff}</span>
                 </motion.li>
               ))}
@@ -177,21 +228,29 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           </div>
 
           {/* 공통 기반 */}
-          <div className="bg-green-500/10 rounded-xl p-4 border border-green-500/20">
-            <div className="flex items-center gap-2 mb-3">
-              <CheckCircle2 className="w-4 h-4 text-green-400" />
-              <h4 className="font-medium text-green-300">공통 기반</h4>
+          <div className="p-5 rounded-lg bg-[#7D8471]/5 border border-[#7D8471]/10">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-lg">✓</span>
+              <h4
+                className="font-medium text-[#7D8471] text-sm"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                공통 기반
+              </h4>
             </div>
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {mutualUnderstanding.commonGround.map((common, idx) => (
                 <motion.li
                   key={idx}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 + idx * 0.05 }}
-                  className="text-sm text-green-200/80 flex items-start gap-2"
+                  transition={{
+                    delay: 0.5 + idx * 0.05,
+                    duration: 0.4
+                  }}
+                  className="text-sm text-[#7D8471]/80 flex items-start gap-3 leading-relaxed"
                 >
-                  <span className="mt-1.5 w-1.5 h-1.5 bg-green-400 rounded-full flex-shrink-0" />
+                  <span className="mt-2 w-1 h-1 bg-[#7D8471]/60 rounded-full flex-shrink-0" />
                   <span>{common}</span>
                 </motion.li>
               ))}
@@ -199,12 +258,15 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           </div>
 
           {/* 중재 전략 */}
-          <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
-            <h4 className="font-medium text-blue-300 mb-2 flex items-center gap-2">
-              <Sparkles className="w-4 h-4" />
+          <div className="p-5 rounded-lg bg-[#B8956A]/5 border border-[#B8956A]/10">
+            <h4
+              className="font-medium text-[#9D7E57] mb-3 flex items-center gap-3 text-sm"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              <span className="text-lg">✨</span>
               성공 전략
             </h4>
-            <p className="text-sm text-blue-200/80 leading-relaxed">
+            <p className="text-sm text-[#5A5A5A] leading-relaxed">
               {mutualUnderstanding.bridgingStrategy}
             </p>
           </div>
@@ -215,21 +277,24 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="glass-card rounded-2xl p-5"
+        transition={{ delay: 0.4, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        className="luxury-card rounded-lg p-6"
       >
-        <h4 className="font-medium text-white mb-4 flex items-center gap-2">
-          <div className="w-1.5 h-5 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full" />
+        <h4
+          className="font-medium text-[#1A1A1A] mb-5 flex items-center gap-3"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          <div className="accent-bar" />
           문화 차원 비교
         </h4>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm modern-table">
             <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left py-3 px-4 font-medium text-gray-400">차원</th>
-                <th className="text-center py-3 px-4 font-medium text-blue-400">{nameA}</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-500">차이</th>
-                <th className="text-center py-3 px-4 font-medium text-purple-400">{nameB}</th>
+              <tr className="border-b border-black/8">
+                <th className="text-left py-4 px-5 font-medium text-[#5A5A5A] tracking-wide">차원</th>
+                <th className="text-center py-4 px-5 font-medium" style={{ color: '#B8956A' }}>{nameA}</th>
+                <th className="text-center py-4 px-5 font-medium text-[#5A5A5A]/50">차이</th>
+                <th className="text-center py-4 px-5 font-medium" style={{ color: '#7D8471' }}>{nameB}</th>
               </tr>
             </thead>
             <tbody>
@@ -250,22 +315,26 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                     key={dim.key}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 + idx * 0.05 }}
-                    className="border-b border-white/5 hover:bg-white/5"
+                    transition={{
+                      delay: 0.5 + idx * 0.05,
+                      duration: 0.4,
+                      ease: [0.25, 0.1, 0.25, 1]
+                    }}
+                    className="border-b border-black/5 hover:bg-[#F5F4F0] transition-colors duration-300"
                   >
-                    <td className="py-3 px-4 text-gray-300">{dim.label}</td>
-                    <td className="py-3 px-4 text-center">
-                      <span className="px-3 py-1.5 rounded-lg bg-blue-500/20 text-blue-300 font-medium">
+                    <td className="py-4 px-5 text-[#5A5A5A]">{dim.label}</td>
+                    <td className="py-4 px-5 text-center">
+                      <span className="px-4 py-2 rounded-md bg-[#B8956A]/10 text-[#9D7E57] font-medium">
                         {valueA}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-center">
-                      <span className={`px-2 py-1 rounded-lg ${isHighDiff ? 'bg-red-500/20 text-red-300' : 'bg-white/10 text-gray-400'}`}>
+                    <td className="py-4 px-5 text-center">
+                      <span className={`px-3 py-1.5 rounded-md ${isHighDiff ? 'bg-[#722F37]/10 text-[#722F37]' : 'bg-[#F5F4F0] text-[#5A5A5A]/50'}`}>
                         {diff}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-center">
-                      <span className="px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-300 font-medium">
+                    <td className="py-4 px-5 text-center">
+                      <span className="px-4 py-2 rounded-md bg-[#7D8471]/10 text-[#7D8471] font-medium">
                         {valueB}
                       </span>
                     </td>

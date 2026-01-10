@@ -4,31 +4,18 @@
  */
 
 import { motion } from 'framer-motion';
-import { MessageSquare, Lightbulb, Users, FileText, Award, Handshake, MessageCircle, Scale } from 'lucide-react';
 import type { AdviceResult, AdviceContext, AdviceBlock } from '../types';
 
-// 컨텍스트별 아이콘 매핑
-const contextIcons: Record<AdviceContext, React.ReactNode> = {
-  MEETING_IDEA: <Lightbulb className="w-5 h-5" />,
-  DISAGREE_BOSS: <MessageSquare className="w-5 h-5" />,
-  REPORTING: <FileText className="w-5 h-5" />,
-  REWARD_RECOGNITION: <Award className="w-5 h-5" />,
-  TEAM_COLLABORATION: <Users className="w-5 h-5" />,
-  NEGOTIATION: <Handshake className="w-5 h-5" />,
-  FEEDBACK: <MessageCircle className="w-5 h-5" />,
-  CONFLICT_RESOLUTION: <Scale className="w-5 h-5" />,
-};
-
-// 컨텍스트별 색상 및 그라데이션 매핑
-const contextColors: Record<AdviceContext, { color: string; gradient: string }> = {
-  MEETING_IDEA: { color: '#3B82F6', gradient: 'from-blue-500 to-indigo-500' },
-  DISAGREE_BOSS: { color: '#EF4444', gradient: 'from-red-500 to-orange-500' },
-  REPORTING: { color: '#10B981', gradient: 'from-emerald-500 to-teal-500' },
-  REWARD_RECOGNITION: { color: '#F59E0B', gradient: 'from-amber-500 to-yellow-500' },
-  TEAM_COLLABORATION: { color: '#8B5CF6', gradient: 'from-purple-500 to-violet-500' },
-  NEGOTIATION: { color: '#EC4899', gradient: 'from-pink-500 to-rose-500' },
-  FEEDBACK: { color: '#06B6D4', gradient: 'from-cyan-500 to-blue-500' },
-  CONFLICT_RESOLUTION: { color: '#6366F1', gradient: 'from-indigo-500 to-purple-500' },
+// 컨텍스트별 색상 매핑 - 럭셔리 팔레트
+const contextColors: Record<AdviceContext, { color: string; emoji: string }> = {
+  MEETING_IDEA: { color: '#B8956A', emoji: '💡' },
+  DISAGREE_BOSS: { color: '#C4886B', emoji: '🗣️' },
+  REPORTING: { color: '#7D8471', emoji: '📋' },
+  REWARD_RECOGNITION: { color: '#C9A227', emoji: '🏆' },
+  TEAM_COLLABORATION: { color: '#8B7355', emoji: '🤝' },
+  NEGOTIATION: { color: '#9D7E57', emoji: '🎯' },
+  FEEDBACK: { color: '#6B7B8C', emoji: '💬' },
+  CONFLICT_RESOLUTION: { color: '#722F37', emoji: '⚖️' },
 };
 
 // 컨텍스트 한글 이름
@@ -54,28 +41,36 @@ function AdviceCard({ block, color, index }: AdviceCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="rounded-xl bg-white/5 border border-white/10 p-5 hover:border-white/20 transition-all"
-      style={{ borderLeft: `3px solid ${color}` }}
+      transition={{
+        delay: index * 0.1,
+        duration: 0.5,
+        ease: [0.25, 0.1, 0.25, 1]
+      }}
+      className="rounded-lg bg-white border border-black/6 p-6 hover:shadow-md hover:border-[#B8956A]/30 transition-all duration-500 border-l-2"
+      style={{ borderLeftColor: color }}
     >
-      <h3 className="text-base font-semibold mb-4 text-white">
+      <h3
+        className="text-base font-medium mb-5 text-[#1A1A1A]"
+        style={{ fontFamily: "'Playfair Display', serif" }}
+      >
         {block.titleKo || block.title}
       </h3>
-      <ul className="space-y-3">
+      <ul className="space-y-4">
         {(block.bulletsKo || block.bullets).map((bullet, idx) => (
           <motion.li
             key={idx}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 + idx * 0.05 }}
-            className="flex items-start gap-3 text-sm text-gray-300"
+            transition={{
+              delay: index * 0.1 + idx * 0.05,
+              duration: 0.4,
+              ease: [0.25, 0.1, 0.25, 1]
+            }}
+            className="flex items-start gap-4 text-sm text-[#5A5A5A] leading-relaxed"
           >
             <span
-              className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0"
-              style={{
-                backgroundColor: color,
-                boxShadow: `0 0 8px ${color}80`,
-              }}
+              className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0"
+              style={{ backgroundColor: color }}
             />
             <span>{bullet}</span>
           </motion.li>
@@ -91,39 +86,33 @@ interface AdviceCardListProps {
 
 export function AdviceCardList({ advice }: AdviceCardListProps) {
   const { country, context, blocks, summary } = advice;
-  const { color, gradient } = contextColors[context];
-  const icon = contextIcons[context];
+  const { color, emoji } = contextColors[context];
   const contextName = contextNames[context];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* 헤더 카드 */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card rounded-2xl p-5"
-        style={{
-          background: `linear-gradient(135deg, ${color}15, transparent)`,
-          borderColor: `${color}30`,
-        }}
+        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+        className="luxury-card rounded-lg p-6 border-l-2"
+        style={{ borderLeftColor: color }}
       >
-        <div className="flex items-center gap-4 mb-3">
-          <motion.div
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center text-white shadow-lg`}
-            style={{ boxShadow: `0 4px 20px ${color}40` }}
-          >
-            {icon}
-          </motion.div>
+        <div className="flex items-center gap-5 mb-4">
+          <div className="text-3xl">{emoji}</div>
           <div>
-            <h2 className="text-xl font-bold text-white">
+            <h2
+              className="text-xl font-medium text-[#1A1A1A]"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
               {country.nameKo || country.name}
             </h2>
-            <p className="text-sm" style={{ color }}>{contextName}</p>
+            <p className="text-sm mt-1" style={{ color }}>{contextName}</p>
           </div>
         </div>
         {summary && (
-          <p className="text-sm text-gray-400 leading-relaxed">{summary}</p>
+          <p className="text-sm text-[#5A5A5A] leading-relaxed">{summary}</p>
         )}
       </motion.div>
 
@@ -142,7 +131,7 @@ interface MultipleAdviceCardListProps {
 export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListProps) {
   if (adviceList.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
+      <div className="text-center py-12 text-[#5A5A5A]">
         조언을 생성할 국가와 상황을 선택해주세요.
       </div>
     );
@@ -151,34 +140,35 @@ export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListPro
   const country = adviceList[0]?.country;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* 국가 헤더 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card rounded-2xl p-6"
-        style={{
-          background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent)',
-        }}
+        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        className="luxury-card rounded-lg p-8"
       >
-        <h2 className="text-xl font-bold text-white mb-2">
+        <h2
+          className="text-xl font-medium text-[#1A1A1A] mb-3"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
           {country?.nameKo || country?.name} 조직과 일할 때 고려할 점
         </h2>
-        <p className="text-sm text-gray-400 mb-4">
+        <p className="text-sm text-[#5A5A5A] mb-5 leading-relaxed">
           선택하신 국가의 문화 차원을 바탕으로, 다양한 상황에서 유의하면 좋은 행동 힌트를 정리했습니다.
         </p>
-        <div className="flex flex-wrap gap-2">
-          <span className="px-3 py-1.5 bg-orange-500/20 text-orange-300 rounded-lg text-xs font-medium">
+        <div className="flex flex-wrap gap-3">
+          <span className="px-4 py-2 bg-[#B8956A]/10 text-[#9D7E57] rounded-md text-xs font-medium tracking-wide">
             PDI: {country?.dimensions.pdi}
           </span>
-          <span className="px-3 py-1.5 bg-cyan-500/20 text-cyan-300 rounded-lg text-xs font-medium">
+          <span className="px-4 py-2 bg-[#7D8471]/10 text-[#7D8471] rounded-md text-xs font-medium tracking-wide">
             IDV: {country?.dimensions.idv}
           </span>
-          <span className="px-3 py-1.5 bg-pink-500/20 text-pink-300 rounded-lg text-xs font-medium">
+          <span className="px-4 py-2 bg-[#C4886B]/10 text-[#C4886B] rounded-md text-xs font-medium tracking-wide">
             UAI: {country?.dimensions.uai}
           </span>
           {country?.dimensions.mas !== undefined && (
-            <span className="px-3 py-1.5 bg-green-500/20 text-green-300 rounded-lg text-xs font-medium">
+            <span className="px-4 py-2 bg-[#6B7B8C]/10 text-[#6B7B8C] rounded-md text-xs font-medium tracking-wide">
               MAS: {country.dimensions.mas}
             </span>
           )}
@@ -191,8 +181,12 @@ export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListPro
           key={idx}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: idx * 0.1 }}
-          className="space-y-3"
+          transition={{
+            delay: idx * 0.1,
+            duration: 0.5,
+            ease: [0.25, 0.1, 0.25, 1]
+          }}
+          className="space-y-4"
         >
           <AdviceCardList advice={advice} />
         </motion.div>
