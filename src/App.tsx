@@ -1,16 +1,15 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe2, Info, X } from 'lucide-react';
-import type { Country, ClusterType, AdviceContext, AdviceResult, BilateralAdviceResult } from './types';
+import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
 import { CountrySelector } from './components/CountrySelector';
 import { DimensionRadar } from './components/DimensionRadar';
 import { DimensionBar } from './components/DimensionBar';
 import { ComparisonTable } from './components/ComparisonTable';
 import { AdviceContextSelector } from './components/AdviceContextSelector';
-import { AdviceCardList } from './components/AdviceCardList';
 import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
-import { generateAdvice, generateBilateralContextAdvice } from './advice';
+import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
 
@@ -37,28 +36,15 @@ function App() {
   const [showInfo, setShowInfo] = useState(false);
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
 
-  const isBilateralMode =
-    selectedContext !== null && selectedCountries.length >= 2;
-
-  const adviceResult = useMemo<AdviceResult | null>(() => {
-    if (selectedCountries.length === 0 || !selectedContext) {
-      return null;
-    }
-    if (isBilateralMode) {
-      return null;
-    }
-    const profile = countryToProfile(selectedCountries[0]);
-    return generateAdvice(profile, selectedContext);
-  }, [selectedCountries, selectedContext, isBilateralMode]);
-
+  // Bilateral advice - only when exactly 2 countries selected
   const bilateralAdvice = useMemo<BilateralAdviceResult | null>(() => {
-    if (!isBilateralMode || !selectedContext) {
+    if (selectedCountries.length !== 2 || !selectedContext) {
       return null;
     }
     const profileA = countryToProfile(selectedCountries[0]);
     const profileB = countryToProfile(selectedCountries[1]);
     return generateBilateralContextAdvice(profileA, profileB, selectedContext);
-  }, [selectedCountries, isBilateralMode, selectedContext]);
+  }, [selectedCountries, selectedContext]);
 
   const handleCountrySelect = (country: Country) => {
     if (selectedCountries.length < 3) {
@@ -204,37 +190,142 @@ function App() {
                 onCountryRemove={handleCountryRemove}
                 filterCluster={filterCluster}
               />
+            </motion.div>
 
-              {/* Bilateral mode indicator */}
-              <AnimatePresence>
-                {selectedCountries.length >= 2 && selectedContext && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.5 }}
-                    className="mt-6 p-5 bg-[#F5F4F0] rounded-lg border border-[#B8956A]/20"
-                  >
-                    <p className="text-sm text-[#9D7E57] flex items-center gap-3">
-                      <span className="text-xl">✨</span>
-                      <span><strong>양국 간 비교 모드:</strong> 2개 국가가 선택되어 상호 비교 조언이 활성화됩니다.</span>
+            {/* ============================================ */}
+            {/* SECTION 1: Cultural Dimension Comparison */}
+            {/* ============================================ */}
+            {selectedCountries.length > 0 && (
+              <motion.div variants={itemVariants}>
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
+                  <span className="text-xl sm:text-2xl">📊</span>
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      문화 차원 비교
+                    </h2>
+                    <p className="text-xs sm:text-sm text-[#5A5A5A] mt-0.5">
+                      1~3개국 선택 시 Hofstede 차원을 비교합니다
                     </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Charts section */}
+            {selectedCountries.length > 0 && (
+            <motion.div variants={itemVariants} className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-8">
+              {/* Radar chart */}
+              <div className="luxury-card rounded-lg p-4 sm:p-8">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                  <div className="accent-bar" />
+                  <h2 className="text-base sm:text-lg font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    레이더 차트
+                  </h2>
+                </div>
+                <DimensionRadar countries={selectedCountries} />
+              </div>
+
+              {/* Bar charts */}
+              <div className="luxury-card rounded-lg p-4 sm:p-8">
+                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                  <div className="accent-bar" />
+                  <h2 className="text-base sm:text-lg font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    차원별 비교
+                  </h2>
+                </div>
+                <DimensionBar countries={selectedCountries} />
+              </div>
+            </motion.div>
+            )}
+
+            {/* Comparison table */}
+            {selectedCountries.length > 0 && (
+              <motion.div variants={itemVariants}>
+                <ComparisonTable countries={selectedCountries} />
+              </motion.div>
+            )}
+
+            {/* ============================================ */}
+            {/* SECTION 2: Bilateral Situational Advice */}
+            {/* ============================================ */}
+            <motion.div variants={itemVariants}>
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
+                <span className="text-xl sm:text-2xl">💡</span>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    상황별 양국 간 조언
+                  </h2>
+                  <p className="text-xs sm:text-sm text-[#5A5A5A] mt-0.5">
+                    정확히 2개국 선택 시 상호 비교 조언을 제공합니다
+                  </p>
+                </div>
+              </div>
             </motion.div>
 
-            {/* Context selector */}
-            <motion.div variants={itemVariants}>
-              <AdviceContextSelector
-                selectedContext={selectedContext}
-                onContextSelect={handleContextSelect}
-              />
-            </motion.div>
+            {/* Guidance messages based on country count */}
+            <AnimatePresence mode="wait">
+              {selectedCountries.length === 0 && (
+                <motion.div
+                  key="no-country"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                  className="luxury-card rounded-lg p-5 sm:p-6 text-center border-l-4 border-[#5A5A5A]/30"
+                >
+                  <p className="text-sm sm:text-base text-[#5A5A5A] flex items-center justify-center gap-3">
+                    <span className="text-xl">🌍</span>
+                    <span>상황별 조언을 보려면 먼저 <strong className="text-[#1A1A1A]">2개 국가</strong>를 선택하세요.</span>
+                  </p>
+                </motion.div>
+              )}
+
+              {selectedCountries.length === 1 && (
+                <motion.div
+                  key="one-country"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                  className="luxury-card rounded-lg p-5 sm:p-6 text-center border-l-4 border-[#C9A227]"
+                >
+                  <p className="text-sm sm:text-base text-[#5A5A5A] flex items-center justify-center gap-3">
+                    <span className="text-xl">👆</span>
+                    <span>상황별 조언을 보려면 <strong className="text-[#1A1A1A]">1개 국가를 더</strong> 선택하세요. (현재: 1개국)</span>
+                  </p>
+                </motion.div>
+              )}
+
+              {selectedCountries.length === 3 && (
+                <motion.div
+                  key="three-country"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
+                  className="luxury-card rounded-lg p-5 sm:p-6 text-center border-l-4 border-[#6B7B8C]"
+                >
+                  <p className="text-sm sm:text-base text-[#5A5A5A] flex items-center justify-center gap-3">
+                    <span className="text-xl">ℹ️</span>
+                    <span>상황별 조언은 <strong className="text-[#1A1A1A]">2개 국가 간 비교</strong>에서만 제공됩니다. 1개 국가를 제거하세요.</span>
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Context selector - only show when exactly 2 countries */}
+            {selectedCountries.length === 2 && (
+              <motion.div variants={itemVariants}>
+                <AdviceContextSelector
+                  selectedContext={selectedContext}
+                  onContextSelect={handleContextSelect}
+                />
+              </motion.div>
+            )}
 
             {/* Bilateral advice */}
             <AnimatePresence mode="wait">
-              {bilateralAdvice && selectedContext && (
+              {bilateralAdvice && selectedContext && selectedCountries.length === 2 && (
                 <motion.div
                   key="bilateral"
                   initial={{ opacity: 0, y: 30 }}
@@ -247,96 +338,27 @@ function App() {
               )}
             </AnimatePresence>
 
-            {/* Single country advice */}
-            <AnimatePresence mode="wait">
-              {adviceResult && (
-                <motion.div
-                  key="single"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -30 }}
-                  transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-                >
-                  <AdviceCardList advice={adviceResult} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Empty state for advice */}
+            {/* Empty state for advice - when 2 countries selected but no context */}
             <AnimatePresence>
-              {selectedCountries.length > 0 && !selectedContext && (
+              {selectedCountries.length === 2 && !selectedContext && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="luxury-card rounded-lg p-8"
+                  className="luxury-card rounded-lg p-6 sm:p-8"
                 >
-                  <div className="flex flex-col items-center justify-center py-12 border border-dashed border-black/10 rounded-lg">
-                    <span className="text-4xl mb-4">💡</span>
-                    <p className="text-[#5A5A5A] text-center leading-relaxed">
+                  <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-black/10 rounded-lg">
+                    <span className="text-3xl sm:text-4xl mb-4">💡</span>
+                    <p className="text-[#5A5A5A] text-sm sm:text-base text-center leading-relaxed">
                       위에서 상황을 선택하면<br />
-                      해당 국가에 맞는 문화 조언이 표시됩니다
+                      양국 간 문화 조언이 표시됩니다
                     </p>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Tip for single country */}
-            <AnimatePresence>
-              {selectedCountries.length === 1 && selectedContext && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.5 }}
-                  className="matte-card rounded-lg p-5 border-l-2 border-[#C9A227]"
-                >
-                  <p className="text-sm text-[#5A5A5A] flex items-center gap-3">
-                    <span className="text-xl">💡</span>
-                    <span><strong className="text-[#1A1A1A]">팁:</strong> 국가를 하나 더 선택하면 양국 간 비교 조언을 받을 수 있습니다.</span>
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Charts section */}
-            <motion.div variants={itemVariants} className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-8">
-              {/* Radar chart */}
-              <div className="luxury-card rounded-lg p-4 sm:p-8">
-                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                  <div className="accent-bar" />
-                  <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    레이더 차트
-                  </h2>
-                </div>
-                <DimensionRadar countries={selectedCountries} />
-              </div>
-
-              {/* Bar charts */}
-              <div className="luxury-card rounded-lg p-4 sm:p-8">
-                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                  <div className="accent-bar" />
-                  <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    차원별 비교
-                  </h2>
-                </div>
-                {selectedCountries.length > 0 ? (
-                  <DimensionBar countries={selectedCountries} />
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-60 sm:h-80 border border-dashed border-black/10 rounded-lg">
-                    <span className="text-3xl sm:text-4xl mb-3">📊</span>
-                    <p className="text-[#5A5A5A] text-xs sm:text-sm">국가를 선택하면 막대 그래프가 표시됩니다</p>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-
-            {/* Comparison table */}
-            <motion.div variants={itemVariants}>
-              <ComparisonTable countries={selectedCountries} />
-            </motion.div>
           </div>
         </motion.div>
       </main>

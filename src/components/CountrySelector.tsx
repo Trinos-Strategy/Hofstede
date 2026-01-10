@@ -151,7 +151,7 @@ export function CountrySelector({
                 />
               </div>
             </div>
-            <div className="max-h-64 overflow-y-auto bg-white">
+            <div className="max-h-[70vh] overflow-y-auto bg-white">
               {Object.entries(groupedCountries).map(([cluster, clusterCountries]) => {
                 const info = clusterInfo[cluster as ClusterType];
                 return (
@@ -174,10 +174,10 @@ export function CountrySelector({
                             setIsOpen(false);
                           }
                         }}
-                        className="w-full px-5 py-3.5 text-left text-sm flex items-center justify-between
-                          transition-colors duration-300 border-b border-black/3"
+                        className="w-full px-5 py-4 text-left text-sm flex items-center justify-between
+                          transition-colors duration-300 border-b border-black/3 min-h-[52px]"
                       >
-                        <span className="text-[#1A1A1A]">{country.nameKo}</span>
+                        <span className="text-[#1A1A1A] font-medium">{country.nameKo}</span>
                         <span className="text-xs text-[#5A5A5A]/60 tracking-wide">{country.name}</span>
                       </motion.button>
                     ))}
