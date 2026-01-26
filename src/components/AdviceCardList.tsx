@@ -66,7 +66,7 @@ function AdviceCard({ block, color, index }: AdviceCardProps) {
               duration: 0.4,
               ease: [0.25, 0.1, 0.25, 1]
             }}
-            className="flex items-start gap-3 sm:gap-4 text-xs sm:text-sm text-[#5A5A5A] leading-relaxed"
+            className="flex items-start gap-3 sm:gap-4 text-xs sm:text-sm text-[#444444] leading-relaxed"
           >
             <span
               className="mt-1.5 sm:mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -112,7 +112,7 @@ export function AdviceCardList({ advice }: AdviceCardListProps) {
           </div>
         </div>
         {summary && (
-          <p className="text-xs sm:text-sm text-[#5A5A5A] leading-relaxed">{summary}</p>
+          <p className="text-xs sm:text-sm text-[#444444] leading-relaxed">{summary}</p>
         )}
       </motion.div>
 
@@ -131,7 +131,7 @@ interface MultipleAdviceCardListProps {
 export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListProps) {
   if (adviceList.length === 0) {
     return (
-      <div className="text-center py-8 sm:py-12 text-[#5A5A5A] text-sm sm:text-base">
+      <div className="text-center py-8 sm:py-12 text-[#444444] text-sm sm:text-base">
         조언을 생성할 국가와 상황을 선택해주세요.
       </div>
     );
@@ -154,7 +154,7 @@ export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListPro
         >
           {country?.nameKo || country?.name} 조직과 일할 때 고려할 점
         </h2>
-        <p className="text-xs sm:text-sm text-[#5A5A5A] mb-4 sm:mb-5 leading-relaxed">
+        <p className="text-xs sm:text-sm text-[#444444] mb-4 sm:mb-5 leading-relaxed">
           선택하신 국가의 문화 차원을 바탕으로, 다양한 상황에서 유의하면 좋은 행동 힌트를 정리했습니다.
         </p>
         <div className="flex flex-wrap gap-2 sm:gap-3">

@@ -61,12 +61,12 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
             className="p-2 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
             title="필터 초기화"
           >
-            <X className="w-4 h-4 text-[#5A5A5A]" strokeWidth={1.5} />
+            <X className="w-4 h-4 text-[#444444]" strokeWidth={1.5} />
           </motion.button>
         )}
       </div>
 
-      <p className="text-[10px] sm:text-xs text-[#5A5A5A] mb-4 sm:mb-5 flex items-center gap-2">
+      <p className="text-[10px] sm:text-xs text-[#555555] mb-4 sm:mb-5 flex items-center gap-2 font-medium">
         <Layers className="w-3 h-3" strokeWidth={1.5} />
         클러스터를 클릭하여 필터링하세요
       </p>

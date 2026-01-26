@@ -88,7 +88,7 @@ function App() {
                 <h1 className="text-lg sm:text-2xl font-medium tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
                   Hofstede Cultural Dimensions
                 </h1>
-                <p className="text-xs sm:text-sm text-[#5A5A5A] tracking-wide mt-0.5 hidden sm:block">
+                <p className="text-xs sm:text-sm text-[#444444] tracking-wide mt-0.5 hidden sm:block">
                   Cross-Cultural Intelligence for Global Business
                 </p>
               </div>
@@ -100,7 +100,7 @@ function App() {
               className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
               title="정보"
             >
-              <Info className="w-5 h-5 text-[#5A5A5A]" strokeWidth={1.5} />
+              <Info className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
             </motion.button>
           </div>
 
@@ -119,7 +119,7 @@ function App() {
                     onClick={() => setShowInfo(false)}
                     className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-lg hover:bg-white/50 transition-colors duration-300"
                   >
-                    <X className="w-4 h-4 text-[#5A5A5A]" strokeWidth={1.5} />
+                    <X className="w-4 h-4 text-[#444444]" strokeWidth={1.5} />
                   </button>
                   <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-5">
                     <div className="text-2xl sm:text-3xl">📚</div>
@@ -127,7 +127,7 @@ function App() {
                       <h3 className="text-lg font-medium text-[#1A1A1A] mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
                         Hofstede 문화 차원 이론
                       </h3>
-                      <p className="text-sm text-[#5A5A5A] mb-4 leading-relaxed">
+                      <p className="text-sm text-[#444444] mb-4 leading-relaxed">
                         Geert Hofstede의 문화 차원 이론은 국가 간 문화적 차이를 6가지 차원으로 분석합니다.
                         이 도구는 Huib Wursten의 "Mental Images" 연구를 기반으로 국가들을 6개의 문화 클러스터로 분류하고,
                         상황별 문화 조언을 제공합니다.
@@ -182,7 +182,7 @@ function App() {
                 <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
                   국가 선택
                 </h2>
-                <span className="text-[10px] sm:text-xs text-[#5A5A5A] tracking-wide uppercase ml-1 sm:ml-2">최대 3개</span>
+                <span className="text-[10px] sm:text-xs text-[#444444] tracking-wide uppercase ml-1 sm:ml-2">최대 3개</span>
               </div>
               <CountrySelector
                 selectedCountries={selectedCountries}
@@ -203,7 +203,7 @@ function App() {
                     <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
                       문화 차원 비교
                     </h2>
-                    <p className="text-xs sm:text-sm text-[#5A5A5A] mt-0.5">
+                    <p className="text-xs sm:text-sm text-[#444444] mt-0.5">
                       1~3개국 선택 시 Hofstede 차원을 비교합니다
                     </p>
                   </div>
@@ -255,7 +255,7 @@ function App() {
                   <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     상황별 양국 간 조언
                   </h2>
-                  <p className="text-xs sm:text-sm text-[#5A5A5A] mt-0.5">
+                  <p className="text-xs sm:text-sm text-[#444444] mt-0.5">
                     정확히 2개국 선택 시 상호 비교 조언을 제공합니다
                   </p>
                 </div>
@@ -273,7 +273,7 @@ function App() {
                   transition={{ duration: 0.4 }}
                   className="luxury-card rounded-lg p-5 sm:p-6 text-center border-l-4 border-[#5A5A5A]/30"
                 >
-                  <p className="text-sm sm:text-base text-[#5A5A5A] flex items-center justify-center gap-3">
+                  <p className="text-sm sm:text-base text-[#444444] flex items-center justify-center gap-3">
                     <span className="text-xl">🌍</span>
                     <span>상황별 조언을 보려면 먼저 <strong className="text-[#1A1A1A]">2개 국가</strong>를 선택하세요.</span>
                   </p>
@@ -289,7 +289,7 @@ function App() {
                   transition={{ duration: 0.4 }}
                   className="luxury-card rounded-lg p-5 sm:p-6 text-center border-l-4 border-[#C9A227]"
                 >
-                  <p className="text-sm sm:text-base text-[#5A5A5A] flex items-center justify-center gap-3">
+                  <p className="text-sm sm:text-base text-[#444444] flex items-center justify-center gap-3">
                     <span className="text-xl">👆</span>
                     <span>상황별 조언을 보려면 <strong className="text-[#1A1A1A]">1개 국가를 더</strong> 선택하세요. (현재: 1개국)</span>
                   </p>
@@ -305,7 +305,7 @@ function App() {
                   transition={{ duration: 0.4 }}
                   className="luxury-card rounded-lg p-5 sm:p-6 text-center border-l-4 border-[#6B7B8C]"
                 >
-                  <p className="text-sm sm:text-base text-[#5A5A5A] flex items-center justify-center gap-3">
+                  <p className="text-sm sm:text-base text-[#444444] flex items-center justify-center gap-3">
                     <span className="text-xl">ℹ️</span>
                     <span>상황별 조언은 <strong className="text-[#1A1A1A]">2개 국가 간 비교</strong>에서만 제공됩니다. 1개 국가를 제거하세요.</span>
                   </p>
@@ -350,7 +350,7 @@ function App() {
                 >
                   <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-black/10 rounded-lg">
                     <span className="text-3xl sm:text-4xl mb-4">💡</span>
-                    <p className="text-[#5A5A5A] text-sm sm:text-base text-center leading-relaxed">
+                    <p className="text-[#444444] text-sm sm:text-base text-center leading-relaxed">
                       위에서 상황을 선택하면<br />
                       양국 간 문화 조언이 표시됩니다
                     </p>
@@ -396,10 +396,10 @@ function App() {
 
             {/* Credits */}
             <div className="text-center space-y-3">
-              <p className="text-sm text-[#5A5A5A]">
+              <p className="text-sm text-[#444444]">
                 Based on Hofstede's Cultural Dimensions Theory and Huib Wursten's "Mental Images" research
               </p>
-              <p className="text-sm text-[#5A5A5A]">
+              <p className="text-sm text-[#444444]">
                 Data source:{' '}
                 <a
                   href="https://www.hofstede-insights.com"
@@ -413,7 +413,7 @@ function App() {
             </div>
 
             {/* Copyright */}
-            <p className="text-xs text-[#5A5A5A]/60 tracking-wide">
+            <p className="text-xs text-[#444444]/60 tracking-wide">
               © 2026 Trinos Research Lab. All rights reserved.
             </p>
           </div>

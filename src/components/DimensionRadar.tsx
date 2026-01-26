@@ -99,7 +99,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
         >
           <span className="text-3xl sm:text-4xl mb-3 block text-center">📈</span>
         </motion.div>
-        <p className="text-[#5A5A5A] text-xs sm:text-sm">국가를 선택하면 레이더 차트가 표시됩니다</p>
+        <p className="text-[#444444] text-xs sm:text-sm">국가를 선택하면 레이더 차트가 표시됩니다</p>
       </div>
     );
   }

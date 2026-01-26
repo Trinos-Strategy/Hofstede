@@ -14,15 +14,16 @@ const countryColors = [
   { bg: '#7570b3', light: 'rgba(117, 112, 179, 0.12)' }, // Purple - 3rd country
 ];
 
+// Dimension level colors - WCAG AA compliant with stronger contrast
 const getDimensionColorClass = (value: number): { bg: string; text: string } => {
   const level = getDimensionLevel(value);
   switch (level) {
     case 'low':
-      return { bg: 'rgba(125, 132, 113, 0.12)', text: '#7D8471' };
+      return { bg: 'rgba(74, 90, 62, 0.15)', text: '#3D4D32' };   // Darker sage
     case 'medium':
-      return { bg: 'rgba(90, 90, 90, 0.08)', text: '#5A5A5A' };
+      return { bg: 'rgba(60, 60, 60, 0.10)', text: '#444444' };   // Darker gray
     case 'high':
-      return { bg: 'rgba(184, 149, 106, 0.12)', text: '#9D7E57' };
+      return { bg: 'rgba(139, 89, 42, 0.15)', text: '#6B4420' };  // Darker gold
   }
 };
 
@@ -40,8 +41,8 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
           </h3>
         </div>
         <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-black/10 rounded-lg">
-          <Table className="w-6 h-6 sm:w-8 sm:h-8 text-[#5A5A5A]/40 mb-3" strokeWidth={1.5} />
-          <p className="text-[#5A5A5A] text-xs sm:text-sm">국가를 선택하면 비교 테이블이 표시됩니다</p>
+          <Table className="w-6 h-6 sm:w-8 sm:h-8 text-[#444444]/40 mb-3" strokeWidth={1.5} />
+          <p className="text-[#444444] text-xs sm:text-sm">국가를 선택하면 비교 테이블이 표시됩니다</p>
         </div>
       </div>
     );
@@ -68,10 +69,10 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
         <table className="w-full modern-table min-w-[600px] sm:min-w-0">
           <thead>
             <tr className="border-b border-black/8">
-              <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#5A5A5A] tracking-wide">
+              <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">
                 국가
               </th>
-              <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#5A5A5A] tracking-wide">
+              <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">
                 클러스터
               </th>
               {dimensionInfo.map((dim) => (
@@ -81,7 +82,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   style={{ color: dim.color }}
                 >
                   <div>{dim.nameKo}</div>
-                  <div className="text-[10px] sm:text-xs font-normal text-[#5A5A5A]/50 mt-0.5">{dim.key}</div>
+                  <div className="text-[10px] sm:text-xs font-normal text-[#444444]/50 mt-0.5">{dim.key}</div>
                 </th>
               ))}
             </tr>
@@ -111,7 +112,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                       />
                       <div>
                         <div className="font-medium text-xs sm:text-sm" style={{ color: countryColor.bg }}>{country.nameKo}</div>
-                        <div className="text-[10px] sm:text-xs text-[#5A5A5A]/60 tracking-wide">{country.name}</div>
+                        <div className="text-[10px] sm:text-xs text-[#444444]/60 tracking-wide">{country.name}</div>
                       </div>
                     </div>
                   </td>
@@ -181,7 +182,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
               />
               {dim.nameKo} ({dim.key})
             </h4>
-            <p className="text-[10px] sm:text-xs text-[#5A5A5A] leading-relaxed">{dim.description}</p>
+            <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{dim.description}</p>
           </motion.div>
         ))}
       </div>

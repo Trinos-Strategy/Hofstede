@@ -8,13 +8,14 @@ interface ClusterCardProps {
   onClick: (cluster: ClusterType) => void;
 }
 
+// Cluster accent colors - Darker for WCAG AA compliance (4.5:1 contrast)
 const clusterAccentColors: Record<ClusterType, string> = {
-  contest: '#9D7E57',
-  network: '#7D8471',
-  family: '#C9A227',
-  pyramid: '#8B7355',
-  solarSystem: '#C4886B',
-  machine: '#6B7B8C',
+  contest: '#7A5D2E',      // Darker gold - readable on white
+  network: '#4A5A3E',      // Darker sage
+  family: '#8B6914',       // Darker mustard
+  pyramid: '#5A4832',      // Darker bronze
+  solarSystem: '#8B5A3A',  // Darker terracotta
+  machine: '#3D4D5C',      // Darker slate
 };
 
 export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) {
@@ -59,11 +60,11 @@ export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) 
           >
             {info.nameKo}
           </h3>
-          <p className="text-xs text-[#5A5A5A]/60 tracking-wide">{info.name}</p>
+          <p className="text-xs text-[#666666] tracking-wide font-medium">{info.name}</p>
         </div>
       </div>
 
-      <p className="text-xs text-[#5A5A5A] mb-4 line-clamp-2 leading-relaxed">
+      <p className="text-xs text-[#444444] mb-4 line-clamp-2 leading-relaxed">
         {info.description}
       </p>
 
@@ -71,13 +72,13 @@ export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) 
         {countriesInCluster.slice(0, 3).map((country) => (
           <span
             key={country.code}
-            className="text-xs px-3 py-1.5 rounded-md bg-[#F5F4F0] text-[#5A5A5A] border border-black/5"
+            className="text-xs px-3 py-1.5 rounded-md bg-[#F5F4F0] text-[#333333] font-medium border border-black/5"
           >
             {country.nameKo}
           </span>
         ))}
         {countriesInCluster.length > 3 && (
-          <span className="text-xs px-3 py-1.5 rounded-md bg-[#FAFAF8] text-[#5A5A5A]/50 border border-black/5">
+          <span className="text-xs px-3 py-1.5 rounded-md bg-[#FAFAF8] text-[#666666] font-medium border border-black/5">
             +{countriesInCluster.length - 3}
           </span>
         )}

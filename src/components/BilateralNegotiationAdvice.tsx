@@ -80,7 +80,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           <span className="text-xl sm:text-2xl">{colors.emoji}</span>
           양국 간 {contextInfo.title} 조언
         </h2>
-        <p className="text-xs sm:text-sm text-center text-[#5A5A5A] mt-2 sm:mt-3 leading-relaxed">
+        <p className="text-xs sm:text-sm text-center text-[#444444] mt-2 sm:mt-3 leading-relaxed">
           {contextInfo.description}
         </p>
       </motion.div>
@@ -120,7 +120,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                     duration: 0.4,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  className="flex items-start gap-3 sm:gap-4 text-xs sm:text-sm text-[#5A5A5A] leading-relaxed"
+                  className="flex items-start gap-3 sm:gap-4 text-xs sm:text-sm text-[#444444] leading-relaxed"
                 >
                   <span className="mt-1.5 sm:mt-2 w-1.5 h-1.5 bg-[#B8956A] rounded-full flex-shrink-0" />
                   <span>{bullet}</span>
@@ -163,7 +163,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                     duration: 0.4,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  className="flex items-start gap-3 sm:gap-4 text-xs sm:text-sm text-[#5A5A5A] leading-relaxed"
+                  className="flex items-start gap-3 sm:gap-4 text-xs sm:text-sm text-[#444444] leading-relaxed"
                 >
                   <span className="mt-1.5 sm:mt-2 w-1.5 h-1.5 bg-[#7D8471] rounded-full flex-shrink-0" />
                   <span>{bullet}</span>
@@ -266,7 +266,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
               <span className="text-base sm:text-lg">✨</span>
               성공 전략
             </h4>
-            <p className="text-xs sm:text-sm text-[#5A5A5A] leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#444444] leading-relaxed">
               {mutualUnderstanding.bridgingStrategy}
             </p>
           </div>
@@ -291,9 +291,9 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           <table className="w-full text-xs sm:text-sm modern-table min-w-[400px] sm:min-w-0">
             <thead>
               <tr className="border-b border-black/8">
-                <th className="text-left py-3 sm:py-4 px-3 sm:px-5 font-medium text-[#5A5A5A] tracking-wide">차원</th>
+                <th className="text-left py-3 sm:py-4 px-3 sm:px-5 font-medium text-[#444444] tracking-wide">차원</th>
                 <th className="text-center py-3 sm:py-4 px-2 sm:px-5 font-medium" style={{ color: '#B8956A' }}>{nameA}</th>
-                <th className="text-center py-3 sm:py-4 px-2 sm:px-5 font-medium text-[#5A5A5A]/50">차이</th>
+                <th className="text-center py-3 sm:py-4 px-2 sm:px-5 font-medium text-[#444444]/50">차이</th>
                 <th className="text-center py-3 sm:py-4 px-2 sm:px-5 font-medium" style={{ color: '#7D8471' }}>{nameB}</th>
               </tr>
             </thead>
@@ -322,14 +322,14 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                     }}
                     className="border-b border-black/5 hover:bg-[#F5F4F0] transition-colors duration-300"
                   >
-                    <td className="py-3 sm:py-4 px-3 sm:px-5 text-[#5A5A5A] text-[10px] sm:text-sm">{dim.label}</td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-5 text-[#444444] text-[10px] sm:text-sm">{dim.label}</td>
                     <td className="py-3 sm:py-4 px-2 sm:px-5 text-center">
                       <span className="px-2 sm:px-4 py-1 sm:py-2 rounded-md bg-[#B8956A]/10 text-[#9D7E57] font-medium">
                         {valueA}
                       </span>
                     </td>
                     <td className="py-3 sm:py-4 px-2 sm:px-5 text-center">
-                      <span className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md ${isHighDiff ? 'bg-[#722F37]/10 text-[#722F37]' : 'bg-[#F5F4F0] text-[#5A5A5A]/50'}`}>
+                      <span className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-md ${isHighDiff ? 'bg-[#722F37]/10 text-[#722F37]' : 'bg-[#F5F4F0] text-[#444444]/50'}`}>
                         {diff}
                       </span>
                     </td>

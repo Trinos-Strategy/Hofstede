@@ -91,7 +91,7 @@ export function CountrySelector({
           </AnimatePresence>
         </div>
         {selectedCountries.length === 0 && (
-          <p className="text-sm text-[#5A5A5A] flex items-center gap-2">
+          <p className="text-sm text-[#444444] flex items-center gap-2">
             <Plus className="w-4 h-4" strokeWidth={1.5} />
             국가를 선택하세요 (최대 {maxSelections}개)
           </p>
@@ -112,12 +112,12 @@ export function CountrySelector({
           }
         `}
       >
-        <span className={`text-sm ${canAddMore ? 'text-[#5A5A5A]' : 'text-[#5A5A5A]/50'}`}>
+        <span className={`text-sm ${canAddMore ? 'text-[#444444]' : 'text-[#444444]/50'}`}>
           {canAddMore ? '국가 추가...' : '최대 선택 완료'}
         </span>
         <ChevronDown
           className={`w-4 h-4 transition-transform duration-500 ${isOpen ? 'rotate-180' : ''} ${
-            canAddMore ? 'text-[#5A5A5A]' : 'text-[#5A5A5A]/50'
+            canAddMore ? 'text-[#444444]' : 'text-[#444444]/50'
           }`}
           strokeWidth={1.5}
         />
@@ -137,7 +137,7 @@ export function CountrySelector({
           >
             <div className="p-4 border-b border-black/5 bg-[#FAFAF8]">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#5A5A5A]" strokeWidth={1.5} />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#444444]" strokeWidth={1.5} />
                 <input
                   type="text"
                   placeholder="국가 검색..."
@@ -179,14 +179,14 @@ export function CountrySelector({
                           transition-colors duration-300 border-b border-black/3 min-h-[52px]"
                       >
                         <span className="text-[#1A1A1A] font-medium">{country.nameKo}</span>
-                        <span className="text-xs text-[#5A5A5A]/60 tracking-wide">{country.name}</span>
+                        <span className="text-xs text-[#444444]/60 tracking-wide">{country.name}</span>
                       </motion.button>
                     ))}
                   </div>
                 );
               })}
               {Object.keys(groupedCountries).length === 0 && (
-                <div className="px-5 py-10 text-sm text-[#5A5A5A] text-center">
+                <div className="px-5 py-10 text-sm text-[#444444] text-center">
                   <Search className="w-8 h-8 mx-auto mb-3 opacity-30" strokeWidth={1.5} />
                   검색 결과가 없습니다
                 </div>

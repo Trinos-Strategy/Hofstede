@@ -120,7 +120,7 @@ export function AdviceContextSelector({
           상황 선택
         </h2>
       </div>
-      <p className="text-xs sm:text-sm text-[#5A5A5A] mb-4 sm:mb-6 flex items-center gap-2">
+      <p className="text-xs sm:text-sm text-[#444444] mb-4 sm:mb-6 flex items-center gap-2">
         <span className="text-base sm:text-lg">💼</span>
         어떤 상황에서의 조언이 필요한가요?
       </p>
@@ -162,7 +162,7 @@ export function AdviceContextSelector({
               {/* Label */}
               <span
                 className={`text-[10px] sm:text-xs font-medium leading-tight tracking-wide ${
-                  isSelected ? 'text-[#1A1A1A]' : 'text-[#5A5A5A]'
+                  isSelected ? 'text-[#1A1A1A]' : 'text-[#444444]'
                 }`}
               >
                 {option.nameKo}
@@ -203,7 +203,7 @@ export function AdviceContextSelector({
                 borderLeftColor: contextOptions.find((o) => o.key === selectedContext)?.color,
               }}
             >
-              <p className="text-sm text-[#5A5A5A] leading-relaxed">
+              <p className="text-sm text-[#444444] leading-relaxed">
                 {contextOptions.find((o) => o.key === selectedContext)?.description}
               </p>
             </div>

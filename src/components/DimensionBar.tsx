@@ -56,7 +56,7 @@ export function DimensionBar({ countries }: DimensionBarProps) {
               >
                 {dim.nameKo}
               </h4>
-              <p className="text-xs text-[#5A5A5A]/60 tracking-wide">{dim.name}</p>
+              <p className="text-xs text-[#444444]/60 tracking-wide">{dim.name}</p>
             </div>
             <div
               className="w-3 h-3 rounded-full"
@@ -69,7 +69,7 @@ export function DimensionBar({ countries }: DimensionBarProps) {
               const value = country.dimensions[dim.key];
               return (
                 <div key={country.code} className="flex items-center gap-4">
-                  <span className="w-16 text-sm text-[#5A5A5A] truncate">
+                  <span className="w-16 text-sm text-[#444444] truncate">
                     {country.nameKo}
                   </span>
                   <div className="flex-1 h-8 bg-white rounded-lg overflow-hidden relative border border-black/5">
@@ -91,7 +91,7 @@ export function DimensionBar({ countries }: DimensionBarProps) {
                       </span>
                     </motion.div>
                   </div>
-                  <span className="w-10 text-xs text-[#5A5A5A]/60 text-right">
+                  <span className="w-10 text-xs text-[#444444]/60 text-right">
                     {getDimensionLevelKo(value)}
                   </span>
                 </div>
@@ -99,7 +99,7 @@ export function DimensionBar({ countries }: DimensionBarProps) {
             })}
           </div>
 
-          <div className="flex justify-between mt-4 text-xs text-[#5A5A5A]/50">
+          <div className="flex justify-between mt-4 text-xs text-[#444444]/50">
             <span className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#EDECEA]" />
               {dim.lowDescription}
