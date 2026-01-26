@@ -6,10 +6,11 @@ interface DimensionBarProps {
   countries: Country[];
 }
 
+// ColorBrewer qualitative palette - consistent with radar chart
 const chartColors = [
-  { bg: '#B8956A', light: 'rgba(184, 149, 106, 0.15)' },
-  { bg: '#7D8471', light: 'rgba(125, 132, 113, 0.15)' },
-  { bg: '#C4886B', light: 'rgba(196, 136, 107, 0.15)' },
+  { bg: '#1b9e77', light: 'rgba(27, 158, 119, 0.15)' },  // Teal - 1st country
+  { bg: '#d95f02', light: 'rgba(217, 95, 2, 0.15)' },    // Orange - 2nd country
+  { bg: '#7570b3', light: 'rgba(117, 112, 179, 0.15)' }, // Purple - 3rd country
 ];
 
 const containerVariants = {

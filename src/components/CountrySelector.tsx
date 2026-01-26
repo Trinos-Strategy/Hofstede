@@ -12,10 +12,11 @@ interface CountrySelectorProps {
   maxSelections?: number;
 }
 
+// ColorBrewer qualitative palette - consistent with radar chart
 const countryColors = [
-  { bg: '#B8956A', text: '#FFFFFF' },
-  { bg: '#7D8471', text: '#FFFFFF' },
-  { bg: '#C4886B', text: '#FFFFFF' },
+  { bg: '#1b9e77', text: '#FFFFFF' }, // Teal - 1st country
+  { bg: '#d95f02', text: '#FFFFFF' }, // Orange - 2nd country
+  { bg: '#7570b3', text: '#FFFFFF' }, // Purple - 3rd country
 ];
 
 export function CountrySelector({

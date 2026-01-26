@@ -7,6 +7,13 @@ interface ComparisonTableProps {
   countries: Country[];
 }
 
+// ColorBrewer qualitative palette - consistent with radar chart
+const countryColors = [
+  { bg: '#1b9e77', light: 'rgba(27, 158, 119, 0.12)' },  // Teal - 1st country
+  { bg: '#d95f02', light: 'rgba(217, 95, 2, 0.12)' },    // Orange - 2nd country
+  { bg: '#7570b3', light: 'rgba(117, 112, 179, 0.12)' }, // Purple - 3rd country
+];
+
 const getDimensionColorClass = (value: number): { bg: string; text: string } => {
   const level = getDimensionLevel(value);
   switch (level) {
@@ -82,6 +89,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
           <tbody>
             {countries.map((country, index) => {
               const cluster = clusterInfo[country.cluster];
+              const countryColor = countryColors[index % countryColors.length];
               return (
                 <motion.tr
                   key={country.code}
@@ -93,10 +101,19 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
                   className="border-b border-black/5 hover:bg-[#F5F4F0] transition-colors duration-300"
+                  style={{ borderLeftWidth: '3px', borderLeftColor: countryColor.bg }}
                 >
                   <td className="py-3 sm:py-4 px-3 sm:px-5">
-                    <div className="font-medium text-[#1A1A1A] text-xs sm:text-sm">{country.nameKo}</div>
-                    <div className="text-[10px] sm:text-xs text-[#5A5A5A]/60 tracking-wide">{country.name}</div>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: countryColor.bg }}
+                      />
+                      <div>
+                        <div className="font-medium text-xs sm:text-sm" style={{ color: countryColor.bg }}>{country.nameKo}</div>
+                        <div className="text-[10px] sm:text-xs text-[#5A5A5A]/60 tracking-wide">{country.name}</div>
+                      </div>
+                    </div>
                   </td>
                   <td className="py-3 sm:py-4 px-3 sm:px-5">
                     <span
