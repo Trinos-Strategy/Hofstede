@@ -16,11 +16,77 @@ interface DimensionRadarProps {
   countries: Country[];
 }
 
+// ColorBrewer qualitative palette - high contrast colors
 const chartColors = [
-  { stroke: '#B8956A', fill: 'rgba(184, 149, 106, 0.25)' },
-  { stroke: '#7D8471', fill: 'rgba(125, 132, 113, 0.25)' },
-  { stroke: '#C4886B', fill: 'rgba(196, 136, 107, 0.25)' },
+  {
+    stroke: '#1b9e77', // Teal
+    fill: 'rgba(27, 158, 119, 0.2)',
+    strokeDasharray: undefined, // Solid line
+    marker: 'circle' as const,
+  },
+  {
+    stroke: '#d95f02', // Orange
+    fill: 'rgba(217, 95, 2, 0.15)',
+    strokeDasharray: '8 4', // Dashed line
+    marker: 'square' as const,
+  },
+  {
+    stroke: '#7570b3', // Purple
+    fill: 'rgba(117, 112, 179, 0.15)',
+    strokeDasharray: '3 3', // Dotted line
+    marker: 'triangle' as const,
+  },
 ];
+
+// Custom dot component for different marker shapes
+interface CustomDotProps {
+  cx?: number;
+  cy?: number;
+  index?: number;
+  markerType: 'circle' | 'square' | 'triangle';
+  fill: string;
+}
+
+function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
+  const size = 5;
+
+  switch (markerType) {
+    case 'square':
+      return (
+        <rect
+          x={cx - size}
+          y={cy - size}
+          width={size * 2}
+          height={size * 2}
+          fill={fill}
+          stroke={fill}
+          strokeWidth={1}
+        />
+      );
+    case 'triangle':
+      const points = `${cx},${cy - size * 1.2} ${cx - size},${cy + size * 0.8} ${cx + size},${cy + size * 0.8}`;
+      return (
+        <polygon
+          points={points}
+          fill={fill}
+          stroke={fill}
+          strokeWidth={1}
+        />
+      );
+    case 'circle':
+    default:
+      return (
+        <circle
+          cx={cx}
+          cy={cy}
+          r={size}
+          fill={fill}
+          stroke={fill}
+          strokeWidth={1}
+        />
+      );
+  }
+}
 
 export function DimensionRadar({ countries }: DimensionRadarProps) {
   if (countries.length === 0) {
@@ -70,18 +136,32 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
             tickCount={6}
             axisLine={false}
           />
-          {countries.map((country, index) => (
-            <Radar
-              key={country.code}
-              name={country.nameKo}
-              dataKey={country.code}
-              stroke={chartColors[index % chartColors.length].stroke}
-              fill={chartColors[index % chartColors.length].fill}
-              strokeWidth={2}
-              animationDuration={800}
-              animationBegin={index * 150}
-            />
-          ))}
+          {countries.map((country, index) => {
+            const colorConfig = chartColors[index % chartColors.length];
+            return (
+              <Radar
+                key={country.code}
+                name={country.nameKo}
+                dataKey={country.code}
+                stroke={colorConfig.stroke}
+                fill={colorConfig.fill}
+                strokeWidth={2.5}
+                strokeDasharray={colorConfig.strokeDasharray}
+                dot={(props) => (
+                  <CustomDot
+                    key={`dot-${country.code}-${props.index}`}
+                    cx={props.cx}
+                    cy={props.cy}
+                    index={props.index}
+                    markerType={colorConfig.marker}
+                    fill={colorConfig.stroke}
+                  />
+                )}
+                animationDuration={800}
+                animationBegin={index * 150}
+              />
+            );
+          })}
           <Tooltip
             contentStyle={{
               backgroundColor: '#FFFFFF',
@@ -96,14 +176,23 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
           />
           <Legend
             wrapperStyle={{ paddingTop: '15px' }}
-            formatter={(value, entry) => (
-              <span
-                className="text-sm tracking-wide"
-                style={{ color: entry.color }}
-              >
-                {value}
-              </span>
-            )}
+            formatter={(value, _entry, index) => {
+              const colorConfig = chartColors[index % chartColors.length];
+              const markerSymbol = colorConfig.marker === 'circle' ? '●'
+                : colorConfig.marker === 'square' ? '■'
+                : '▲';
+              const lineStyle = colorConfig.strokeDasharray === undefined ? '━━'
+                : colorConfig.strokeDasharray === '8 4' ? '┅┅'
+                : '···';
+              return (
+                <span
+                  className="text-sm tracking-wide font-medium"
+                  style={{ color: colorConfig.stroke }}
+                >
+                  {markerSymbol} {lineStyle} {value}
+                </span>
+              );
+            }}
           />
         </RadarChart>
       </ResponsiveContainer>
