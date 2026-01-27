@@ -424,11 +424,11 @@ function generateConflictAdvice(
   if (pdiGap) {
     if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
       // 고PDI → 저PDI
-      bullets.push('당사자 간 직접 해결하세요. 중재를 최소화하세요.');
+      bullets.push('당사자 간 직접 해결하세요. 제3자의 개입을 최소화하세요.');
       bullets.push('직접 대화를 통해 문제를 해결하는 것을 선호합니다.');
     } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
       // 저PDI → 고PDI
-      bullets.push('상급자나 중재자를 통해 해결하세요.');
+      bullets.push('상급자나 조정인을 통해 해결하세요.');
       bullets.push('공식적인 절차를 통한 갈등 해결이 더 효과적입니다.');
     }
   }
@@ -597,7 +597,7 @@ function generateContextMutualUnderstanding(
     commonGround.push('전문성과 비즈니스 목표에 대한 상호 존중');
   }
 
-  // 컨텍스트별 중재 전략
+  // 컨텍스트별 가교 전략 (Bridging Strategy)
   const bridgingStrategies: Record<AdviceContext, string> = {
     MEETING_IDEA: `회의 문화의 차이를 인정하고, ${nameA}와 ${nameB} 양측이 서로의 제안 방식을 이해하면 더 효과적인 아이디어 교환이 가능합니다.`,
     DISAGREE_BOSS: `의견 충돌 시 ${nameA}와 ${nameB}의 소통 방식 차이를 인식하고, 상호 존중을 바탕으로 건설적인 대화를 이끌어내세요.`,

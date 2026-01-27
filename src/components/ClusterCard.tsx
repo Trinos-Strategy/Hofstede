@@ -8,83 +8,127 @@ interface ClusterCardProps {
   onClick: (cluster: ClusterType) => void;
 }
 
-// Cluster accent colors - Darker for WCAG AA compliance (4.5:1 contrast)
-const clusterAccentColors: Record<ClusterType, string> = {
-  contest: '#7A5D2E',      // Darker gold - readable on white
-  network: '#4A5A3E',      // Darker sage
-  family: '#8B6914',       // Darker mustard
-  pyramid: '#5A4832',      // Darker bronze
-  solarSystem: '#8B5A3A',  // Darker terracotta
-  machine: '#3D4D5C',      // Darker slate
+// Cluster accent colors with gradient pairs - Darker for WCAG AA compliance
+const clusterStyles: Record<ClusterType, { color: string; gradient: string; lightBg: string }> = {
+  contest: {
+    color: '#7A5D2E',
+    gradient: 'linear-gradient(135deg, #7A5D2E, #9D7E57)',
+    lightBg: 'linear-gradient(135deg, rgba(122, 93, 46, 0.08), rgba(157, 126, 87, 0.04))',
+  },
+  network: {
+    color: '#4A5A3E',
+    gradient: 'linear-gradient(135deg, #4A5A3E, #7D8471)',
+    lightBg: 'linear-gradient(135deg, rgba(74, 90, 62, 0.08), rgba(125, 132, 113, 0.04))',
+  },
+  family: {
+    color: '#8B6914',
+    gradient: 'linear-gradient(135deg, #8B6914, #C9A227)',
+    lightBg: 'linear-gradient(135deg, rgba(139, 105, 20, 0.08), rgba(201, 162, 39, 0.04))',
+  },
+  pyramid: {
+    color: '#5A4832',
+    gradient: 'linear-gradient(135deg, #5A4832, #8B7355)',
+    lightBg: 'linear-gradient(135deg, rgba(90, 72, 50, 0.08), rgba(139, 115, 85, 0.04))',
+  },
+  solarSystem: {
+    color: '#8B5A3A',
+    gradient: 'linear-gradient(135deg, #8B5A3A, #C4886B)',
+    lightBg: 'linear-gradient(135deg, rgba(139, 90, 58, 0.08), rgba(196, 136, 107, 0.04))',
+  },
+  machine: {
+    color: '#3D4D5C',
+    gradient: 'linear-gradient(135deg, #3D4D5C, #6B7B8C)',
+    lightBg: 'linear-gradient(135deg, rgba(61, 77, 92, 0.08), rgba(107, 123, 140, 0.04))',
+  },
 };
 
 export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) {
   const info = clusterInfo[cluster];
   const countriesInCluster = getCountriesByCluster(cluster);
-  const accentColor = clusterAccentColors[cluster];
+  const style = clusterStyles[cluster];
 
   return (
     <motion.div
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -6, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => onClick(cluster)}
-      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className={`
-        cursor-pointer rounded-lg p-5 relative
+        cursor-pointer rounded-xl p-5 relative overflow-hidden
         transition-all duration-500
         ${isSelected
-          ? 'bg-white shadow-md border-l-2'
-          : 'bg-white border border-black/6 hover:shadow-md'
+          ? 'shadow-lg border-l-4'
+          : 'border border-black/6 hover:shadow-lg hover:border-transparent'
         }
       `}
       style={{
-        borderLeftColor: isSelected ? accentColor : 'transparent',
+        background: isSelected ? style.lightBg : '#FFFFFF',
+        borderLeftColor: isSelected ? style.color : 'transparent',
       }}
     >
-      <div className="flex items-center gap-4 mb-4">
-        <div
-          className="w-11 h-11 rounded-lg flex items-center justify-center text-xl"
-          style={{
-            backgroundColor: `${accentColor}15`,
-          }}
-        >
-          {info.icon}
-        </div>
-        <div>
-          <h3
-            className="font-medium text-sm tracking-wide"
+      {/* Subtle gradient overlay on hover */}
+      <div
+        className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: style.lightBg }}
+      />
+
+      <div className="relative z-10">
+        <div className="flex items-center gap-4 mb-4">
+          {/* Larger icon with gradient background */}
+          <motion.div
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            transition={{ duration: 0.3 }}
+            className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shadow-sm"
             style={{
-              color: accentColor,
-              fontFamily: "'Playfair Display', serif"
+              background: style.gradient,
+              boxShadow: `0 4px 12px ${style.color}30`,
             }}
           >
-            {info.nameKo}
-          </h3>
-          <p className="text-xs text-[#666666] tracking-wide font-medium">{info.name}</p>
+            <span className="filter drop-shadow-sm">{info.icon}</span>
+          </motion.div>
+          <div>
+            <h3
+              className="font-semibold text-base tracking-wide"
+              style={{
+                color: style.color,
+                fontFamily: "'Playfair Display', serif"
+              }}
+            >
+              {info.nameKo}
+            </h3>
+            <p className="text-xs text-[#555555] tracking-wide font-medium">{info.name}</p>
+          </div>
+        </div>
+
+        <p className="text-sm text-[#444444] mb-4 line-clamp-2 leading-relaxed">
+          {info.description}
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          {countriesInCluster.slice(0, 3).map((country) => (
+            <span
+              key={country.code}
+              className="text-xs px-3 py-1.5 rounded-lg bg-white/80 text-[#333333] font-medium border border-black/5 shadow-sm"
+            >
+              {country.nameKo}
+            </span>
+          ))}
+          {countriesInCluster.length > 3 && (
+            <span
+              className="text-xs px-3 py-1.5 rounded-lg font-medium border shadow-sm"
+              style={{
+                backgroundColor: `${style.color}10`,
+                color: style.color,
+                borderColor: `${style.color}20`,
+              }}
+            >
+              +{countriesInCluster.length - 3}
+            </span>
+          )}
         </div>
       </div>
 
-      <p className="text-xs text-[#444444] mb-4 line-clamp-2 leading-relaxed">
-        {info.description}
-      </p>
-
-      <div className="flex flex-wrap gap-2">
-        {countriesInCluster.slice(0, 3).map((country) => (
-          <span
-            key={country.code}
-            className="text-xs px-3 py-1.5 rounded-md bg-[#F5F4F0] text-[#333333] font-medium border border-black/5"
-          >
-            {country.nameKo}
-          </span>
-        ))}
-        {countriesInCluster.length > 3 && (
-          <span className="text-xs px-3 py-1.5 rounded-md bg-[#FAFAF8] text-[#666666] font-medium border border-black/5">
-            +{countriesInCluster.length - 3}
-          </span>
-        )}
-      </div>
-
-      {/* Selected indicator */}
+      {/* Selected indicator - animated pulse */}
       {isSelected && (
         <motion.div
           initial={{ scale: 0 }}
@@ -92,9 +136,14 @@ export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) 
           transition={{ duration: 0.4 }}
           className="absolute top-4 right-4"
         >
-          <div
-            className="w-2 h-2 rounded-full"
-            style={{ backgroundColor: accentColor }}
+          <motion.div
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-3 h-3 rounded-full"
+            style={{
+              background: style.gradient,
+              boxShadow: `0 0 8px ${style.color}60`,
+            }}
           />
         </motion.div>
       )}

@@ -91,7 +91,7 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
 export function DimensionRadar({ countries }: DimensionRadarProps) {
   if (countries.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-60 sm:h-80 border border-dashed border-black/10 rounded-lg">
+      <div className="flex flex-col items-center justify-center h-80 sm:h-[420px] border border-dashed border-black/10 rounded-lg">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -120,19 +120,19 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-      className="h-60 sm:h-80"
+      className="h-80 sm:h-[420px]"
     >
       <ResponsiveContainer width="100%" height="100%">
-        <RadarChart data={data} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
+        <RadarChart data={data} margin={{ top: 25, right: 40, bottom: 25, left: 40 }}>
           <PolarGrid stroke="rgba(0, 0, 0, 0.08)" />
           <PolarAngleAxis
             dataKey="dimension"
-            tick={{ fill: '#5A5A5A', fontSize: 11 }}
+            tick={{ fill: '#444444', fontSize: 12, fontWeight: 500 }}
           />
           <PolarRadiusAxis
             angle={90}
             domain={[0, 100]}
-            tick={{ fill: '#5A5A5A', fontSize: 10 }}
+            tick={{ fill: '#666666', fontSize: 11 }}
             tickCount={6}
             axisLine={false}
           />

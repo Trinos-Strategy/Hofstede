@@ -257,7 +257,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
             </ul>
           </div>
 
-          {/* 중재 전략 */}
+          {/* 가교 전략 (Bridging Strategy) */}
           <div className="p-4 sm:p-5 rounded-lg bg-[#B8956A]/5 border border-[#B8956A]/10">
             <h4
               className="font-medium text-[#9D7E57] mb-2 sm:mb-3 flex items-center gap-2 sm:gap-3 text-xs sm:text-sm"
