@@ -132,19 +132,34 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     const value = country.dimensions[dim.key];
                     const colors = getDimensionColorClass(value);
                     return (
-                      <td key={dim.key} className="py-3 sm:py-4 px-2 sm:px-5 text-center">
-                        <span
-                          className="inline-block px-2 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium"
-                          style={{
-                            backgroundColor: colors.bg,
-                            color: colors.text,
-                          }}
-                        >
-                          {value}
-                          <span className="ml-1 sm:ml-1.5 text-[10px] sm:text-xs opacity-60">
-                            {getDimensionLevelKo(value)}
-                          </span>
-                        </span>
+                      <td key={dim.key} className="py-3 sm:py-4 px-2 sm:px-5">
+                        <div className="flex flex-col items-center gap-1.5">
+                          {/* Value and Level */}
+                          <div className="text-center">
+                            <span
+                              className="text-sm sm:text-base font-semibold"
+                              style={{ color: countryColor.bg }}
+                            >
+                              {value}
+                            </span>
+                            <span
+                              className="ml-1.5 text-[10px] sm:text-xs font-medium"
+                              style={{ color: colors.text }}
+                            >
+                              {getDimensionLevelKo(value)}
+                            </span>
+                          </div>
+                          {/* Mini Progress Bar */}
+                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-[#E8E7E3] rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${value}%` }}
+                              transition={{ duration: 0.8, delay: index * 0.1 + 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                              className="h-full rounded-full"
+                              style={{ backgroundColor: countryColor.bg }}
+                            />
+                          </div>
+                        </div>
                       </td>
                     );
                   })}
