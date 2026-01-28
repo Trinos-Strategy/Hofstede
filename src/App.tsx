@@ -299,7 +299,7 @@ function App() {
             {/* SECTION 2: Bilateral Situational Advice */}
             {/* ============================================ */}
             <motion.div variants={itemVariants} id="bilateral-advice">
-              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
+              <div className="flex items-center gap-2 sm:gap-3 mb-3">
                 <span className="text-xl sm:text-2xl">💡</span>
                 <div>
                   <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -309,6 +309,13 @@ function App() {
                     정확히 2개국 선택 시 상호 비교 조언을 제공합니다
                   </p>
                 </div>
+              </div>
+              {/* Framework note */}
+              <div className="mb-4 sm:mb-5 px-4 py-2.5 bg-[#F5F4F0] rounded-lg border border-[#B8956A]/15">
+                <p className="text-[10px] sm:text-xs text-[#555555] leading-relaxed">
+                  <span className="font-medium text-[#9D7E57]">📚 프레임워크:</span>{' '}
+                  양국 간 조언은 Huib Wursten의 Mental Images 프레임워크에 기반하며, 4개 핵심 차원(PDI, IDV, UAI, MAS)을 사용합니다.
+                </p>
               </div>
             </motion.div>
 

@@ -27,6 +27,10 @@ const getDimensionColorClass = (value: number): { bg: string; text: string } => 
   }
 };
 
+// Separate core dimensions (Wursten cluster basis) and extended dimensions
+const coreDimensions = dimensionInfo.filter(d => ['PDI', 'IDV', 'UAI', 'MAS'].includes(d.key));
+const extendedDimensions = dimensionInfo.filter(d => ['LTO', 'IVR'].includes(d.key));
+
 export function ComparisonTable({ countries }: ComparisonTableProps) {
   if (countries.length === 0) {
     return (
@@ -66,7 +70,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
       </div>
 
       <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
-        <table className="w-full modern-table min-w-[600px] sm:min-w-0">
+        <table className="w-full modern-table min-w-[700px] sm:min-w-0">
           <thead>
             <tr className="border-b border-black/8">
               <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">
@@ -75,10 +79,42 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
               <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">
                 클러스터
               </th>
-              {dimensionInfo.map((dim) => (
+              {/* Core Dimensions Header */}
+              <th
+                colSpan={4}
+                className="text-center py-2 px-2 text-[10px] sm:text-xs font-medium tracking-wide border-l border-black/5"
+                style={{ color: '#9D7E57', backgroundColor: 'rgba(184, 149, 106, 0.08)' }}
+              >
+                핵심 차원 (Wursten 클러스터 기준)
+              </th>
+              {/* Extended Dimensions Header */}
+              <th
+                colSpan={2}
+                className="text-center py-2 px-2 text-[10px] sm:text-xs font-medium tracking-wide border-l border-black/5"
+                style={{ color: '#7C3AED', backgroundColor: 'rgba(139, 92, 246, 0.08)' }}
+              >
+                추가 차원 (Hofstede 확장)
+              </th>
+            </tr>
+            <tr className="border-b border-black/8">
+              <th className="py-2"></th>
+              <th className="py-2"></th>
+              {/* Core dimension columns */}
+              {coreDimensions.map((dim, idx) => (
                 <th
                   key={dim.key}
-                  className="text-center py-3 sm:py-4 px-2 sm:px-5 text-xs sm:text-sm font-medium"
+                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium ${idx === 0 ? 'border-l border-black/5' : ''}`}
+                  style={{ color: dim.color }}
+                >
+                  <div>{dim.nameKo}</div>
+                  <div className="text-[10px] sm:text-xs font-normal text-[#444444]/50 mt-0.5">{dim.key}</div>
+                </th>
+              ))}
+              {/* Extended dimension columns */}
+              {extendedDimensions.map((dim, idx) => (
+                <th
+                  key={dim.key}
+                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium ${idx === 0 ? 'border-l border-black/5' : ''}`}
                   style={{ color: dim.color }}
                 >
                   <div>{dim.nameKo}</div>
@@ -128,11 +164,48 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                       {cluster.nameKo}
                     </span>
                   </td>
-                  {dimensionInfo.map((dim) => {
+                  {/* Core dimensions */}
+                  {coreDimensions.map((dim, dimIdx) => {
                     const value = country.dimensions[dim.key];
                     const colors = getDimensionColorClass(value);
                     return (
-                      <td key={dim.key} className="py-3 sm:py-4 px-2 sm:px-5">
+                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-black/5' : ''}`}>
+                        <div className="flex flex-col items-center gap-1.5">
+                          {/* Value and Level */}
+                          <div className="text-center">
+                            <span
+                              className="text-sm sm:text-base font-semibold"
+                              style={{ color: countryColor.bg }}
+                            >
+                              {value}
+                            </span>
+                            <span
+                              className="ml-1.5 text-[10px] sm:text-xs font-medium"
+                              style={{ color: colors.text }}
+                            >
+                              {getDimensionLevelKo(value)}
+                            </span>
+                          </div>
+                          {/* Mini Progress Bar */}
+                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-[#E8E7E3] rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${value}%` }}
+                              transition={{ duration: 0.8, delay: index * 0.1 + 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                              className="h-full rounded-full"
+                              style={{ backgroundColor: countryColor.bg }}
+                            />
+                          </div>
+                        </div>
+                      </td>
+                    );
+                  })}
+                  {/* Extended dimensions */}
+                  {extendedDimensions.map((dim, dimIdx) => {
+                    const value = country.dimensions[dim.key];
+                    const colors = getDimensionColorClass(value);
+                    return (
+                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-black/5' : ''}`}>
                         <div className="flex flex-col items-center gap-1.5">
                           {/* Value and Level */}
                           <div className="text-center">
@@ -170,36 +243,86 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
         </table>
       </div>
 
-      {/* Dimension explanations */}
-      <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-        {dimensionInfo.map((dim, index) => (
-          <motion.div
-            key={dim.key}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              delay: 0.3 + index * 0.06,
-              duration: 0.5,
-              ease: [0.25, 0.1, 0.25, 1]
-            }}
-            className="p-4 sm:p-5 rounded-lg bg-[#F5F4F0] border border-black/5 hover:border-[#B8956A]/30 transition-all duration-500 border-l-2"
-            style={{
-              borderLeftColor: dim.color,
-            }}
-          >
-            <h4
-              className="font-medium text-xs sm:text-sm text-[#1A1A1A] mb-2 flex items-center gap-2"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              <span
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: dim.color }}
-              />
-              {dim.nameKo} ({dim.key})
-            </h4>
-            <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{dim.description}</p>
-          </motion.div>
-        ))}
+      {/* Dimension explanations - grouped */}
+      <div className="mt-6 sm:mt-8 space-y-6">
+        {/* Core Dimensions */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 rounded-full bg-gradient-to-b from-[#B8956A] to-[#9D7E57]" />
+            <span className="text-xs font-medium text-[#9D7E57]">핵심 차원 (Wursten 클러스터 기준)</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+            {coreDimensions.map((dim, index) => (
+              <motion.div
+                key={dim.key}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.3 + index * 0.06,
+                  duration: 0.5,
+                  ease: [0.25, 0.1, 0.25, 1]
+                }}
+                className="p-4 sm:p-5 rounded-lg bg-[#F5F4F0] border border-black/5 hover:border-[#B8956A]/30 transition-all duration-500 border-l-2"
+                style={{
+                  borderLeftColor: dim.color,
+                }}
+              >
+                <h4
+                  className="font-medium text-xs sm:text-sm text-[#1A1A1A] mb-2 flex items-center gap-2"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: dim.color }}
+                  />
+                  {dim.nameKo} ({dim.key})
+                </h4>
+                <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{dim.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-dashed border-[#8B5CF6]/30" />
+
+        {/* Extended Dimensions */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-4 rounded-full bg-gradient-to-b from-[#8B5CF6] to-[#6D28D9]" />
+            <span className="text-xs font-medium text-[#7C3AED]">추가 차원 (Hofstede 확장)</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+            {extendedDimensions.map((dim, index) => (
+              <motion.div
+                key={dim.key}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: 0.5 + index * 0.06,
+                  duration: 0.5,
+                  ease: [0.25, 0.1, 0.25, 1]
+                }}
+                className="p-4 sm:p-5 rounded-lg bg-[#F5F4F0] border border-black/5 hover:border-[#8B5CF6]/30 transition-all duration-500 border-l-2"
+                style={{
+                  borderLeftColor: dim.color,
+                }}
+              >
+                <h4
+                  className="font-medium text-xs sm:text-sm text-[#1A1A1A] mb-2 flex items-center gap-2"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
+                >
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: dim.color }}
+                  />
+                  {dim.nameKo} ({dim.key})
+                </h4>
+                <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{dim.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </motion.div>
   );

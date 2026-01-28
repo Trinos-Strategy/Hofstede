@@ -87,6 +87,19 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
           </motion.div>
         ))}
       </motion.div>
+
+      {/* Cluster classification note */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        className="mt-5 pt-4 border-t border-black/5"
+      >
+        <p className="text-[10px] sm:text-xs text-[#555555] leading-relaxed">
+          <span className="font-medium text-[#9D7E57]">ℹ️ 분류 기준:</span>{' '}
+          Wursten의 문화 클러스터는 Hofstede의 4개 핵심 차원(PDI, IDV, UAI, MAS)을 기반으로 분류됩니다.
+        </p>
+      </motion.div>
     </div>
   );
 }
