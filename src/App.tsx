@@ -263,14 +263,17 @@ function App() {
 
             {/* Charts section */}
             {selectedCountries.length > 0 && (
-            <motion.div variants={itemVariants} className="grid grid-cols-1 xl:grid-cols-2 gap-5 sm:gap-8">
-              {/* Radar chart */}
+            <motion.div variants={itemVariants} className="space-y-5 sm:space-y-8">
+              {/* Radar chart - full width with dimension explanations */}
               <div className="luxury-card rounded-lg p-4 sm:p-8">
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                   <div className="accent-bar" />
                   <h2 className="text-base sm:text-lg font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     레이더 차트
                   </h2>
+                  <span className="text-[10px] sm:text-xs text-[#9D7E57] bg-[#B8956A]/10 px-2 py-0.5 rounded-full font-medium">
+                    6차원 비교
+                  </span>
                 </div>
                 <DimensionRadar countries={selectedCountries} />
               </div>
@@ -280,7 +283,7 @@ function App() {
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                   <div className="accent-bar" />
                   <h2 className="text-base sm:text-lg font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    차원별 비교
+                    차원별 막대 비교
                   </h2>
                 </div>
                 <DimensionBar countries={selectedCountries} />

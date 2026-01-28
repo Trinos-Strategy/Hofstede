@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Info } from 'lucide-react';
 import type { ClusterType } from '../types';
 import { clusterInfo, getCountriesByCluster } from '../data/countries';
 
@@ -6,6 +7,7 @@ interface ClusterCardProps {
   cluster: ClusterType;
   isSelected: boolean;
   onClick: (cluster: ClusterType) => void;
+  onInfoClick?: (cluster: ClusterType) => void;
 }
 
 // Cluster styles with unique icon colors
@@ -46,16 +48,34 @@ const clusterStyles: Record<ClusterType, {
   },
 };
 
-export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) {
+export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: ClusterCardProps) {
   const info = clusterInfo[cluster];
   const countriesInCluster = getCountriesByCluster(cluster);
   const style = clusterStyles[cluster];
+
+  const handleClick = () => {
+    onClick(cluster);
+  };
+
+  const handleDoubleClick = () => {
+    if (onInfoClick) {
+      onInfoClick(cluster);
+    }
+  };
+
+  const handleInfoButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onInfoClick) {
+      onInfoClick(cluster);
+    }
+  };
 
   return (
     <motion.div
       whileHover={{ y: -4, scale: 1.01 }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => onClick(cluster)}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className={`
         cursor-pointer rounded-xl p-5 relative overflow-hidden
@@ -93,7 +113,7 @@ export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) 
               {info.icon}
             </span>
           </motion.div>
-          <div>
+          <div className="flex-1">
             <h3
               className="font-semibold text-base tracking-wide"
               style={{
@@ -105,6 +125,18 @@ export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) 
             </h3>
             <p className="text-xs text-[#555555] tracking-wide font-medium">{info.name}</p>
           </div>
+          {/* Info button */}
+          {onInfoClick && (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleInfoButtonClick}
+              className="p-2 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-300"
+              title="상세 정보 보기"
+            >
+              <Info className="w-4 h-4 text-[#555555]" strokeWidth={1.5} />
+            </motion.button>
+          )}
         </div>
 
         <p className="text-sm text-[#444444] mb-4 line-clamp-2 leading-relaxed">

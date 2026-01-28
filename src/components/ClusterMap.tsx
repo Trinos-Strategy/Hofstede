@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Layers, X } from 'lucide-react';
 import type { ClusterType } from '../types';
 import { clusterOrder } from '../data/countries';
 import { ClusterCard } from './ClusterCard';
+import { ClusterDetailModal } from './ClusterDetailModal';
 
 interface ClusterMapProps {
   selectedCluster: ClusterType | null;
@@ -30,12 +32,22 @@ const itemVariants = {
 };
 
 export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps) {
+  const [modalCluster, setModalCluster] = useState<ClusterType | null>(null);
+
   const handleClusterClick = (cluster: ClusterType) => {
     if (selectedCluster === cluster) {
       onClusterSelect(null);
     } else {
       onClusterSelect(cluster);
     }
+  };
+
+  const handleClusterInfo = (cluster: ClusterType) => {
+    setModalCluster(cluster);
+  };
+
+  const handleCloseModal = () => {
+    setModalCluster(null);
   };
 
   return (
@@ -68,7 +80,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
 
       <p className="text-[10px] sm:text-xs text-[#555555] mb-4 sm:mb-5 flex items-center gap-2 font-medium">
         <Layers className="w-3 h-3" strokeWidth={1.5} />
-        클러스터를 클릭하여 필터링하세요
+        클릭: 필터 · 더블클릭: 상세정보
       </p>
 
       <motion.div
@@ -83,6 +95,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
               cluster={cluster}
               isSelected={selectedCluster === cluster}
               onClick={handleClusterClick}
+              onInfoClick={handleClusterInfo}
             />
           </motion.div>
         ))}
@@ -100,6 +113,13 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
           Wursten의 문화 클러스터는 Hofstede의 4개 핵심 차원(PDI, IDV, UAI, MAS)을 기반으로 분류됩니다.
         </p>
       </motion.div>
+
+      {/* Cluster Detail Modal */}
+      <ClusterDetailModal
+        cluster={modalCluster}
+        isOpen={modalCluster !== null}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }
