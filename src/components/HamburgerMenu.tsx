@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe2, BarChart3, Table, MessageSquare, Layers } from 'lucide-react';
 
@@ -109,39 +110,23 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
     };
   }, [isOpen]);
 
-  return (
-    <>
-      {/* Hamburger Button */}
-      <motion.button
-        ref={buttonRef}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ duration: 0.3 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
-        aria-label="메뉴 열기"
-        aria-expanded={isOpen}
-      >
-        <Menu className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
-      </motion.button>
-
-      {/* Backdrop Overlay */}
-      <AnimatePresence>
-        {isOpen && (
+  // Menu drawer content - rendered via portal
+  const menuDrawer = (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm"
+            style={{ zIndex: 9998 }}
             onClick={() => setIsOpen(false)}
           />
-        )}
-      </AnimatePresence>
 
-      {/* Side Drawer */}
-      <AnimatePresence>
-        {isOpen && (
+          {/* Side Drawer */}
           <motion.div
             ref={menuRef}
             initial={{ x: '100%', opacity: 0 }}
@@ -153,8 +138,9 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
               stiffness: 300,
               opacity: { duration: 0.2 }
             }}
-            className="fixed top-0 right-0 h-full w-72 sm:w-80 bg-white shadow-2xl z-50 overflow-y-auto"
+            className="fixed top-0 right-0 h-full w-72 sm:w-80 bg-white shadow-2xl overflow-y-auto"
             style={{
+              zIndex: 9999,
               boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.12)',
             }}
           >
@@ -234,8 +220,29 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
               </p>
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </>
+      )}
+    </AnimatePresence>
+  );
+
+  return (
+    <>
+      {/* Hamburger Button */}
+      <motion.button
+        ref={buttonRef}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ duration: 0.3 }}
+        onClick={() => setIsOpen(!isOpen)}
+        className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
+        aria-label="메뉴 열기"
+        aria-expanded={isOpen}
+      >
+        <Menu className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
+      </motion.button>
+
+      {/* Render menu drawer via portal to document.body */}
+      {createPortal(menuDrawer, document.body)}
     </>
   );
 }
