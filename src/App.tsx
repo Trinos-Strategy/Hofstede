@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe2, Info, X } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
@@ -9,6 +9,7 @@ import { DimensionBar } from './components/DimensionBar';
 import { ComparisonTable } from './components/ComparisonTable';
 import { AdviceContextSelector } from './components/AdviceContextSelector';
 import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
+import { HamburgerMenu } from './components/HamburgerMenu';
 import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
@@ -35,6 +36,10 @@ function App() {
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
   const [showInfo, setShowInfo] = useState(false);
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  // Section refs for scroll navigation
+  const sidebarRef = useRef<HTMLElement>(null);
 
   // Bilateral advice - only when exactly 2 countries selected
   const bilateralAdvice = useMemo<BilateralAdviceResult | null>(() => {
@@ -64,6 +69,32 @@ function App() {
     setSelectedContext(context);
   };
 
+  // Scroll to section handler
+  const handleScrollToSection = useCallback((sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerOffset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  }, []);
+
+  // Toggle sidebar visibility (especially useful for mobile)
+  const handleToggleSidebar = useCallback(() => {
+    setSidebarVisible(prev => !prev);
+    // On mobile, also scroll to sidebar if making it visible
+    if (!sidebarVisible && sidebarRef.current) {
+      setTimeout(() => {
+        sidebarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [sidebarVisible]);
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -86,22 +117,28 @@ function App() {
               </motion.div>
               <div>
                 <h1 className="text-lg sm:text-2xl font-medium tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  Hofstede Cultural Dimensions
+                  호프스테드 문화 차원 비교
                 </h1>
                 <p className="text-xs sm:text-sm text-[#444444] tracking-wide mt-0.5 hidden sm:block">
-                  Cross-Cultural Intelligence for Global Business
+                  글로벌 비즈니스를 위한 문화 지능
                 </p>
               </div>
             </div>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.6 }}
-              onClick={() => setShowInfo(!showInfo)}
-              className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
-              title="정보"
-            >
-              <Info className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
-            </motion.button>
+            <div className="flex items-center gap-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.6 }}
+                onClick={() => setShowInfo(!showInfo)}
+                className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
+                title="정보"
+              >
+                <Info className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
+              </motion.button>
+              <HamburgerMenu
+                onScrollToSection={handleScrollToSection}
+                onToggleSidebar={handleToggleSidebar}
+              />
+            </div>
           </div>
 
           {/* Info panel */}
@@ -164,19 +201,32 @@ function App() {
           className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8"
         >
           {/* Left sidebar - Cluster Map */}
-          <motion.aside variants={itemVariants} className="lg:col-span-3 order-2 lg:order-1">
-            <div className="lg:sticky lg:top-24 space-y-5 sm:space-y-8">
-              <ClusterMap
-                selectedCluster={filterCluster}
-                onClusterSelect={handleClusterSelect}
-              />
-            </div>
-          </motion.aside>
+          <AnimatePresence>
+            {sidebarVisible && (
+              <motion.aside
+                ref={sidebarRef}
+                variants={itemVariants}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="lg:col-span-3 order-2 lg:order-1"
+                id="cluster-sidebar"
+              >
+                <div className="lg:sticky lg:top-24 space-y-5 sm:space-y-8">
+                  <ClusterMap
+                    selectedCluster={filterCluster}
+                    onClusterSelect={handleClusterSelect}
+                  />
+                </div>
+              </motion.aside>
+            )}
+          </AnimatePresence>
 
           {/* Main content area */}
-          <div className="lg:col-span-9 space-y-5 sm:space-y-8 order-1 lg:order-2">
+          <div className={`${sidebarVisible ? 'lg:col-span-9' : 'lg:col-span-12'} space-y-5 sm:space-y-8 order-1 lg:order-2 transition-all duration-300`}>
             {/* Country selector */}
-            <motion.div variants={itemVariants} className="luxury-card rounded-lg p-4 sm:p-8">
+            <motion.div variants={itemVariants} id="country-selector" className="luxury-card rounded-lg p-4 sm:p-8">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                 <div className="accent-bar" />
                 <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -196,7 +246,7 @@ function App() {
             {/* SECTION 1: Cultural Dimension Comparison */}
             {/* ============================================ */}
             {selectedCountries.length > 0 && (
-              <motion.div variants={itemVariants}>
+              <motion.div variants={itemVariants} id="dimension-comparison">
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
                   <span className="text-xl sm:text-2xl">📊</span>
                   <div>
@@ -240,7 +290,7 @@ function App() {
 
             {/* Comparison table */}
             {selectedCountries.length > 0 && (
-              <motion.div variants={itemVariants}>
+              <motion.div variants={itemVariants} id="comparison-table">
                 <ComparisonTable countries={selectedCountries} />
               </motion.div>
             )}
@@ -248,7 +298,7 @@ function App() {
             {/* ============================================ */}
             {/* SECTION 2: Bilateral Situational Advice */}
             {/* ============================================ */}
-            <motion.div variants={itemVariants}>
+            <motion.div variants={itemVariants} id="bilateral-advice">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
                 <span className="text-xl sm:text-2xl">💡</span>
                 <div>
