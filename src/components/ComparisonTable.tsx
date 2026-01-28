@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Table } from 'lucide-react';
+import { Table, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Country } from '../types';
 import { clusterInfo, dimensionInfo, getDimensionLevel, getDimensionLevelKo } from '../data/countries';
 
@@ -69,8 +69,15 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
         </h3>
       </div>
 
-      <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
-        <table className="w-full modern-table min-w-[700px] sm:min-w-0">
+      {/* Mobile scroll hint */}
+      <div className="sm:hidden flex items-center justify-center gap-2 mb-3 py-2 px-3 bg-[#F5F4F0] rounded-lg">
+        <ChevronLeft className="w-4 h-4 text-[#9D7E57]" strokeWidth={1.5} />
+        <span className="text-[10px] text-[#555555] font-medium">좌우로 스크롤하여 모든 차원 보기</span>
+        <ChevronRight className="w-4 h-4 text-[#9D7E57]" strokeWidth={1.5} />
+      </div>
+
+      <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 scrollbar-thin">
+        <table className="w-full modern-table min-w-[600px] sm:min-w-0">
           <thead>
             <tr className="border-b border-black/8">
               <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">

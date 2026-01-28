@@ -163,47 +163,47 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
             onClick={onClose}
           />
 
-          {/* Modal */}
+          {/* Modal - Full screen on mobile */}
           <motion.div
             ref={modalRef}
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{
               type: 'spring',
               damping: 25,
               stiffness: 300,
             }}
-            className="fixed inset-4 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2
-              sm:max-w-lg sm:w-full max-h-[90vh] overflow-y-auto
-              bg-white rounded-2xl shadow-2xl"
+            className="fixed inset-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2
+              sm:max-w-lg sm:w-[calc(100%-2rem)] sm:max-h-[90vh] h-full sm:h-auto overflow-y-auto
+              bg-white sm:rounded-2xl shadow-2xl"
             style={{ zIndex: 9999 }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with gradient background */}
             <div
-              className="sticky top-0 p-5 sm:p-6 rounded-t-2xl border-b border-black/5"
+              className="sticky top-0 p-4 sm:p-6 sm:rounded-t-2xl border-b border-black/5"
               style={{ background: style.gradientBg }}
             >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3 sm:gap-4">
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
-                    className="text-5xl"
+                    className="text-4xl sm:text-5xl"
                   >
                     {info.icon}
                   </motion.span>
                   <div>
                     <h2
-                      className="text-xl sm:text-2xl font-semibold"
+                      className="text-lg sm:text-2xl font-semibold"
                       style={{ color: style.color, fontFamily: "'Playfair Display', serif" }}
                     >
                       {info.nameKo}
                     </h2>
-                    <p className="text-sm text-[#555555] mt-1">{info.name}</p>
-                    <p className="text-xs text-[#777777] mt-0.5">{info.conceptKo}</p>
+                    <p className="text-xs sm:text-sm text-[#555555] mt-0.5 sm:mt-1">{info.name}</p>
+                    <p className="text-[10px] sm:text-xs text-[#777777] mt-0.5">{info.conceptKo}</p>
                   </div>
                 </div>
                 <motion.button
@@ -211,7 +211,7 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                   whileTap={{ scale: 0.9 }}
                   transition={{ duration: 0.2 }}
                   onClick={onClose}
-                  className="p-2 rounded-lg hover:bg-white/50 transition-colors duration-300"
+                  className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/50 transition-colors duration-300"
                   aria-label="닫기"
                 >
                   <X className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
@@ -220,7 +220,7 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
             </div>
 
             {/* Content */}
-            <div className="p-5 sm:p-6 space-y-5">
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
               {/* Description */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -303,7 +303,7 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
             </div>
 
             {/* Footer */}
-            <div className="p-5 sm:p-6 pt-0">
+            <div className="p-4 sm:p-6 pt-0 pb-6 sm:pb-6">
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -311,7 +311,7 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onClose}
-                className="w-full py-3 rounded-xl font-medium text-sm text-white transition-all duration-300"
+                className="w-full py-3.5 sm:py-3 min-h-[48px] rounded-xl font-medium text-sm text-white transition-all duration-300"
                 style={{
                   background: `linear-gradient(135deg, ${style.iconColor}, ${style.color})`,
                   boxShadow: `0 4px 12px ${style.iconColor}40`,

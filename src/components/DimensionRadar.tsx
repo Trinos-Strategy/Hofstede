@@ -125,20 +125,20 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-        className="h-[500px] sm:h-[550px]"
+        className="h-[350px] sm:h-[500px]"
       >
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart data={data} margin={{ top: 30, right: 50, bottom: 30, left: 50 }}>
+          <RadarChart data={data} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
             <PolarGrid stroke="rgba(0, 0, 0, 0.08)" />
             <PolarAngleAxis
               dataKey="dimension"
-              tick={{ fill: '#444444', fontSize: 12, fontWeight: 500 }}
+              tick={{ fill: '#444444', fontSize: 10, fontWeight: 500 }}
             />
             <PolarRadiusAxis
               angle={90}
               domain={[0, 100]}
-              tick={{ fill: '#666666', fontSize: 11 }}
-              tickCount={6}
+              tick={{ fill: '#666666', fontSize: 9 }}
+              tickCount={5}
               axisLine={false}
             />
             {countries.map((country, index) => {
@@ -184,7 +184,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
       </motion.div>
 
       {/* Custom Legend - correctly matched with country colors */}
-      <div className="flex flex-wrap justify-center gap-4 sm:gap-6 py-3 px-4 bg-[#F5F4F0] rounded-lg border border-black/5">
+      <div className="flex flex-wrap justify-center gap-3 sm:gap-6 py-2.5 sm:py-3 px-3 sm:px-4 bg-[#F5F4F0] rounded-lg border border-black/5">
         {countries.map((country, index) => {
           const colorConfig = chartColors[index % chartColors.length];
           const markerSymbol = colorConfig.marker === 'circle' ? '●'
@@ -196,16 +196,16 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
           return (
             <div
               key={country.code}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1.5 sm:gap-2"
             >
               <span
-                className="text-sm font-medium tracking-wide"
+                className="text-xs sm:text-sm font-medium tracking-wide"
                 style={{ color: colorConfig.stroke }}
               >
                 {markerSymbol} {lineStyle}
               </span>
               <span
-                className="text-sm font-medium"
+                className="text-xs sm:text-sm font-medium"
                 style={{ color: colorConfig.stroke }}
               >
                 {country.nameKo}

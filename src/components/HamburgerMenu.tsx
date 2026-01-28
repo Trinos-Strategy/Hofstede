@@ -126,7 +126,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Side Drawer */}
+          {/* Full Screen on Mobile, Side Drawer on larger screens */}
           <motion.div
             ref={menuRef}
             initial={{ x: '100%', opacity: 0 }}
@@ -138,7 +138,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
               stiffness: 300,
               opacity: { duration: 0.2 }
             }}
-            className="fixed top-0 right-0 h-full w-72 sm:w-80 bg-white shadow-2xl overflow-y-auto"
+            className="fixed inset-0 sm:inset-auto sm:top-0 sm:right-0 sm:h-full sm:w-80 bg-white shadow-2xl overflow-y-auto"
             style={{
               zIndex: 9999,
               boxShadow: '-8px 0 32px rgba(0, 0, 0, 0.12)',
@@ -166,7 +166,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
                   whileTap={{ scale: 0.9 }}
                   transition={{ duration: 0.3 }}
                   onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-lg hover:bg-[#F5F4F0] transition-colors duration-300"
+                  className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-[#F5F4F0] transition-colors duration-300"
                   aria-label="메뉴 닫기"
                 >
                   <X className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
@@ -189,7 +189,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
                   >
                     <button
                       onClick={item.action}
-                      className="w-full flex items-center gap-4 p-4 rounded-xl text-left
+                      className="w-full flex items-center gap-4 p-4 min-h-[56px] rounded-xl text-left
                         hover:bg-gradient-to-r hover:from-[#FAFAF8] hover:to-[#F5F4F0]
                         border border-transparent hover:border-[#B8956A]/20
                         transition-all duration-300 group"
@@ -234,7 +234,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
         whileTap={{ scale: 0.95 }}
         transition={{ duration: 0.3 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
+        className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
         aria-label="메뉴 열기"
         aria-expanded={isOpen}
       >
