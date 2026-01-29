@@ -470,6 +470,78 @@ function generateConflictAdvice(
 }
 
 /**
+ * 협상 - A→B 조언 생성
+ */
+function generateNegotiationAdvice(
+  profileA: CountryProfile,
+  profileB: CountryProfile,
+  gaps: DimensionGap[]
+): string[] {
+  const bullets: string[] = [];
+
+  // PDI 기반 조언
+  const pdiGap = gaps.find((g) => g.dimension === 'PDI');
+  if (pdiGap) {
+    if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
+      // 저PDI → 고PDI
+      bullets.push('상대국은 위계를 중시합니다. 의사결정권자를 파악하고 적절히 존중하세요.');
+      bullets.push('실무자 단독으로 즉답하기 어려울 수 있으니, 의사결정 시간을 충분히 확보하세요.');
+    } else if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
+      // 고PDI → 저PDI
+      bullets.push('상대국은 수평적 문화입니다. 직급보다 역할과 전문성에 초점을 맞추세요.');
+      bullets.push('현장 담당자도 상당한 결정 권한이 있으니, 실무 협의가 효과적입니다.');
+    }
+  }
+
+  // IDV 기반 조언
+  const idvGap = gaps.find((g) => g.dimension === 'IDV');
+  if (idvGap) {
+    if (profileA.dimensions.idv > profileB.dimensions.idv + 20) {
+      // 고IDV → 저IDV
+      bullets.push('관계 구축에 시간을 투자하세요. 비즈니스 외 신뢰 형성이 중요합니다.');
+      bullets.push('팀 전체의 이익과 조직 차원의 가치를 강조하면 공감을 얻기 쉽습니다.');
+    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
+      // 저IDV → 고IDV
+      bullets.push('직접적이고 명확한 의사 표현을 선호합니다. 분명하게 요구사항을 제시하세요.');
+      bullets.push('개인의 성과와 이익을 강조하세요. 팀보다 개인별 인센티브가 효과적입니다.');
+    }
+  }
+
+  // UAI 기반 조언
+  const uaiGap = gaps.find((g) => g.dimension === 'UAI');
+  if (uaiGap) {
+    if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
+      // 저UAI → 고UAI
+      bullets.push('상세한 계획과 문서화를 중시합니다. 구두 합의만으로는 부족할 수 있습니다.');
+      bullets.push('예상 시나리오와 리스크 대응 방안을 미리 준비하면 신뢰를 얻을 수 있습니다.');
+    } else if (profileA.dimensions.uai > profileB.dimensions.uai + 15) {
+      // 고UAI → 저UAI
+      bullets.push('유연한 협상이 가능합니다. 큰 틀에서 합의하고 세부사항은 진행하며 조정하세요.');
+      bullets.push('과도한 문서화나 절차보다 실질적 진행을 더 중요하게 여깁니다.');
+    }
+  }
+
+  // MAS 기반 조언
+  const masGap = gaps.find((g) => g.dimension === 'MAS');
+  if (masGap && masGap.significance !== 'low') {
+    if (profileA.dimensions.mas! < profileB.dimensions.mas! - 20) {
+      // 저MAS → 고MAS
+      bullets.push('성과와 경쟁을 중시합니다. 구체적인 성과 지표와 목표를 명확히 하세요.');
+    } else if (profileA.dimensions.mas! > profileB.dimensions.mas! + 20) {
+      // 고MAS → 저MAS
+      bullets.push('협력과 삶의 질을 중시합니다. 윈-윈 관계와 장기적 파트너십을 강조하세요.');
+    }
+  }
+
+  if (bullets.length === 0) {
+    bullets.push('두 문화 간 큰 차이가 없어 자연스러운 소통이 가능합니다.');
+    bullets.push('상호 존중과 명확한 의사소통을 유지하면 원활한 협상이 가능합니다.');
+  }
+
+  return bullets;
+}
+
+/**
  * 컨텍스트별 A→B 조언 생성 함수
  */
 function generateContextAdviceFromAtoB(
@@ -505,6 +577,9 @@ function generateContextAdviceFromAtoB(
       break;
     case 'CONFLICT_RESOLUTION':
       bullets = generateConflictAdvice(profileA, profileB, gaps);
+      break;
+    case 'NEGOTIATION':
+      bullets = generateNegotiationAdvice(profileA, profileB, gaps);
       break;
     default:
       bullets = ['상황에 맞는 조언을 준비 중입니다.'];
