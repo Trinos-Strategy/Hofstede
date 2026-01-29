@@ -46,8 +46,8 @@ export interface NegotiationAdviceDatabase {
  * 학술 근거: Hall (1976) High/Low Context, Hofstede (2010), Meyer (2014) Culture Map
  */
 const usToKoreaAdvice: DetailedNegotiationAdvice = {
-  fromCountryCode: 'US',
-  toCountryCode: 'KR',
+  fromCountryCode: 'USA',
+  toCountryCode: 'KOR',
   title: '미국 → 한국 협상 전략',
   culturalContext: '미국은 저맥락(Low-context) 문화로 직접적이고 명시적인 의사소통을 선호하는 반면, 한국은 고맥락(High-context) 문화로 비언어적 단서와 관계적 맥락을 중시합니다. 이러한 차이를 이해하고 적응하는 것이 성공적인 협상의 핵심입니다.',
   culturalDifferences: [
@@ -163,8 +163,8 @@ const usToKoreaAdvice: DetailedNegotiationAdvice = {
  * 학술 근거: Hall (1976), Hofstede (2010), Meyer (2014), Korean-US Business Studies
  */
 const koreaToUsAdvice: DetailedNegotiationAdvice = {
-  fromCountryCode: 'KR',
-  toCountryCode: 'US',
+  fromCountryCode: 'KOR',
+  toCountryCode: 'USA',
   title: '한국 → 미국 협상 전략',
   culturalContext: '미국은 법적이고 명시적이며 빠른 진행과 결과를 지향하는 문화입니다. 한국의 관계 중심, 맥락 의존적 소통 방식에서 벗어나 직접적이고 효율적인 접근이 필요합니다.',
   culturalDifferences: [
@@ -292,8 +292,8 @@ const koreaToUsAdvice: DetailedNegotiationAdvice = {
  * key 형식: "{fromCountryCode}-{toCountryCode}"
  */
 export const negotiationAdviceDB: NegotiationAdviceDatabase = {
-  'US-KR': usToKoreaAdvice,
-  'KR-US': koreaToUsAdvice,
+  'USA-KOR': usToKoreaAdvice,
+  'KOR-USA': koreaToUsAdvice,
 };
 
 /**
