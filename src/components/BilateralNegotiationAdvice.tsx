@@ -235,10 +235,10 @@ function DetailedAdviceSection({
               <tr className="border-b border-black/10">
                 <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium text-[#666666]">차원</th>
                 <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium" style={{ color: accentColor }}>
-                  {advice.fromCountryCode === 'US' ? '미국' : '한국'}
+                  {advice.fromCountryCode === 'USA' ? '미국' : '한국'}
                 </th>
                 <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium text-[#7D8471]">
-                  {advice.toCountryCode === 'KR' ? '한국' : '미국'}
+                  {advice.toCountryCode === 'KOR' ? '한국' : '미국'}
                 </th>
               </tr>
             </thead>
