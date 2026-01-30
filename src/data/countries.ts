@@ -123,11 +123,11 @@ export const dimensionInfo: DimensionInfo[] = [
   },
   {
     key: 'MAS',
-    name: 'Masculinity',
-    nameKo: '남성성',
-    description: '성취와 경쟁(남성적) vs 배려와 삶의 질(여성적) 중시 정도',
-    lowDescription: '협력, 삶의 질 중시',
-    highDescription: '경쟁, 성취 중시',
+    name: 'Motivation towards Achievement and Success',
+    nameKo: '성취 동기',
+    description: '성취와 경쟁 지향 vs 배려와 삶의 질 지향 정도',
+    lowDescription: '배려 지향, 삶의 질 중시',
+    highDescription: '성취 지향, 경쟁 중시',
     color: '#22C55E'
   },
   {
@@ -166,7 +166,7 @@ export const countries: Country[] = [
   { code: 'FIN', name: 'Finland', nameKo: '핀란드', cluster: 'network', dimensions: { PDI: 33, IDV: 63, UAI: 59, MAS: 26, LTO: 38, IVR: 57 } },
 
   // Family 클러스터
-  { code: 'CHN', name: 'China', nameKo: '중국', cluster: 'family', dimensions: { PDI: 80, IDV: 20, UAI: 30, MAS: 66, LTO: 87, IVR: 24 } },
+  { code: 'CHN', name: 'China', nameKo: '중국', cluster: 'family', dimensions: { PDI: 80, IDV: 20, UAI: 30, MAS: 66, LTO: 77, IVR: 24 } },
   { code: 'HKG', name: 'Hong Kong', nameKo: '홍콩', cluster: 'family', dimensions: { PDI: 68, IDV: 25, UAI: 29, MAS: 57, LTO: 61, IVR: 17 } },
   { code: 'IND', name: 'India', nameKo: '인도', cluster: 'family', dimensions: { PDI: 77, IDV: 48, UAI: 40, MAS: 56, LTO: 51, IVR: 26 } },
   { code: 'IDN', name: 'Indonesia', nameKo: '인도네시아', cluster: 'family', dimensions: { PDI: 78, IDV: 14, UAI: 48, MAS: 46, LTO: 62, IVR: 38 } },
@@ -179,7 +179,7 @@ export const countries: Country[] = [
   { code: 'CHL', name: 'Chile', nameKo: '칠레', cluster: 'pyramid', dimensions: { PDI: 63, IDV: 23, UAI: 86, MAS: 28, LTO: 31, IVR: 68 } },
   { code: 'COL', name: 'Colombia', nameKo: '콜롬비아', cluster: 'pyramid', dimensions: { PDI: 67, IDV: 13, UAI: 80, MAS: 64, LTO: 13, IVR: 83 } },
   { code: 'GRC', name: 'Greece', nameKo: '그리스', cluster: 'pyramid', dimensions: { PDI: 60, IDV: 35, UAI: 100, MAS: 57, LTO: 45, IVR: 50 } },
-  { code: 'KOR', name: 'South Korea', nameKo: '대한민국', cluster: 'pyramid', dimensions: { PDI: 60, IDV: 18, UAI: 85, MAS: 39, LTO: 100, IVR: 29 } },
+  { code: 'KOR', name: 'South Korea', nameKo: '대한민국', cluster: 'pyramid', dimensions: { PDI: 60, IDV: 18, UAI: 85, MAS: 39, LTO: 86, IVR: 29 } },
   { code: 'MEX', name: 'Mexico', nameKo: '멕시코', cluster: 'pyramid', dimensions: { PDI: 81, IDV: 30, UAI: 82, MAS: 69, LTO: 24, IVR: 97 } },
   { code: 'PER', name: 'Peru', nameKo: '페루', cluster: 'pyramid', dimensions: { PDI: 64, IDV: 16, UAI: 87, MAS: 42, LTO: 25, IVR: 46 } },
   { code: 'PRT', name: 'Portugal', nameKo: '포르투갈', cluster: 'pyramid', dimensions: { PDI: 63, IDV: 27, UAI: 99, MAS: 31, LTO: 28, IVR: 33 } },
