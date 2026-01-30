@@ -462,12 +462,12 @@ function App() {
               <p className="text-sm text-[#444444]">
                 Data source:{' '}
                 <a
-                  href="https://www.hofstede-insights.com"
+                  href="https://www.theculturefactor.com/country-comparison-tool"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="link-underline text-[#9D7E57] hover:text-[#B8956A]"
                 >
-                  Hofstede Insights
+                  The Culture Factor
                 </a>
               </p>
             </div>
