@@ -64,12 +64,12 @@ function generateMeetingAdvice(
   if (pdiGap) {
     if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
       // 고PDI → 저PDI
-      bullets.push('사전 승인 필요 없음. 회의에서 자유롭게 제안하세요.');
-      bullets.push('직급과 관계없이 아이디어 자체의 가치로 평가받습니다.');
-    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
-      // 저PDI → 고PDI
       bullets.push('상사 사전 동의 확보. 형식적 절차를 존중하세요.');
       bullets.push('회의 전 상사에게 먼저 아이디어를 공유하는 것이 좋습니다.');
+    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
+      // 저PDI → 고PDI
+      bullets.push('사전 승인 필요 없음. 회의에서 자유롭게 제안하세요.');
+      bullets.push('직급과 관계없이 아이디어 자체의 가치로 평가받습니다.');
     }
   }
 
@@ -78,12 +78,12 @@ function generateMeetingAdvice(
   if (idvGap) {
     if (profileA.dimensions.idv > profileB.dimensions.idv + 20) {
       // 고IDV → 저IDV
-      bullets.push('팀 이익을 강조하세요. "우리"로 표현하면 더 효과적입니다.');
-      bullets.push('아이디어가 팀 전체에 어떤 도움이 되는지 설명하세요.');
-    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
-      // 저IDV → 고IDV
       bullets.push('개인 기여를 명확히 하세요. 담당자를 지정하세요.');
       bullets.push('누가 어떤 역할을 맡을지 구체적으로 제안하세요.');
+    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
+      // 저IDV → 고IDV
+      bullets.push('팀 이익을 강조하세요. "우리"로 표현하면 더 효과적입니다.');
+      bullets.push('아이디어가 팀 전체에 어떤 도움이 되는지 설명하세요.');
     }
   }
 
@@ -92,12 +92,12 @@ function generateMeetingAdvice(
   if (uaiGap) {
     if (profileA.dimensions.uai > profileB.dimensions.uai + 15) {
       // 고UAI → 저UAI
-      bullets.push('유연성을 강조하세요. 큰 그림 중심으로 제안하세요.');
-      bullets.push('세부 사항보다는 전략적 방향에 초점을 맞추세요.');
-    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
-      // 저UAI → 고UAI
       bullets.push('상세 계획과 데이터 준비가 필수입니다.');
       bullets.push('예상 리스크와 대응 방안도 함께 준비하세요.');
+    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
+      // 저UAI → 고UAI
+      bullets.push('유연성을 강조하세요. 큰 그림 중심으로 제안하세요.');
+      bullets.push('세부 사항보다는 전략적 방향에 초점을 맞추세요.');
     }
   }
 
@@ -124,12 +124,12 @@ function generateDisagreementAdvice(
   if (pdiGap) {
     if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
       // 고PDI → 저PDI
-      bullets.push('회의에서 직접 반론 가능합니다. 논리적 토론이 환영됩니다.');
-      bullets.push('공개적으로 다른 의견을 표현해도 부정적으로 여겨지지 않습니다.');
-    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
-      // 저PDI → 고PDI
       bullets.push('공개 반대는 피하세요. 사적 면담을 요청하세요.');
       bullets.push('상사의 체면을 세워주면서 의견을 전달하는 것이 중요합니다.');
+    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
+      // 저PDI → 고PDI
+      bullets.push('회의에서 직접 반론 가능합니다. 논리적 토론이 환영됩니다.');
+      bullets.push('공개적으로 다른 의견을 표현해도 부정적으로 여겨지지 않습니다.');
     }
   }
 
@@ -138,12 +138,12 @@ function generateDisagreementAdvice(
   if (idvGap) {
     if (profileA.dimensions.idv > profileB.dimensions.idv + 20) {
       // 고IDV → 저IDV
-      bullets.push('팀 합의를 강조하세요. 다수 의견을 언급하면 효과적입니다.');
-      bullets.push('"팀에서 논의한 결과..."로 시작하면 수용성이 높아집니다.');
-    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
-      // 저IDV → 고IDV
       bullets.push('개인 분석과 근거를 제시하세요. 책임감을 표현하세요.');
       bullets.push('자신의 전문성을 바탕으로 논리적으로 설명하세요.');
+    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
+      // 저IDV → 고IDV
+      bullets.push('팀 합의를 강조하세요. 다수 의견을 언급하면 효과적입니다.');
+      bullets.push('"팀에서 논의한 결과..."로 시작하면 수용성이 높아집니다.');
     }
   }
 
@@ -152,12 +152,12 @@ function generateDisagreementAdvice(
   if (uaiGap) {
     if (profileA.dimensions.uai > profileB.dimensions.uai + 15) {
       // 고UAI → 저UAI
-      bullets.push('질문 형식으로 접근하세요. 대안 없이도 의견 표출 가능합니다.');
-      bullets.push('"이런 방향은 어떨까요?"와 같이 열린 질문을 활용하세요.');
-    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
-      // 저UAI → 고UAI
       bullets.push('구체적 대안을 제시하세요. 리스크 분석도 포함하세요.');
       bullets.push('현재 방식의 문제점과 대안의 장점을 데이터로 뒷받침하세요.');
+    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
+      // 저UAI → 고UAI
+      bullets.push('질문 형식으로 접근하세요. 대안 없이도 의견 표출 가능합니다.');
+      bullets.push('"이런 방향은 어떨까요?"와 같이 열린 질문을 활용하세요.');
     }
   }
 
@@ -184,12 +184,12 @@ function generateReportingAdvice(
   if (pdiGap) {
     if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
       // 고PDI → 저PDI
-      bullets.push('간단한 업데이트로 충분합니다. 이메일로도 가능합니다.');
-      bullets.push('격식을 차리기보다 핵심 내용을 간결하게 전달하세요.');
-    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
-      // 저PDI → 고PDI
       bullets.push('형식적 보고서를 작성하세요. 상세히 기록하세요.');
       bullets.push('정기적인 대면 보고가 신뢰를 쌓는 데 효과적입니다.');
+    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
+      // 저PDI → 고PDI
+      bullets.push('간단한 업데이트로 충분합니다. 이메일로도 가능합니다.');
+      bullets.push('격식을 차리기보다 핵심 내용을 간결하게 전달하세요.');
     }
   }
 
@@ -198,12 +198,12 @@ function generateReportingAdvice(
   if (uaiGap) {
     if (profileA.dimensions.uai > profileB.dimensions.uai + 15) {
       // 고UAI → 저UAI
-      bullets.push('진행상황 중심으로 보고하세요. 변경사항을 강조하세요.');
-      bullets.push('유연한 진행을 보여주면 긍정적으로 평가받습니다.');
-    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
-      // 저UAI → 고UAI
       bullets.push('리스크와 대응계획을 포함하세요. 필수입니다.');
       bullets.push('예상되는 문제와 해결 방안을 미리 준비하세요.');
+    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
+      // 저UAI → 고UAI
+      bullets.push('진행상황 중심으로 보고하세요. 변경사항을 강조하세요.');
+      bullets.push('유연한 진행을 보여주면 긍정적으로 평가받습니다.');
     }
   }
 
@@ -212,12 +212,12 @@ function generateReportingAdvice(
   if (masGap && masGap.significance !== 'low') {
     if (profileA.dimensions.mas! > profileB.dimensions.mas! + 20) {
       // 고MAS → 저MAS
-      bullets.push('프로세스와 협력 과정을 강조하세요.');
-      bullets.push('팀워크와 조화로운 진행 상황을 보고하세요.');
-    } else if (profileA.dimensions.mas! < profileB.dimensions.mas! - 20) {
-      // 저MAS → 고MAS
       bullets.push('성과 지표와 달성률을 명시하세요.');
       bullets.push('구체적인 수치와 목표 대비 진행률을 강조하세요.');
+    } else if (profileA.dimensions.mas! < profileB.dimensions.mas! - 20) {
+      // 저MAS → 고MAS
+      bullets.push('프로세스와 협력 과정을 강조하세요.');
+      bullets.push('팀워크와 조화로운 진행 상황을 보고하세요.');
     }
   }
 
@@ -244,12 +244,12 @@ function generateRewardsAdvice(
   if (idvGap) {
     if (profileA.dimensions.idv > profileB.dimensions.idv + 20) {
       // 고IDV → 저IDV
-      bullets.push('팀 기여를 인정하세요. 집단 보상을 제안하세요.');
-      bullets.push('개인보다 팀 성과를 강조하면 동기부여에 효과적입니다.');
-    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
-      // 저IDV → 고IDV
       bullets.push('개인 성과를 구체적으로 언급하세요. 차별화된 보상을 제안하세요.');
       bullets.push('각 개인의 기여도를 명확히 구분하여 인정하세요.');
+    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
+      // 저IDV → 고IDV
+      bullets.push('팀 기여를 인정하세요. 집단 보상을 제안하세요.');
+      bullets.push('개인보다 팀 성과를 강조하면 동기부여에 효과적입니다.');
     }
   }
 
@@ -258,12 +258,12 @@ function generateRewardsAdvice(
   if (pdiGap) {
     if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
       // 고PDI → 저PDI
-      bullets.push('직접 대화가 가능합니다. 투명한 기준을 공유하세요.');
-      bullets.push('보상 기준을 명확히 설명하고 질문을 받으세요.');
-    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
-      // 저PDI → 고PDI
       bullets.push('상사를 통해 전달하세요. 권위를 존중하세요.');
       bullets.push('공식적인 채널을 통한 커뮤니케이션이 효과적입니다.');
+    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
+      // 저PDI → 고PDI
+      bullets.push('직접 대화가 가능합니다. 투명한 기준을 공유하세요.');
+      bullets.push('보상 기준을 명확히 설명하고 질문을 받으세요.');
     }
   }
 
@@ -272,12 +272,12 @@ function generateRewardsAdvice(
   if (masGap && masGap.significance !== 'low') {
     if (profileA.dimensions.mas! > profileB.dimensions.mas! + 20) {
       // 고MAS → 저MAS
-      bullets.push('일과 삶의 균형을 강조하세요. 복지 혜택을 언급하세요.');
-      bullets.push('금전적 보상 외에 시간, 유연성 등의 가치를 제안하세요.');
-    } else if (profileA.dimensions.mas! < profileB.dimensions.mas! - 20) {
-      // 저MAS → 고MAS
       bullets.push('경쟁과 승진 기회를 강조하세요.');
       bullets.push('성과에 따른 차별화된 보상과 커리어 성장을 연결하세요.');
+    } else if (profileA.dimensions.mas! < profileB.dimensions.mas! - 20) {
+      // 저MAS → 고MAS
+      bullets.push('일과 삶의 균형을 강조하세요. 복지 혜택을 언급하세요.');
+      bullets.push('금전적 보상 외에 시간, 유연성 등의 가치를 제안하세요.');
     }
   }
 
@@ -304,12 +304,12 @@ function generateCollaborationAdvice(
   if (idvGap) {
     if (profileA.dimensions.idv > profileB.dimensions.idv + 20) {
       // 고IDV → 저IDV
-      bullets.push('공동 책임을 강조하세요. 집단 의사결정을 존중하세요.');
-      bullets.push('개인 성과보다 팀 목표 달성을 우선시하세요.');
-    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
-      // 저IDV → 고IDV
       bullets.push('명확한 역할 분담을 하세요. 개인 책임을 지정하세요.');
       bullets.push('각자의 담당 영역과 기대 결과물을 명확히 정의하세요.');
+    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
+      // 저IDV → 고IDV
+      bullets.push('공동 책임을 강조하세요. 집단 의사결정을 존중하세요.');
+      bullets.push('개인 성과보다 팀 목표 달성을 우선시하세요.');
     }
   }
 
@@ -318,12 +318,12 @@ function generateCollaborationAdvice(
   if (uaiGap) {
     if (profileA.dimensions.uai > profileB.dimensions.uai + 15) {
       // 고UAI → 저UAI
-      bullets.push('유연한 접근을 하세요. 즉흥적 조정이 가능합니다.');
-      bullets.push('상황에 따라 계획을 수정하는 것을 자연스럽게 받아들이세요.');
-    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
-      // 저UAI → 고UAI
       bullets.push('상세 프로세스와 일정을 공유하세요.');
       bullets.push('명확한 마일스톤과 체크포인트를 설정하세요.');
+    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
+      // 저UAI → 고UAI
+      bullets.push('유연한 접근을 하세요. 즉흥적 조정이 가능합니다.');
+      bullets.push('상황에 따라 계획을 수정하는 것을 자연스럽게 받아들이세요.');
     }
   }
 
@@ -332,12 +332,12 @@ function generateCollaborationAdvice(
   if (pdiGap) {
     if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
       // 고PDI → 저PDI
-      bullets.push('수평적 협력을 하세요. 직급과 무관하게 소통하세요.');
-      bullets.push('모든 팀원의 의견을 동등하게 존중하세요.');
-    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
-      // 저PDI → 고PDI
       bullets.push('리더의 조정 역할을 존중하세요. 계층을 인정하세요.');
       bullets.push('주요 결정은 리더를 통해 진행하는 것이 효과적입니다.');
+    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
+      // 저PDI → 고PDI
+      bullets.push('수평적 협력을 하세요. 직급과 무관하게 소통하세요.');
+      bullets.push('모든 팀원의 의견을 동등하게 존중하세요.');
     }
   }
 
@@ -364,12 +364,12 @@ function generateFeedbackAdvice(
   if (pdiGap) {
     if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
       // 고PDI → 저PDI
-      bullets.push('직접적 피드백이 가능합니다. 공개 토론을 활용하세요.');
-      bullets.push('솔직하고 구체적인 피드백이 환영받습니다.');
-    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
-      // 저PDI → 고PDI
       bullets.push('간접적 표현을 사용하세요. 사적 면담을 선호합니다.');
       bullets.push('공개적 비판을 피하고 개인적으로 피드백을 전달하세요.');
+    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
+      // 저PDI → 고PDI
+      bullets.push('직접적 피드백이 가능합니다. 공개 토론을 활용하세요.');
+      bullets.push('솔직하고 구체적인 피드백이 환영받습니다.');
     }
   }
 
@@ -378,12 +378,12 @@ function generateFeedbackAdvice(
   if (idvGap) {
     if (profileA.dimensions.idv > profileB.dimensions.idv + 20) {
       // 고IDV → 저IDV
-      bullets.push('관계를 배려하세요. 집단 조화를 고려하세요.');
-      bullets.push('피드백이 관계에 미치는 영향을 고려하여 표현하세요.');
-    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
-      // 저IDV → 고IDV
       bullets.push('직설적 피드백을 하세요. 개인 대상으로 명확히 전달하세요.');
       bullets.push('에둘러 말하지 말고 핵심을 바로 전달하세요.');
+    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
+      // 저IDV → 고IDV
+      bullets.push('관계를 배려하세요. 집단 조화를 고려하세요.');
+      bullets.push('피드백이 관계에 미치는 영향을 고려하여 표현하세요.');
     }
   }
 
@@ -392,12 +392,12 @@ function generateFeedbackAdvice(
   if (uaiGap) {
     if (profileA.dimensions.uai > profileB.dimensions.uai + 15) {
       // 고UAI → 저UAI
-      bullets.push('일반적 방향 제시로 충분합니다.');
-      bullets.push('큰 방향만 제시하고 세부 사항은 자율에 맡기세요.');
-    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
-      // 저UAI → 고UAI
       bullets.push('구체적 개선방안과 절차를 제공하세요.');
       bullets.push('문제점과 함께 구체적인 해결 방법을 제안하세요.');
+    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
+      // 저UAI → 고UAI
+      bullets.push('일반적 방향 제시로 충분합니다.');
+      bullets.push('큰 방향만 제시하고 세부 사항은 자율에 맡기세요.');
     }
   }
 
@@ -424,12 +424,12 @@ function generateConflictAdvice(
   if (pdiGap) {
     if (profileA.dimensions.pdi > profileB.dimensions.pdi + 15) {
       // 고PDI → 저PDI
-      bullets.push('당사자 간 직접 해결하세요. 제3자의 개입을 최소화하세요.');
-      bullets.push('직접 대화를 통해 문제를 해결하는 것을 선호합니다.');
-    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
-      // 저PDI → 고PDI
       bullets.push('상급자나 조정인을 통해 해결하세요.');
       bullets.push('공식적인 절차를 통한 갈등 해결이 더 효과적입니다.');
+    } else if (profileA.dimensions.pdi < profileB.dimensions.pdi - 15) {
+      // 저PDI → 고PDI
+      bullets.push('당사자 간 직접 해결하세요. 제3자의 개입을 최소화하세요.');
+      bullets.push('직접 대화를 통해 문제를 해결하는 것을 선호합니다.');
     }
   }
 
@@ -438,12 +438,12 @@ function generateConflictAdvice(
   if (idvGap) {
     if (profileA.dimensions.idv > profileB.dimensions.idv + 20) {
       // 고IDV → 저IDV
-      bullets.push('관계 회복을 중심으로 접근하세요. 화해를 강조하세요.');
-      bullets.push('장기적인 관계 유지를 위해 감정적 화해를 우선시하세요.');
-    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
-      // 저IDV → 고IDV
       bullets.push('이슈 해결 중심으로 접근하세요. 논리적 합의를 도출하세요.');
       bullets.push('감정보다 사실과 논리에 기반한 해결책을 제시하세요.');
+    } else if (profileA.dimensions.idv < profileB.dimensions.idv - 20) {
+      // 저IDV → 고IDV
+      bullets.push('관계 회복을 중심으로 접근하세요. 화해를 강조하세요.');
+      bullets.push('장기적인 관계 유지를 위해 감정적 화해를 우선시하세요.');
     }
   }
 
@@ -452,12 +452,12 @@ function generateConflictAdvice(
   if (uaiGap) {
     if (profileA.dimensions.uai > profileB.dimensions.uai + 15) {
       // 고UAI → 저UAI
-      bullets.push('유연한 해결을 추구하세요. 상황별로 조정하세요.');
-      bullets.push('정해진 규칙보다 상황에 맞는 해결책을 찾으세요.');
-    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
-      // 저UAI → 고UAI
       bullets.push('명확한 합의문과 규칙을 수립하세요.');
       bullets.push('향후 유사 상황을 방지할 수 있는 명문화된 합의를 도출하세요.');
+    } else if (profileA.dimensions.uai < profileB.dimensions.uai - 15) {
+      // 저UAI → 고UAI
+      bullets.push('유연한 해결을 추구하세요. 상황별로 조정하세요.');
+      bullets.push('정해진 규칙보다 상황에 맞는 해결책을 찾으세요.');
     }
   }
 
