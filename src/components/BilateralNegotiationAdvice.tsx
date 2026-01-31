@@ -651,7 +651,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 { key: 'pdi', label: '권력 거리 (PDI)' },
                 { key: 'idv', label: '개인주의 (IDV)' },
                 { key: 'uai', label: '불확실성 회피 (UAI)' },
-                { key: 'mas', label: '남성성 (MAS)' },
+                { key: 'mas', label: '성취 중시 (MAS)' },
               ].map((dim, idx) => {
                 const valueA = countryA.dimensions[dim.key as keyof typeof countryA.dimensions];
                 const valueB = countryB.dimensions[dim.key as keyof typeof countryB.dimensions];
