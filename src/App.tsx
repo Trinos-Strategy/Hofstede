@@ -180,7 +180,7 @@ function App() {
                           UAI: 불확실성 회피
                         </span>
                         <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#6B7B8C] border border-[#6B7B8C]/20 tracking-wide">
-                          MAS: 남성성
+                          MAS: 성취 중시
                         </span>
                       </div>
                     </div>

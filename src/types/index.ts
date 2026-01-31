@@ -64,7 +64,7 @@ export type HofstedeDimensions = {
   pdi: number; // Power Distance (권력 거리)
   idv: number; // Individualism (개인주의)
   uai: number; // Uncertainty Avoidance (불확실성 회피)
-  mas?: number; // Masculinity (남성성) - optional
+  mas?: number; // Masculinity (성취 중시) - optional
   lto?: number; // Long Term Orientation (장기 지향성) - optional
   ivr?: number; // Indulgence vs Restraint (관용 vs 자제) - optional
 };
