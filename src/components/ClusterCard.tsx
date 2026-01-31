@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Info } from 'lucide-react';
 import type { ClusterType } from '../types';
 import { clusterInfo, getCountriesByCluster } from '../data/countries';
 
@@ -6,109 +7,182 @@ interface ClusterCardProps {
   cluster: ClusterType;
   isSelected: boolean;
   onClick: (cluster: ClusterType) => void;
+  onInfoClick?: (cluster: ClusterType) => void;
 }
 
-const clusterGradients: Record<ClusterType, string> = {
-  contest: 'from-red-500 to-orange-500',
-  network: 'from-cyan-500 to-blue-500',
-  family: 'from-amber-500 to-yellow-500',
-  pyramid: 'from-purple-500 to-violet-500',
-  solarSystem: 'from-orange-500 to-yellow-500',
-  machine: 'from-blue-500 to-indigo-500',
+// Cluster styles with unique icon colors
+const clusterStyles: Record<ClusterType, {
+  color: string;
+  iconColor: string;  // Vivid color for the icon
+  lightBg: string;
+}> = {
+  contest: {
+    color: '#7A5D2E',
+    iconColor: '#D4A017',  // Gold/Orange - Trophy color
+    lightBg: 'linear-gradient(135deg, rgba(212, 160, 23, 0.06), rgba(255, 215, 0, 0.03))',
+  },
+  network: {
+    color: '#2E6B5E',
+    iconColor: '#1B9E77',  // Teal/Blue-green
+    lightBg: 'linear-gradient(135deg, rgba(27, 158, 119, 0.06), rgba(46, 107, 94, 0.03))',
+  },
+  family: {
+    color: '#8B4513',
+    iconColor: '#CD853F',  // Warm brown/Peru
+    lightBg: 'linear-gradient(135deg, rgba(205, 133, 63, 0.06), rgba(139, 69, 19, 0.03))',
+  },
+  pyramid: {
+    color: '#8B2323',
+    iconColor: '#C41E3A',  // Cardinal Red
+    lightBg: 'linear-gradient(135deg, rgba(196, 30, 58, 0.06), rgba(139, 35, 35, 0.03))',
+  },
+  solarSystem: {
+    color: '#B8860B',
+    iconColor: '#FFB300',  // Amber/Gold - Sun color
+    lightBg: 'linear-gradient(135deg, rgba(255, 179, 0, 0.06), rgba(184, 134, 11, 0.03))',
+  },
+  machine: {
+    color: '#4A5568',
+    iconColor: '#5B7C99',  // Steel Blue
+    lightBg: 'linear-gradient(135deg, rgba(91, 124, 153, 0.06), rgba(74, 85, 104, 0.03))',
+  },
 };
 
-const clusterBgColors: Record<ClusterType, string> = {
-  contest: 'rgba(239, 68, 68, 0.15)',
-  network: 'rgba(6, 182, 212, 0.15)',
-  family: 'rgba(245, 158, 11, 0.15)',
-  pyramid: 'rgba(168, 85, 247, 0.15)',
-  solarSystem: 'rgba(249, 115, 22, 0.15)',
-  machine: 'rgba(59, 130, 246, 0.15)',
-};
-
-const clusterGlowColors: Record<ClusterType, string> = {
-  contest: 'rgba(239, 68, 68, 0.3)',
-  network: 'rgba(6, 182, 212, 0.3)',
-  family: 'rgba(245, 158, 11, 0.3)',
-  pyramid: 'rgba(168, 85, 247, 0.3)',
-  solarSystem: 'rgba(249, 115, 22, 0.3)',
-  machine: 'rgba(59, 130, 246, 0.3)',
-};
-
-export function ClusterCard({ cluster, isSelected, onClick }: ClusterCardProps) {
+export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: ClusterCardProps) {
   const info = clusterInfo[cluster];
   const countriesInCluster = getCountriesByCluster(cluster);
+  const style = clusterStyles[cluster];
+
+  const handleClick = () => {
+    onClick(cluster);
+  };
+
+  const handleDoubleClick = () => {
+    if (onInfoClick) {
+      onInfoClick(cluster);
+    }
+  };
+
+  const handleInfoButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onInfoClick) {
+      onInfoClick(cluster);
+    }
+  };
 
   return (
     <motion.div
-      whileHover={{ scale: 1.02, y: -2 }}
+      whileHover={{ y: -4, scale: 1.01 }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => onClick(cluster)}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
+      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className={`
-        cursor-pointer rounded-xl p-4
-        backdrop-blur-xl transition-all duration-300
-        border
+        cursor-pointer rounded-xl p-5 relative overflow-hidden
+        transition-all duration-500
         ${isSelected
-          ? 'border-white/30'
-          : 'border-white/10 hover:border-white/20'
+          ? 'shadow-lg border-l-4'
+          : 'border border-black/6 hover:shadow-lg hover:border-transparent'
         }
       `}
       style={{
-        background: isSelected ? clusterBgColors[cluster] : 'rgba(255, 255, 255, 0.05)',
-        boxShadow: isSelected ? `0 0 30px ${clusterGlowColors[cluster]}` : 'none',
+        background: isSelected ? style.lightBg : '#FFFFFF',
+        borderLeftColor: isSelected ? style.iconColor : 'transparent',
       }}
     >
-      <div className="flex items-center gap-3 mb-3">
-        <motion.div
-          whileHover={{ rotate: 10, scale: 1.1 }}
-          className={`
-            w-10 h-10 rounded-xl flex items-center justify-center text-xl
-            bg-gradient-to-br ${clusterGradients[cluster]} shadow-lg
-          `}
-        >
-          {info.icon}
-        </motion.div>
-        <div>
-          <h3
-            className="font-bold text-sm"
-            style={{ color: info.color }}
+      {/* Subtle gradient overlay on hover */}
+      <div
+        className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: style.lightBg }}
+      />
+
+      <div className="relative z-10">
+        <div className="flex items-center gap-4 mb-4">
+          {/* Large colorful icon without background */}
+          <motion.div
+            whileHover={{ scale: 1.15, rotate: 8 }}
+            transition={{ duration: 0.3 }}
+            className="flex items-center justify-center"
           >
-            {info.nameKo}
-          </h3>
-          <p className="text-xs text-gray-400">{info.name}</p>
+            <span
+              className="text-4xl filter drop-shadow-md"
+              style={{
+                filter: `drop-shadow(0 2px 4px ${style.iconColor}40)`,
+              }}
+            >
+              {info.icon}
+            </span>
+          </motion.div>
+          <div className="flex-1">
+            <h3
+              className="font-semibold text-base tracking-wide"
+              style={{
+                color: style.color,
+                fontFamily: "'Playfair Display', serif"
+              }}
+            >
+              {info.nameKo}
+            </h3>
+            <p className="text-xs text-[#555555] tracking-wide font-medium">{info.name}</p>
+          </div>
+          {/* Info button */}
+          {onInfoClick && (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={handleInfoButtonClick}
+              className="p-2 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-300"
+              title="상세 정보 보기"
+            >
+              <Info className="w-4 h-4 text-[#555555]" strokeWidth={1.5} />
+            </motion.button>
+          )}
+        </div>
+
+        <p className="text-sm text-[#444444] mb-4 line-clamp-2 leading-relaxed">
+          {info.description}
+        </p>
+
+        <div className="flex flex-wrap gap-2">
+          {countriesInCluster.slice(0, 3).map((country) => (
+            <span
+              key={country.code}
+              className="text-xs px-3 py-1.5 rounded-lg bg-white/80 text-[#333333] font-medium border border-black/5 shadow-sm"
+            >
+              {country.nameKo}
+            </span>
+          ))}
+          {countriesInCluster.length > 3 && (
+            <span
+              className="text-xs px-3 py-1.5 rounded-lg font-medium border shadow-sm"
+              style={{
+                backgroundColor: `${style.iconColor}15`,
+                color: style.color,
+                borderColor: `${style.iconColor}25`,
+              }}
+            >
+              +{countriesInCluster.length - 3}
+            </span>
+          )}
         </div>
       </div>
 
-      <p className="text-xs text-gray-400 mb-3 line-clamp-2 leading-relaxed">
-        {info.description}
-      </p>
-
-      <div className="flex flex-wrap gap-1.5">
-        {countriesInCluster.slice(0, 3).map((country) => (
-          <span
-            key={country.code}
-            className="text-xs px-2 py-1 rounded-lg bg-white/10 text-gray-300"
-          >
-            {country.nameKo}
-          </span>
-        ))}
-        {countriesInCluster.length > 3 && (
-          <span className="text-xs px-2 py-1 rounded-lg bg-white/5 text-gray-500">
-            +{countriesInCluster.length - 3}
-          </span>
-        )}
-      </div>
-
-      {/* Selected indicator */}
+      {/* Selected indicator - animated pulse */}
       {isSelected && (
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          className="absolute top-2 right-2"
+          transition={{ duration: 0.4 }}
+          className="absolute top-4 right-4"
         >
-          <div
-            className="w-2 h-2 rounded-full animate-pulse"
-            style={{ backgroundColor: info.color }}
+          <motion.div
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            className="w-3 h-3 rounded-full"
+            style={{
+              backgroundColor: style.iconColor,
+              boxShadow: `0 0 8px ${style.iconColor}60`,
+            }}
           />
         </motion.div>
       )}

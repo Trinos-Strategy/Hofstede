@@ -13,6 +13,8 @@ export interface Dimensions {
   IDV: number;
   UAI: number;
   MAS: number;
+  LTO: number;
+  IVR: number;
 }
 
 export interface Country {
@@ -28,6 +30,8 @@ export interface ClusterCharacteristics {
   IDV: DimensionLevel;
   UAI: DimensionLevel;
   MAS: DimensionLevel;
+  LTO?: DimensionLevel;
+  IVR?: DimensionLevel;
 }
 
 export interface ClusterInfo {
@@ -162,7 +166,7 @@ export type BilateralAdviceResult = {
 
 // 차원 차이 분석 결과
 export type DimensionGap = {
-  dimension: 'PDI' | 'IDV' | 'UAI' | 'MAS';
+  dimension: 'PDI' | 'IDV' | 'UAI' | 'MAS' | 'LTO' | 'IVR';
   valueA: number;
   valueB: number;
   gap: number;

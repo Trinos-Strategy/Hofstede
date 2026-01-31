@@ -12,16 +12,11 @@ interface CountrySelectorProps {
   maxSelections?: number;
 }
 
+// ColorBrewer qualitative palette - consistent with radar chart
 const countryColors = [
-  'from-blue-500 to-indigo-500',
-  'from-emerald-500 to-teal-500',
-  'from-amber-500 to-orange-500',
-];
-
-const countryGlows = [
-  'rgba(59, 130, 246, 0.4)',
-  'rgba(16, 185, 129, 0.4)',
-  'rgba(245, 158, 11, 0.4)',
+  { bg: '#1b9e77', text: '#FFFFFF' }, // Teal - 1st country
+  { bg: '#d95f02', text: '#FFFFFF' }, // Orange - 2nd country
+  { bg: '#7570b3', text: '#FFFFFF' }, // Purple - 3rd country
 ];
 
 export function CountrySelector({
@@ -66,115 +61,113 @@ export function CountrySelector({
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <div className="mb-4">
-        <div className="flex flex-wrap gap-2 mb-2">
+      <div className="mb-5">
+        <div className="flex flex-wrap gap-3 mb-3">
           <AnimatePresence mode="popLayout">
             {selectedCountries.map((country, index) => (
               <motion.div
                 key={country.code}
-                initial={{ opacity: 0, scale: 0.8, y: -10 }}
+                initial={{ opacity: 0, scale: 0.9, y: -10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className={`
-                  country-pill flex items-center gap-2 px-4 py-2 rounded-xl
-                  text-white text-sm font-medium
-                  bg-gradient-to-r ${countryColors[index % countryColors.length]}
-                  shadow-lg
-                `}
-                style={{ boxShadow: `0 4px 20px ${countryGlows[index % countryGlows.length]}` }}
+                exit={{ opacity: 0, scale: 0.9, y: -10 }}
+                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                className="country-pill flex items-center gap-3 px-5 py-3 rounded-lg text-sm font-medium"
+                style={{
+                  backgroundColor: countryColors[index % countryColors.length].bg,
+                  color: countryColors[index % countryColors.length].text,
+                }}
               >
-                <span>{country.nameKo}</span>
+                <span className="tracking-wide">{country.nameKo}</span>
                 <motion.button
-                  whileHover={{ scale: 1.2 }}
+                  whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => onCountryRemove(country.code)}
-                  className="remove-btn p-0.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                  className="remove-btn p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-300"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-3.5 h-3.5" strokeWidth={1.5} />
                 </motion.button>
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
         {selectedCountries.length === 0 && (
-          <p className="text-sm text-gray-500 flex items-center gap-2">
-            <Plus className="w-4 h-4" />
+          <p className="text-sm text-[#444444] flex items-center gap-2">
+            <Plus className="w-4 h-4" strokeWidth={1.5} />
             국가를 선택하세요 (최대 {maxSelections}개)
           </p>
         )}
       </div>
 
       <motion.button
-        whileHover={canAddMore ? { scale: 1.01 } : {}}
-        whileTap={canAddMore ? { scale: 0.99 } : {}}
+        whileHover={canAddMore ? { scale: 1.005 } : {}}
+        whileTap={canAddMore ? { scale: 0.995 } : {}}
         onClick={() => canAddMore && setIsOpen(!isOpen)}
         disabled={!canAddMore}
         className={`
-          w-full flex items-center justify-between px-4 py-3
-          rounded-xl transition-all duration-300
+          w-full flex items-center justify-between px-5 py-4
+          rounded-lg transition-all duration-500
           ${canAddMore
-            ? 'bg-white/5 border border-white/20 hover:border-white/40 hover:bg-white/10 cursor-pointer'
-            : 'bg-white/5 border border-white/10 cursor-not-allowed opacity-50'
+            ? 'bg-[#F5F4F0] border border-black/8 hover:border-[#B8956A]/50 cursor-pointer'
+            : 'bg-[#F5F4F0] border border-black/5 cursor-not-allowed opacity-50'
           }
         `}
       >
-        <span className={canAddMore ? 'text-gray-300' : 'text-gray-500'}>
+        <span className={`text-sm ${canAddMore ? 'text-[#444444]' : 'text-[#444444]/50'}`}>
           {canAddMore ? '국가 추가...' : '최대 선택 완료'}
         </span>
         <ChevronDown
-          className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''} ${
-            canAddMore ? 'text-gray-400' : 'text-gray-600'
+          className={`w-4 h-4 transition-transform duration-500 ${isOpen ? 'rotate-180' : ''} ${
+            canAddMore ? 'text-[#444444]' : 'text-[#444444]/50'
           }`}
+          strokeWidth={1.5}
         />
       </motion.button>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-            className="absolute z-50 w-full mt-2 rounded-xl overflow-hidden border border-white/10"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            className="absolute z-50 w-full mt-3 rounded-lg overflow-hidden border border-black/8 bg-white"
             style={{
-              backgroundColor: 'rgba(15, 23, 42, 0.98)',
-              backdropFilter: 'blur(24px)',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7)'
+              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)'
             }}
           >
-            <div className="p-3 border-b border-white/10 bg-slate-900/50">
+            <div className="p-4 border-b border-black/5 bg-[#FAFAF8]">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#444444]" strokeWidth={1.5} />
                 <input
                   type="text"
                   placeholder="국가 검색..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 text-sm
-                    bg-slate-800/80 border border-white/10 rounded-lg
-                    text-white placeholder-gray-400
-                    focus:border-purple-500/50 focus:bg-slate-800
-                    transition-all duration-200"
+                  className="w-full pl-11 pr-4 py-3 text-sm
+                    bg-white border border-black/8 rounded-lg
+                    text-[#1A1A1A] placeholder-[#5A5A5A]/60
+                    focus:border-[#B8956A] focus:ring-0
+                    transition-all duration-300"
                   autoFocus
                 />
               </div>
             </div>
-            <div className="max-h-64 overflow-y-auto bg-slate-900/30">
+            <div className="max-h-[70vh] overflow-y-auto bg-white">
               {Object.entries(groupedCountries).map(([cluster, clusterCountries]) => {
                 const info = clusterInfo[cluster as ClusterType];
                 return (
                   <div key={cluster}>
                     <div
-                      className="px-4 py-2 text-xs font-semibold sticky top-0 bg-slate-800/90 backdrop-blur-sm border-b border-white/5"
+                      className="px-5 py-2.5 text-xs font-medium uppercase tracking-wider sticky top-0 bg-[#F5F4F0] border-b border-black/5"
                       style={{ color: info.color }}
                     >
-                      {info.icon} {info.nameKo}
+                      <span className="mr-2">{info.icon}</span>
+                      {info.nameKo}
                     </div>
                     {clusterCountries.map((country) => (
                       <motion.button
                         key={country.code}
-                        whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+                        whileHover={{ backgroundColor: '#FAFAF8' }}
                         onClick={() => {
                           onCountrySelect(country);
                           setSearchTerm('');
@@ -182,19 +175,19 @@ export function CountrySelector({
                             setIsOpen(false);
                           }
                         }}
-                        className="w-full px-4 py-2.5 text-left text-sm flex items-center justify-between
-                          transition-colors duration-150 hover:bg-slate-700/50"
+                        className="w-full px-5 py-4 text-left text-sm flex items-center justify-between
+                          transition-colors duration-300 border-b border-black/3 min-h-[52px]"
                       >
-                        <span className="text-gray-100">{country.nameKo}</span>
-                        <span className="text-xs text-gray-400">{country.name}</span>
+                        <span className="text-[#1A1A1A] font-medium">{country.nameKo}</span>
+                        <span className="text-xs text-[#444444]/60 tracking-wide">{country.name}</span>
                       </motion.button>
                     ))}
                   </div>
                 );
               })}
               {Object.keys(groupedCountries).length === 0 && (
-                <div className="px-4 py-8 text-sm text-gray-500 text-center">
-                  <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                <div className="px-5 py-10 text-sm text-[#444444] text-center">
+                  <Search className="w-8 h-8 mx-auto mb-3 opacity-30" strokeWidth={1.5} />
                   검색 결과가 없습니다
                 </div>
               )}

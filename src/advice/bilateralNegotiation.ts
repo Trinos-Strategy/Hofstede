@@ -252,7 +252,7 @@ function generateMutualUnderstanding(
     commonGround.push('전문성과 비즈니스 목표에 대한 상호 존중');
   }
 
-  // 중재 전략
+  // 가교 전략 (Bridging Strategy)
   let bridgingStrategy = '';
   if (highGaps.length >= 2) {
     bridgingStrategy = `${nameA}와 ${nameB}는 상당한 문화적 차이가 있습니다. 양측 모두 상대방의 의사결정 방식과 소통 스타일을 이해하려는 노력이 필요합니다. 초기 신뢰 구축에 시간을 투자하고, 중요한 합의는 명확히 문서화하는 것이 좋습니다.`;

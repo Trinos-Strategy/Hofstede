@@ -12,7 +12,6 @@ import {
   Handshake,
   MessageCircle,
   Scale,
-  Sparkles,
 } from 'lucide-react';
 import type { AdviceContext } from '../types';
 
@@ -22,7 +21,7 @@ interface ContextOption {
   nameKo: string;
   icon: React.ReactNode;
   color: string;
-  gradient: string;
+  emoji: string;
   description: string;
 }
 
@@ -31,72 +30,72 @@ const contextOptions: ContextOption[] = [
     key: 'MEETING_IDEA',
     name: 'Meeting Ideas',
     nameKo: '회의에서 아이디어 제안',
-    icon: <Lightbulb className="w-5 h-5" />,
-    color: '#3B82F6',
-    gradient: 'from-blue-500 to-indigo-500',
+    icon: <Lightbulb className="w-5 h-5" strokeWidth={1.5} />,
+    color: '#B8956A',
+    emoji: '💡',
     description: '회의 중 새로운 아이디어를 효과적으로 제안하는 방법',
   },
   {
     key: 'DISAGREE_BOSS',
     name: 'Disagree with Boss',
     nameKo: '상사와 의견 다를 때',
-    icon: <MessageSquare className="w-5 h-5" />,
-    color: '#EF4444',
-    gradient: 'from-red-500 to-orange-500',
+    icon: <MessageSquare className="w-5 h-5" strokeWidth={1.5} />,
+    color: '#C4886B',
+    emoji: '🗣️',
     description: '상사와 의견 차이가 있을 때 현명하게 대처하는 방법',
   },
   {
     key: 'REPORTING',
     name: 'Reporting',
     nameKo: '보고 및 중간 점검',
-    icon: <FileText className="w-5 h-5" />,
-    color: '#10B981',
-    gradient: 'from-emerald-500 to-teal-500',
+    icon: <FileText className="w-5 h-5" strokeWidth={1.5} />,
+    color: '#7D8471',
+    emoji: '📋',
     description: '업무 진행 상황을 효과적으로 보고하는 방법',
   },
   {
     key: 'REWARD_RECOGNITION',
     name: 'Reward & Recognition',
     nameKo: '성과/보상 커뮤니케이션',
-    icon: <Award className="w-5 h-5" />,
-    color: '#F59E0B',
-    gradient: 'from-amber-500 to-yellow-500',
+    icon: <Award className="w-5 h-5" strokeWidth={1.5} />,
+    color: '#C9A227',
+    emoji: '🏆',
     description: '성과를 인정하고 보상을 전달하는 효과적인 방법',
   },
   {
     key: 'TEAM_COLLABORATION',
     name: 'Team Collaboration',
     nameKo: '팀 협업',
-    icon: <Users className="w-5 h-5" />,
-    color: '#8B5CF6',
-    gradient: 'from-purple-500 to-violet-500',
+    icon: <Users className="w-5 h-5" strokeWidth={1.5} />,
+    color: '#8B7355',
+    emoji: '🤝',
     description: '팀원들과 효과적으로 협업하는 방법',
   },
   {
     key: 'NEGOTIATION',
     name: 'Negotiation',
     nameKo: '협상',
-    icon: <Handshake className="w-5 h-5" />,
-    color: '#EC4899',
-    gradient: 'from-pink-500 to-rose-500',
+    icon: <Handshake className="w-5 h-5" strokeWidth={1.5} />,
+    color: '#9D7E57',
+    emoji: '🎯',
     description: '성공적인 협상을 위한 접근법',
   },
   {
     key: 'FEEDBACK',
     name: 'Feedback',
     nameKo: '피드백 주고받기',
-    icon: <MessageCircle className="w-5 h-5" />,
-    color: '#06B6D4',
-    gradient: 'from-cyan-500 to-blue-500',
+    icon: <MessageCircle className="w-5 h-5" strokeWidth={1.5} />,
+    color: '#6B7B8C',
+    emoji: '💬',
     description: '피드백을 효과적으로 주고받는 방법',
   },
   {
     key: 'CONFLICT_RESOLUTION',
     name: 'Conflict Resolution',
     nameKo: '갈등 해결',
-    icon: <Scale className="w-5 h-5" />,
-    color: '#6366F1',
-    gradient: 'from-indigo-500 to-purple-500',
+    icon: <Scale className="w-5 h-5" strokeWidth={1.5} />,
+    color: '#722F37',
+    emoji: '⚖️',
     description: '갈등 상황을 원만하게 해결하는 방법',
   },
 ];
@@ -111,17 +110,22 @@ export function AdviceContextSelector({
   onContextSelect,
 }: AdviceContextSelectorProps) {
   return (
-    <div className="glass-card rounded-2xl p-6">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-1.5 h-6 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full" />
-        <h2 className="text-lg font-bold text-white">상황 선택</h2>
+    <div className="luxury-card rounded-lg p-4 sm:p-8">
+      <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+        <div className="accent-bar" />
+        <h2
+          className="text-lg sm:text-xl font-medium text-[#1A1A1A]"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          상황 선택
+        </h2>
       </div>
-      <p className="text-sm text-gray-400 mb-5 flex items-center gap-2">
-        <Sparkles className="w-4 h-4" />
+      <p className="text-xs sm:text-sm text-[#444444] mb-4 sm:mb-6 flex items-center gap-2">
+        <span className="text-base sm:text-lg">💼</span>
         어떤 상황에서의 조언이 필요한가요?
       </p>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
         {contextOptions.map((option, index) => {
           const isSelected = selectedContext === option.key;
           return (
@@ -129,53 +133,36 @@ export function AdviceContextSelector({
               key={option.key}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ scale: 1.03, y: -2 }}
+              transition={{
+                delay: index * 0.06,
+                duration: 0.5,
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
+              whileHover={{ y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() =>
                 onContextSelect(isSelected ? null : option.key)
               }
               className={`
-                relative flex flex-col items-center gap-2 p-4 rounded-xl
-                border transition-all duration-300 text-center
+                relative flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-lg
+                transition-all duration-500 text-center min-h-[80px] sm:min-h-0
                 ${isSelected
-                  ? 'border-white/30'
-                  : 'border-white/10 hover:border-white/20'
+                  ? 'bg-white shadow-md border-b-2'
+                  : 'bg-[#F5F4F0] border border-black/5 hover:bg-white hover:shadow-sm'
                 }
               `}
               style={{
-                background: isSelected
-                  ? `linear-gradient(135deg, ${option.color}30, ${option.color}10)`
-                  : 'rgba(255, 255, 255, 0.05)',
-                boxShadow: isSelected
-                  ? `0 0 30px ${option.color}40`
-                  : 'none',
+                borderBottomColor: isSelected ? option.color : 'transparent',
               }}
               title={option.description}
             >
-              {/* Icon */}
-              <motion.div
-                whileHover={{ rotate: 5 }}
-                className={`
-                  w-10 h-10 rounded-xl flex items-center justify-center
-                  ${isSelected
-                    ? `bg-gradient-to-br ${option.gradient} text-white shadow-lg`
-                    : 'bg-white/10 text-gray-400'
-                  }
-                `}
-                style={{
-                  boxShadow: isSelected
-                    ? `0 4px 15px ${option.color}50`
-                    : 'none',
-                }}
-              >
-                {option.icon}
-              </motion.div>
+              {/* Emoji */}
+              <span className="text-xl sm:text-2xl">{option.emoji}</span>
 
               {/* Label */}
               <span
-                className={`text-xs font-medium leading-tight ${
-                  isSelected ? 'text-white' : 'text-gray-400'
+                className={`text-[10px] sm:text-xs font-medium leading-tight tracking-wide ${
+                  isSelected ? 'text-[#1A1A1A]' : 'text-[#444444]'
                 }`}
               >
                 {option.nameKo}
@@ -186,10 +173,11 @@ export function AdviceContextSelector({
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
+                  transition={{ duration: 0.4 }}
                   className="absolute -top-1 -right-1"
                 >
                   <div
-                    className="w-3 h-3 rounded-full animate-pulse"
+                    className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: option.color }}
                   />
                 </motion.div>
@@ -206,26 +194,16 @@ export function AdviceContextSelector({
             initial={{ opacity: 0, y: -10, height: 0 }}
             animate={{ opacity: 1, y: 0, height: 'auto' }}
             exit={{ opacity: 0, y: -10, height: 0 }}
-            className="mt-5 overflow-hidden"
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mt-6 overflow-hidden"
           >
             <div
-              className="p-4 rounded-xl border"
+              className="p-5 rounded-lg border-l-2 bg-[#F5F4F0]"
               style={{
-                background: `linear-gradient(135deg, ${
-                  contextOptions.find((o) => o.key === selectedContext)?.color
-                }20, transparent)`,
-                borderColor: `${
-                  contextOptions.find((o) => o.key === selectedContext)?.color
-                }30`,
+                borderLeftColor: contextOptions.find((o) => o.key === selectedContext)?.color,
               }}
             >
-              <p
-                className="text-sm"
-                style={{
-                  color: contextOptions.find((o) => o.key === selectedContext)
-                    ?.color,
-                }}
-              >
+              <p className="text-sm text-[#444444] leading-relaxed">
                 {contextOptions.find((o) => o.key === selectedContext)?.description}
               </p>
             </div>
