@@ -214,11 +214,11 @@ export function adviceForNegotiation_IDV(idv: number): string[] {
 }
 
 // ============================================
-// 남성성(MAS) 관련 조언 (선택적)
+// 성취 중시(MAS) 관련 조언 (선택적)
 // ============================================
 
 /**
- * 남성성(MAS) - 성과 중심 vs 관계 중심
+ * 성취 중시(MAS) - 성과 중심 vs 관계 중심
  */
 export function adviceForWorkStyle_MAS(mas?: number): string[] {
   if (mas === undefined) return [];
