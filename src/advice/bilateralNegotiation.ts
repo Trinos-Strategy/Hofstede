@@ -214,7 +214,7 @@ function generateMutualUnderstanding(
         break;
       case 'MAS':
         keyDifferences.push(
-          `남성성: ${nameA}(${gap.valueA}) vs ${nameB}(${gap.valueB}) - ${
+          `성취 중시: ${nameA}(${gap.valueA}) vs ${nameB}(${gap.valueB}) - ${
             gap.valueA > gap.valueB ? '경쟁 지향 vs 협력 지향' : '협력 지향 vs 경쟁 지향'
           }`
         );
