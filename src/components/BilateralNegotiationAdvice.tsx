@@ -15,6 +15,13 @@ import {
   type DetailedNegotiationAdvice,
   type KeyStrategy,
 } from '../data/negotiationAdvice';
+import { countries } from '../data/countries';
+
+// Helper function to get country name by code
+const getCountryNameByCode = (code: string): string => {
+  const country = countries.find(c => c.code === code);
+  return country?.nameKo || country?.name || code;
+};
 
 interface BilateralNegotiationAdviceProps {
   advice: BilateralAdviceResult;
@@ -235,10 +242,10 @@ function DetailedAdviceSection({
               <tr className="border-b border-black/10">
                 <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium text-[#666666]">차원</th>
                 <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium" style={{ color: accentColor }}>
-                  {advice.fromCountryCode === 'USA' ? '미국' : '한국'}
+                  {getCountryNameByCode(advice.fromCountryCode)}
                 </th>
                 <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium text-[#7D8471]">
-                  {advice.toCountryCode === 'KOR' ? '한국' : '미국'}
+                  {getCountryNameByCode(advice.toCountryCode)}
                 </th>
               </tr>
             </thead>
