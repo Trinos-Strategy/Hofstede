@@ -34,7 +34,7 @@ const itemVariants = {
 };
 
 function App() {
-  const { t, language, isKorean } = useLanguage();
+  const { t, language, isKorean, setLanguage } = useLanguage();
 
   console.log('[App] Render - language:', language, 'isKorean:', isKorean, 'appTitle:', t('appTitle'));
 
@@ -104,8 +104,35 @@ function App() {
   return (
     <div className="min-h-screen">
       {/* Debug: Language indicator - remove after testing */}
-      <div className="fixed bottom-4 right-4 z-50 bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
-        DEBUG: {language} / {isKorean ? 'Korean' : 'English'} / Title: {t('appTitle').substring(0, 20)}...
+      <div style={{
+        position: 'fixed',
+        bottom: '16px',
+        right: '16px',
+        zIndex: 9999,
+        backgroundColor: '#ef4444',
+        color: 'white',
+        padding: '12px 16px',
+        borderRadius: '8px',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+      }}>
+        DEBUG: {language} / {isKorean ? 'Korean' : 'English'}
+        <br />
+        Title: {t('appTitle').substring(0, 25)}...
+        <br />
+        <button
+          onClick={() => setLanguage('en')}
+          style={{ marginRight: '8px', padding: '4px 8px', backgroundColor: '#333', borderRadius: '4px', marginTop: '8px' }}
+        >
+          Set EN
+        </button>
+        <button
+          onClick={() => setLanguage('ko')}
+          style={{ padding: '4px 8px', backgroundColor: '#333', borderRadius: '4px' }}
+        >
+          Set KO
+        </button>
       </div>
 
       {/* Header */}
