@@ -104,7 +104,7 @@ const dimensionTranslationKeys: Record<string, { name: keyof TranslationKeys; de
 };
 
 export function DimensionRadar({ countries }: DimensionRadarProps) {
-  const { t, isKorean } = useLanguage();
+  const { t, isKorean, language } = useLanguage();
 
   if (countries.length === 0) {
     return (
@@ -133,7 +133,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
   });
 
   return (
-    <div className="space-y-6">
+    <div key={`dimension-radar-${language}`} className="space-y-6">
       {/* Radar Chart */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -240,7 +240,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {coreDimensions.map((dim, index) => (
               <motion.div
-                key={dim.key}
+                key={`${dim.key}-${language}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -281,7 +281,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {extendedDimensions.map((dim, index) => (
               <motion.div
-                key={dim.key}
+                key={`${dim.key}-${language}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{

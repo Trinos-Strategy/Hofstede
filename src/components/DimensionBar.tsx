@@ -142,14 +142,16 @@ function DimensionBarItem({ dim, dimIndex, countries }: DimensionBarItemProps) {
 }
 
 export function DimensionBar({ countries }: DimensionBarProps) {
-  const { t, isKorean } = useLanguage();
+  const { t, isKorean, language } = useLanguage();
 
   if (countries.length === 0) {
     return null;
   }
 
+  // Use language as key to force complete re-render when language changes
   return (
     <motion.div
+      key={`dimension-bar-${language}`}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
@@ -172,7 +174,7 @@ export function DimensionBar({ countries }: DimensionBarProps) {
         <div className="space-y-4">
           {coreDimensions.map((dim, dimIndex) => (
             <DimensionBarItem
-              key={dim.key}
+              key={`${dim.key}-${language}`}
               dim={dim}
               dimIndex={dimIndex}
               countries={countries}
@@ -204,7 +206,7 @@ export function DimensionBar({ countries }: DimensionBarProps) {
         <div className="space-y-4">
           {extendedDimensions.map((dim, dimIndex) => (
             <DimensionBarItem
-              key={dim.key}
+              key={`${dim.key}-${language}`}
               dim={dim}
               dimIndex={dimIndex + coreDimensions.length}
               countries={countries}

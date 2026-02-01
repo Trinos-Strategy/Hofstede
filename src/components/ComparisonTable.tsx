@@ -44,7 +44,7 @@ const dimensionTranslationKeys: Record<string, { name: keyof TranslationKeys; de
 };
 
 export function ComparisonTable({ countries }: ComparisonTableProps) {
-  const { t, isKorean } = useLanguage();
+  const { t, isKorean, language } = useLanguage();
 
   // Get dimension level text based on language
   const getDimensionLevelText = (value: number): string => {
@@ -77,6 +77,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
 
   return (
     <motion.div
+      key={`comparison-table-${language}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
@@ -159,7 +160,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
               const countryColor = countryColors[index % countryColors.length];
               return (
                 <motion.tr
-                  key={country.code}
+                  key={`${country.code}-${language}`}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{
@@ -284,7 +285,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {coreDimensions.map((dim, index) => (
               <motion.div
-                key={dim.key}
+                key={`${dim.key}-${language}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -325,7 +326,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {extendedDimensions.map((dim, index) => (
               <motion.div
-                key={dim.key}
+                key={`${dim.key}-${language}`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
