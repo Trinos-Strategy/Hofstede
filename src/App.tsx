@@ -34,7 +34,7 @@ const itemVariants = {
 };
 
 function App() {
-  const { t } = useLanguage();
+  const { t, language, isKorean } = useLanguage();
 
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
@@ -129,6 +129,10 @@ function App() {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {/* Debug: Language State Indicator */}
+              <span className="text-[10px] px-2 py-1 bg-yellow-100 rounded text-yellow-800 font-mono">
+                {language.toUpperCase()} | {isKorean ? 'KO' : 'EN'}
+              </span>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
