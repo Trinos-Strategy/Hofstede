@@ -10,6 +10,7 @@ import {
 } from 'recharts';
 import type { Country } from '../types';
 import { dimensionInfo } from '../data/countries';
+import { useLanguage } from '../i18n';
 
 interface DimensionRadarProps {
   countries: Country[];
@@ -92,6 +93,8 @@ const coreDimensions = dimensionInfo.filter(d => ['PDI', 'IDV', 'UAI', 'MAS'].in
 const extendedDimensions = dimensionInfo.filter(d => ['LTO', 'IVR'].includes(d.key));
 
 export function DimensionRadar({ countries }: DimensionRadarProps) {
+  const { t, isKorean } = useLanguage();
+
   if (countries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] border border-dashed border-black/10 rounded-lg">
@@ -102,14 +105,14 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
         >
           <span className="text-3xl sm:text-4xl mb-3 block text-center">📈</span>
         </motion.div>
-        <p className="text-[#444444] text-xs sm:text-sm">국가를 선택하면 레이더 차트가 표시됩니다</p>
+        <p className="text-[#444444] text-xs sm:text-sm">{t('selectCountryToShowRadar')}</p>
       </div>
     );
   }
 
   const data = dimensionInfo.map((dim) => {
     const dataPoint: Record<string, string | number> = {
-      dimension: dim.nameKo,
+      dimension: isKorean ? dim.nameKo : dim.name,
       fullMark: 100,
     };
     countries.forEach((country) => {
@@ -146,7 +149,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
               return (
                 <Radar
                   key={country.code}
-                  name={country.nameKo}
+                  name={isKorean ? country.nameKo : country.name}
                   dataKey={country.code}
                   stroke={colorConfig.stroke}
                   fill={colorConfig.fill}
@@ -208,7 +211,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                 className="text-xs sm:text-sm font-medium"
                 style={{ color: colorConfig.stroke }}
               >
-                {country.nameKo}
+                {isKorean ? country.nameKo : country.name}
               </span>
             </div>
           );
@@ -221,7 +224,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-[#B8956A] to-[#9D7E57]" />
-            <span className="text-xs font-medium text-[#9D7E57]">핵심 차원 (Wursten 클러스터 기준)</span>
+            <span className="text-xs font-medium text-[#9D7E57]">{t('coreDimensions')}</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {coreDimensions.map((dim, index) => (
@@ -247,7 +250,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                     className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: dim.color }}
                   />
-                  {dim.nameKo} ({dim.key})
+                  {isKorean ? dim.nameKo : dim.name} ({dim.key})
                 </h4>
                 <p className="text-[10px] text-[#444444] leading-relaxed">{dim.description}</p>
               </motion.div>
@@ -262,7 +265,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-[#8B5CF6] to-[#6D28D9]" />
-            <span className="text-xs font-medium text-[#7C3AED]">추가 차원 (Hofstede 확장)</span>
+            <span className="text-xs font-medium text-[#7C3AED]">{t('extendedDimensions')}</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {extendedDimensions.map((dim, index) => (
@@ -288,7 +291,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                     className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: dim.color }}
                   />
-                  {dim.nameKo} ({dim.key})
+                  {isKorean ? dim.nameKo : dim.name} ({dim.key})
                 </h4>
                 <p className="text-[10px] text-[#444444] leading-relaxed">{dim.description}</p>
               </motion.div>

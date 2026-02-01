@@ -5,6 +5,7 @@ import type { ClusterType } from '../types';
 import { clusterOrder } from '../data/countries';
 import { ClusterCard } from './ClusterCard';
 import { ClusterDetailModal } from './ClusterDetailModal';
+import { useLanguage } from '../i18n';
 
 interface ClusterMapProps {
   selectedCluster: ClusterType | null;
@@ -32,6 +33,7 @@ const itemVariants = {
 };
 
 export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps) {
+  const { t } = useLanguage();
   const [modalCluster, setModalCluster] = useState<ClusterType | null>(null);
   const [isExpanded, setIsExpanded] = useState(false); // Collapsed by default on mobile
 
@@ -68,7 +70,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
             className="text-base sm:text-lg font-medium text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            문화 클러스터
+            {t('culturalClusters')}
           </h2>
         </div>
         <div className="flex items-center gap-2">
@@ -84,7 +86,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
                 onClusterSelect(null);
               }}
               className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
-              title="필터 초기화"
+              title={t('resetFilter')}
             >
               <X className="w-4 h-4 text-[#444444]" strokeWidth={1.5} />
             </motion.button>
@@ -107,8 +109,8 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
       {/* Guidance text */}
       <p className="text-[10px] sm:text-xs text-[#555555] mb-4 sm:mb-5 flex items-center gap-2 font-medium">
         <Layers className="w-3 h-3 flex-shrink-0" strokeWidth={1.5} />
-        <span className="hidden sm:inline">클릭: 필터 · 더블클릭: 상세정보</span>
-        <span className="sm:hidden">탭: 필터 · ℹ️: 상세정보</span>
+        <span className="hidden sm:inline">{t('clickFilterDoubleClickDetails')}</span>
+        <span className="sm:hidden">{t('tapFilterInfoDetails')}</span>
       </p>
 
       {/* Cluster cards - Always visible on desktop, expandable on mobile */}
@@ -147,8 +149,8 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
               className="mt-5 pt-4 border-t border-black/5"
             >
               <p className="text-[10px] sm:text-xs text-[#555555] leading-relaxed">
-                <span className="font-medium text-[#9D7E57]">ℹ️ 분류 기준:</span>{' '}
-                Wursten의 문화 클러스터는 Hofstede의 4개 핵심 차원(PDI, IDV, UAI, MAS)을 기반으로 분류됩니다.
+                <span className="font-medium text-[#9D7E57]">{t('classificationBasis')}</span>{' '}
+                {t('classificationDescription')}
               </p>
             </motion.div>
           </motion.div>
@@ -160,7 +162,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
         <div className="lg:hidden">
           {selectedCluster ? (
             <div className="flex items-center gap-2 py-2 px-3 bg-[#F5F4F0] rounded-lg">
-              <span className="text-sm font-medium text-[#9D7E57]">선택됨:</span>
+              <span className="text-sm font-medium text-[#9D7E57]">{t('selectedLabel')}</span>
               <span className="text-sm text-[#444444]">{selectedCluster}</span>
             </div>
           ) : (
@@ -168,7 +170,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
               onClick={toggleExpand}
               className="w-full py-3 px-4 bg-[#F5F4F0] rounded-lg text-sm text-[#444444] font-medium hover:bg-[#EDECEA] transition-colors duration-300 min-h-[48px]"
             >
-              클러스터 선택하기 ↓
+              {t('selectCluster')}
             </button>
           )}
         </div>

@@ -11,6 +11,7 @@ import { AdviceContextSelector } from './components/AdviceContextSelector';
 import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
 import { HamburgerMenu } from './components/HamburgerMenu';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { useLanguage } from './i18n';
 import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
@@ -33,6 +34,7 @@ const itemVariants = {
 };
 
 function App() {
+  const { t } = useLanguage();
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -118,10 +120,10 @@ function App() {
               </motion.div>
               <div>
                 <h1 className="text-lg sm:text-2xl font-medium tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  호프스테드 문화 차원 비교
+                  {t('appTitle')}
                 </h1>
                 <p className="text-xs sm:text-sm text-[#444444] tracking-wide mt-0.5 hidden sm:block">
-                  글로벌 비즈니스를 위한 문화 지능
+                  {t('appSubtitle')}
                 </p>
               </div>
             </div>
@@ -131,7 +133,7 @@ function App() {
                 transition={{ duration: 0.6 }}
                 onClick={() => setShowInfo(!showInfo)}
                 className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
-                title="정보"
+                title={t('info')}
               >
                 <Info className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
               </motion.button>
@@ -164,25 +166,23 @@ function App() {
                     <div className="text-2xl sm:text-3xl">📚</div>
                     <div>
                       <h3 className="text-lg font-medium text-[#1A1A1A] mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        Hofstede 문화 차원 이론
+                        {t('infoTitle')}
                       </h3>
                       <p className="text-sm text-[#444444] mb-4 leading-relaxed">
-                        Geert Hofstede의 문화 차원 이론은 국가 간 문화적 차이를 6가지 차원으로 분석합니다.
-                        이 도구는 Huib Wursten의 "Mental Images" 연구를 기반으로 국가들을 6개의 문화 클러스터로 분류하고,
-                        상황별 문화 조언을 제공합니다.
+                        {t('infoDescription')}
                       </p>
                       <div className="flex flex-wrap gap-3">
                         <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#B8956A] border border-[#B8956A]/20 tracking-wide">
-                          PDI: 권력 거리
+                          {t('pdiTag')}
                         </span>
                         <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#7D8471] border border-[#7D8471]/20 tracking-wide">
-                          IDV: 개인주의
+                          {t('idvTag')}
                         </span>
                         <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#C4886B] border border-[#C4886B]/20 tracking-wide">
-                          UAI: 불확실성 회피
+                          {t('uaiTag')}
                         </span>
                         <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#6B7B8C] border border-[#6B7B8C]/20 tracking-wide">
-                          MAS: 성취 중시
+                          {t('masTag')}
                         </span>
                       </div>
                     </div>
@@ -232,9 +232,9 @@ function App() {
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                 <div className="accent-bar" />
                 <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  국가 선택
+                  {t('countrySelection')}
                 </h2>
-                <span className="text-[10px] sm:text-xs text-[#444444] tracking-wide uppercase ml-1 sm:ml-2">최대 3개</span>
+                <span className="text-[10px] sm:text-xs text-[#444444] tracking-wide uppercase ml-1 sm:ml-2">{t('maxCount')}</span>
               </div>
               <CountrySelector
                 selectedCountries={selectedCountries}
@@ -253,10 +253,10 @@ function App() {
                   <span className="text-xl sm:text-2xl">📊</span>
                   <div>
                     <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                      문화 차원 비교
+                      {t('cultureDimensionComparison')}
                     </h2>
                     <p className="text-xs sm:text-sm text-[#444444] mt-0.5">
-                      1~3개국 선택 시 Hofstede 차원을 비교합니다
+                      {t('compareDimensionsDescription')}
                     </p>
                   </div>
                 </div>
@@ -271,10 +271,10 @@ function App() {
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                   <div className="accent-bar" />
                   <h2 className="text-base sm:text-lg font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    레이더 차트
+                    {t('radarChart')}
                   </h2>
                   <span className="text-[10px] sm:text-xs text-[#9D7E57] bg-[#B8956A]/10 px-2 py-0.5 rounded-full font-medium">
-                    6차원 비교
+                    {t('sixDimensionComparison')}
                   </span>
                 </div>
                 <DimensionRadar countries={selectedCountries} />
@@ -285,7 +285,7 @@ function App() {
                 <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
                   <div className="accent-bar" />
                   <h2 className="text-base sm:text-lg font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    차원별 막대 비교
+                    {t('dimensionBarComparison')}
                   </h2>
                 </div>
                 <DimensionBar countries={selectedCountries} />
@@ -308,18 +308,18 @@ function App() {
                 <span className="text-xl sm:text-2xl">💡</span>
                 <div>
                   <h2 className="text-lg sm:text-xl font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    상황별 양국 간 조언
+                    {t('bilateralAdvice')}
                   </h2>
                   <p className="text-xs sm:text-sm text-[#444444] mt-0.5">
-                    정확히 2개국 선택 시 상호 비교 조언을 제공합니다
+                    {t('bilateralAdviceDescription')}
                   </p>
                 </div>
               </div>
               {/* Framework note */}
               <div className="mb-4 sm:mb-5 px-4 py-2.5 bg-[#F5F4F0] rounded-lg border border-[#B8956A]/15">
                 <p className="text-[10px] sm:text-xs text-[#555555] leading-relaxed">
-                  <span className="font-medium text-[#9D7E57]">📚 프레임워크:</span>{' '}
-                  양국 간 조언은 Huib Wursten의 Mental Images 프레임워크에 기반하며, 4개 핵심 차원(PDI, IDV, UAI, MAS)을 사용합니다.
+                  <span className="font-medium text-[#9D7E57]">{t('frameworkLabel')}</span>{' '}
+                  {t('frameworkDescription')}
                 </p>
               </div>
             </motion.div>
@@ -337,7 +337,7 @@ function App() {
                 >
                   <p className="text-sm sm:text-base text-[#444444] flex items-center justify-center gap-3">
                     <span className="text-xl">🌍</span>
-                    <span>상황별 조언을 보려면 먼저 <strong className="text-[#1A1A1A]">2개 국가</strong>를 선택하세요.</span>
+                    <span dangerouslySetInnerHTML={{ __html: t('selectTwoCountriesFirst') }} />
                   </p>
                 </motion.div>
               )}
@@ -353,7 +353,7 @@ function App() {
                 >
                   <p className="text-sm sm:text-base text-[#444444] flex items-center justify-center gap-3">
                     <span className="text-xl">👆</span>
-                    <span>상황별 조언을 보려면 <strong className="text-[#1A1A1A]">1개 국가를 더</strong> 선택하세요. (현재: 1개국)</span>
+                    <span dangerouslySetInnerHTML={{ __html: t('selectOneMoreCountry') }} />
                   </p>
                 </motion.div>
               )}
@@ -369,7 +369,7 @@ function App() {
                 >
                   <p className="text-sm sm:text-base text-[#444444] flex items-center justify-center gap-3">
                     <span className="text-xl">ℹ️</span>
-                    <span>상황별 조언은 <strong className="text-[#1A1A1A]">2개 국가 간 비교</strong>에서만 제공됩니다. 1개 국가를 제거하세요.</span>
+                    <span dangerouslySetInnerHTML={{ __html: t('bilateralOnlyForTwoCountries') }} />
                   </p>
                 </motion.div>
               )}
@@ -412,9 +412,8 @@ function App() {
                 >
                   <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-black/10 rounded-lg">
                     <span className="text-3xl sm:text-4xl mb-4">💡</span>
-                    <p className="text-[#444444] text-sm sm:text-base text-center leading-relaxed">
-                      위에서 상황을 선택하면<br />
-                      양국 간 문화 조언이 표시됩니다
+                    <p className="text-[#444444] text-sm sm:text-base text-center leading-relaxed whitespace-pre-line">
+                      {t('selectSituationAbove')}
                     </p>
                   </div>
                 </motion.div>
@@ -449,7 +448,7 @@ function App() {
                 className="btn-luxury btn-gold text-sm"
                 style={{ height: '48px', padding: '0 28px' }}
               >
-                Contact
+                {t('contact')}
               </a>
             </div>
 
@@ -459,10 +458,10 @@ function App() {
             {/* Credits */}
             <div className="text-center space-y-3">
               <p className="text-sm text-[#444444]">
-                Based on Hofstede's Cultural Dimensions Theory and Huib Wursten's "Mental Images" research
+                {t('basedOn')}
               </p>
               <p className="text-sm text-[#444444]">
-                Data source:{' '}
+                {t('dataSource')}{' '}
                 <a
                   href="https://www.theculturefactor.com/country-comparison-tool"
                   target="_blank"
@@ -476,7 +475,7 @@ function App() {
 
             {/* Copyright */}
             <p className="text-xs text-[#444444]/60 tracking-wide">
-              © 2026 Trinos Research Lab. All rights reserved.
+              {t('copyright')}
             </p>
           </div>
         </div>
