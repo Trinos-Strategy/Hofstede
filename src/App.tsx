@@ -34,7 +34,10 @@ const itemVariants = {
 };
 
 function App() {
-  const { t } = useLanguage();
+  const { t, language, isKorean } = useLanguage();
+
+  console.log('[App] Render - language:', language, 'isKorean:', isKorean, 'appTitle:', t('appTitle'));
+
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -100,6 +103,11 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      {/* Debug: Language indicator - remove after testing */}
+      <div className="fixed bottom-4 right-4 z-50 bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+        DEBUG: {language} / {isKorean ? 'Korean' : 'English'} / Title: {t('appTitle').substring(0, 20)}...
+      </div>
+
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}

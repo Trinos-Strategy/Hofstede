@@ -7,7 +7,7 @@
  * - Supports toggle between Korean and English
  */
 
-import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { translations, type Language, type TranslationKeys, interpolate } from './translations';
 
 // Storage key for localStorage
@@ -121,37 +121,42 @@ export function LanguageProvider({ children, defaultLanguage }: LanguageProvider
 
   // Toggle between ko and en - use functional update to avoid stale closures
   const toggleLanguage = useCallback(() => {
-    setLanguageState((prev) => (prev === 'ko' ? 'en' : 'ko'));
-  }, []);
+    console.log('[LanguageContext] toggleLanguage called, current language:', language);
+    setLanguageState((prev) => {
+      const newLang = prev === 'ko' ? 'en' : 'ko';
+      console.log('[LanguageContext] Changing language from', prev, 'to', newLang);
+      return newLang;
+    });
+  }, [language]);
 
-  // Translation function with variable interpolation support
-  const t = useCallback(
-    (key: keyof TranslationKeys, variables?: Record<string, string | number>): string => {
-      const text = translations[language][key];
-      if (variables) {
-        return interpolate(text, variables);
-      }
-      return text;
-    },
-    [language]
-  );
+  // Translation function - simple function that uses current language
+  const t = (key: keyof TranslationKeys, variables?: Record<string, string | number>): string => {
+    console.log('[LanguageContext] t() called - key:', key, 'language:', language);
+    const text = translations[language][key];
+    if (variables) {
+      return interpolate(text, variables);
+    }
+    return text;
+  };
 
   // Convenience boolean flags
   const isKorean = language === 'ko';
   const isEnglish = language === 'en';
 
-  // Memoize context value to ensure proper change detection
-  const contextValue = useMemo<LanguageContextType>(
-    () => ({
-      language,
-      setLanguage,
-      toggleLanguage,
-      t,
-      isKorean,
-      isEnglish,
-    }),
-    [language, setLanguage, toggleLanguage, t, isKorean, isEnglish]
-  );
+  // Debug log for render
+  console.log('[LanguageContext] Provider render - language:', language, 'isKorean:', isKorean);
+
+  // Create context value object directly (without useMemo to ensure updates propagate)
+  const contextValue: LanguageContextType = {
+    language,
+    setLanguage,
+    toggleLanguage,
+    t,
+    isKorean,
+    isEnglish,
+  };
+
+  console.log('[LanguageContext] contextValue created:', { language: contextValue.language, isKorean: contextValue.isKorean });
 
   return (
     <LanguageContext.Provider value={contextValue}>
