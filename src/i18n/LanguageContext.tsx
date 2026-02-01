@@ -7,7 +7,7 @@
  * - Supports toggle between Korean and English
  */
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react';
 import { translations, type Language, type TranslationKeys, interpolate } from './translations';
 
 // Storage key for localStorage
@@ -109,17 +109,20 @@ export function LanguageProvider({ children, defaultLanguage }: LanguageProvider
     }
   }, [defaultLanguage]);
 
-  // Set language and persist to localStorage
+  // Persist to localStorage when language changes
+  useEffect(() => {
+    saveLanguage(language);
+  }, [language]);
+
+  // Set language directly
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
-    saveLanguage(lang);
   }, []);
 
-  // Toggle between ko and en
+  // Toggle between ko and en - use functional update to avoid stale closures
   const toggleLanguage = useCallback(() => {
-    const newLang: Language = language === 'ko' ? 'en' : 'ko';
-    setLanguage(newLang);
-  }, [language, setLanguage]);
+    setLanguageState((prev) => (prev === 'ko' ? 'en' : 'ko'));
+  }, []);
 
   // Translation function with variable interpolation support
   const t = useCallback(
@@ -137,14 +140,18 @@ export function LanguageProvider({ children, defaultLanguage }: LanguageProvider
   const isKorean = language === 'ko';
   const isEnglish = language === 'en';
 
-  const contextValue: LanguageContextType = {
-    language,
-    setLanguage,
-    toggleLanguage,
-    t,
-    isKorean,
-    isEnglish,
-  };
+  // Memoize context value to ensure proper change detection
+  const contextValue = useMemo<LanguageContextType>(
+    () => ({
+      language,
+      setLanguage,
+      toggleLanguage,
+      t,
+      isKorean,
+      isEnglish,
+    }),
+    [language, setLanguage, toggleLanguage, t, isKorean, isEnglish]
+  );
 
   return (
     <LanguageContext.Provider value={contextValue}>
