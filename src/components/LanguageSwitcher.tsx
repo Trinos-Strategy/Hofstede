@@ -16,9 +16,16 @@ import { useLanguage } from '../i18n';
 export function LanguageSwitcher() {
   const { toggleLanguage, isKorean } = useLanguage();
 
+  console.log('[LanguageSwitcher] Render - isKorean:', isKorean);
+
+  const handleToggle = () => {
+    console.log('[LanguageSwitcher] Toggle clicked, isKorean before:', isKorean);
+    toggleLanguage();
+  };
+
   return (
     <motion.button
-      onClick={toggleLanguage}
+      onClick={handleToggle}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();

@@ -93,7 +93,9 @@ const coreDimensions = dimensionInfo.filter(d => ['PDI', 'IDV', 'UAI', 'MAS'].in
 const extendedDimensions = dimensionInfo.filter(d => ['LTO', 'IVR'].includes(d.key));
 
 export function DimensionRadar({ countries }: DimensionRadarProps) {
-  const { t, isKorean } = useLanguage();
+  const { t, isKorean, language } = useLanguage();
+
+  console.log('[DimensionRadar] Render - language:', language, 'isKorean:', isKorean);
 
   if (countries.length === 0) {
     return (
