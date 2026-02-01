@@ -7,7 +7,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowLeftRight, Check, X, ChevronDown, BookOpen, AlertTriangle, Lightbulb } from 'lucide-react';
 import type { BilateralAdviceResult, AdviceContext } from '../types';
-import { getContextTitle } from '../advice';
+import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 import {
   getDetailedNegotiationAdvice,
   hasDetailedAdvice,
@@ -15,6 +16,18 @@ import {
   type DetailedNegotiationAdvice,
   type KeyStrategy,
 } from '../data/negotiationAdvice';
+
+// Map context keys to translation keys
+const contextTranslationKeys: Record<AdviceContext, keyof TranslationKeys> = {
+  MEETING_IDEA: 'contextMeetingIdea',
+  DISAGREE_BOSS: 'contextDisagreeBoss',
+  REPORTING: 'contextReporting',
+  REWARD_RECOGNITION: 'contextRewardRecognition',
+  TEAM_COLLABORATION: 'contextTeamCollaboration',
+  NEGOTIATION: 'contextNegotiation',
+  FEEDBACK: 'contextFeedback',
+  CONFLICT_RESOLUTION: 'contextConflictResolution',
+};
 
 interface BilateralNegotiationAdviceProps {
   advice: BilateralAdviceResult;
@@ -34,7 +47,7 @@ const contextColors: Record<AdviceContext, { color: string; emoji: string }> = {
 };
 
 // 전략 카드 컴포넌트
-function StrategyCard({ strategy, index, accentColor }: { strategy: KeyStrategy; index: number; accentColor: string }) {
+function StrategyCard({ strategy, index, accentColor, isKorean }: { strategy: KeyStrategy; index: number; accentColor: string; isKorean: boolean }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -55,9 +68,9 @@ function StrategyCard({ strategy, index, accentColor }: { strategy: KeyStrategy;
               className="font-medium text-sm sm:text-base text-[#1A1A1A]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              {strategy.titleKo}
+              {isKorean ? strategy.titleKo : strategy.title}
             </h4>
-            <p className="text-[10px] sm:text-xs text-[#666666] mt-0.5">{strategy.title}</p>
+            <p className="text-[10px] sm:text-xs text-[#666666] mt-0.5">{isKorean ? strategy.title : strategy.titleKo}</p>
           </div>
         </div>
         <motion.div
@@ -105,7 +118,7 @@ function StrategyCard({ strategy, index, accentColor }: { strategy: KeyStrategy;
 }
 
 // Do's and Don'ts 섹션 컴포넌트
-function DosDontsSection({ dos, donts }: { dos: string[]; donts: string[] }) {
+function DosDontsSection({ dos, donts, t }: { dos: string[]; donts: string[]; t: (key: keyof TranslationKeys) => string }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
       {/* Do's */}
@@ -123,7 +136,7 @@ function DosDontsSection({ dos, donts }: { dos: string[]; donts: string[] }) {
             className="font-medium text-sm sm:text-base"
             style={{ color: '#3D4D32', fontFamily: "'Playfair Display', serif" }}
           >
-            Do's (권장 사항)
+            {t('dosRecommended')}
           </h3>
         </div>
         <div className="p-4 sm:p-6">
@@ -161,7 +174,7 @@ function DosDontsSection({ dos, donts }: { dos: string[]; donts: string[] }) {
             className="font-medium text-sm sm:text-base"
             style={{ color: '#722F37', fontFamily: "'Playfair Display', serif" }}
           >
-            Don'ts (금지 사항)
+            {t('dontsNotRecommended')}
           </h3>
         </div>
         <div className="p-4 sm:p-6">
@@ -192,10 +205,14 @@ function DetailedAdviceSection({
   advice,
   accentColor,
   direction,
+  t,
+  isKorean,
 }: {
   advice: DetailedNegotiationAdvice;
   accentColor: string;
   direction: 'AtoB' | 'BtoA';
+  t: (key: keyof TranslationKeys) => string;
+  isKorean: boolean;
 }) {
   return (
     <motion.div
@@ -212,7 +229,7 @@ function DetailedAdviceSection({
             className="font-medium text-sm sm:text-base text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            문화적 배경
+            {t('culturalBackground')}
           </h4>
         </div>
         <p className="text-xs sm:text-sm text-[#444444] leading-relaxed">{advice.culturalContext}</p>
@@ -226,19 +243,19 @@ function DetailedAdviceSection({
             className="font-medium text-sm sm:text-base text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            주요 문화적 차이
+            {t('keyCulturalDifferences')}
           </h4>
         </div>
         <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           <table className="w-full min-w-[400px] sm:min-w-0">
             <thead>
               <tr className="border-b border-black/10">
-                <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium text-[#666666]">차원</th>
+                <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium text-[#666666]">{t('dimension')}</th>
                 <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium" style={{ color: accentColor }}>
-                  {advice.fromCountryCode === 'USA' ? '미국' : '한국'}
+                  {advice.fromCountryCode === 'USA' ? (isKorean ? '미국' : 'USA') : (isKorean ? '한국' : 'South Korea')}
                 </th>
                 <th className="text-left py-2 sm:py-3 px-2 sm:px-4 text-[10px] sm:text-xs font-medium text-[#7D8471]">
-                  {advice.toCountryCode === 'KOR' ? '한국' : '미국'}
+                  {advice.toCountryCode === 'KOR' ? (isKorean ? '한국' : 'South Korea') : (isKorean ? '미국' : 'USA')}
                 </th>
               </tr>
             </thead>
@@ -263,12 +280,12 @@ function DetailedAdviceSection({
             className="font-medium text-sm sm:text-base text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            핵심 전략
+            {t('keyStrategies')}
           </h4>
         </div>
         <div className="space-y-3 sm:space-y-4">
           {advice.keyStrategies.map((strategy, idx) => (
-            <StrategyCard key={idx} strategy={strategy} index={idx} accentColor={accentColor} />
+            <StrategyCard key={idx} strategy={strategy} index={idx} accentColor={accentColor} isKorean={isKorean} />
           ))}
         </div>
       </div>
@@ -281,20 +298,21 @@ function DetailedAdviceSection({
             className="font-medium text-sm sm:text-base text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Do's & Don'ts
+            {t('dosAndDonts')}
           </h4>
         </div>
-        <DosDontsSection dos={advice.dosDonts.dos} donts={advice.dosDonts.donts} />
+        <DosDontsSection dos={advice.dosDonts.dos} donts={advice.dosDonts.donts} t={t} />
       </div>
     </motion.div>
   );
 }
 
 export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: BilateralNegotiationAdviceProps) {
+  const { t, isKorean } = useLanguage();
   const { countryA, countryB, fromAtoB, fromBtoA, mutualUnderstanding } = advice;
-  const nameA = countryA.nameKo || countryA.name;
-  const nameB = countryB.nameKo || countryB.name;
-  const contextInfo = getContextTitle(context);
+  const nameA = isKorean ? (countryA.nameKo || countryA.name) : countryA.name;
+  const nameB = isKorean ? (countryB.nameKo || countryB.name) : countryB.name;
+  const contextTitle = t(contextTranslationKeys[context]);
   const colors = contextColors[context];
 
   // 상세 협상 조언 확인
@@ -304,6 +322,9 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
 
   // 탭 상태 (상세 조언이 있을 경우)
   const [activeTab, setActiveTab] = useState<'AtoB' | 'BtoA'>('AtoB');
+
+  // Generate bilateral advice title
+  const bilateralAdviceTitle = t('bilateralAdviceFor').replace('{context}', contextTitle);
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -351,17 +372,17 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           <span className="text-xl sm:text-2xl">{colors.emoji}</span>
-          양국 간 {contextInfo.title} 조언
+          {bilateralAdviceTitle}
         </h2>
         <p className="text-xs sm:text-sm text-center text-[#444444] mt-2 sm:mt-3 leading-relaxed">
-          {contextInfo.description}
+          {isKorean ? (fromAtoB.titleKo ? `${contextTitle}에서 효과적으로 소통하는 방법을 안내합니다.` : '') : `Guide for effective communication in ${contextTitle.toLowerCase()}.`}
         </p>
 
         {/* 프레임워크 안내 - Option C */}
         <div className="mt-4 sm:mt-5 p-3 sm:p-4 rounded-lg bg-[#F5F4F0] border border-black/5">
           <p className="text-[10px] sm:text-xs text-[#666666] leading-relaxed text-center">
-            <span className="font-medium text-[#9D7E57]">분석 프레임워크:</span>{' '}
-            Wursten 문화 클러스터(PDI, IDV, UAI, MAS 기반)와 Hofstede 문화 차원 이론(LTO, IVR 포함)을 기반으로 합니다.
+            <span className="font-medium text-[#9D7E57]">{t('analysisFrameworkLabel')}</span>{' '}
+            {t('analysisFrameworkDescription')}
           </p>
         </div>
       </motion.div>
@@ -414,7 +435,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.4 }}
               >
-                <DetailedAdviceSection advice={detailedAtoBAdvice} accentColor="#B8956A" direction="AtoB" />
+                <DetailedAdviceSection advice={detailedAtoBAdvice} accentColor="#B8956A" direction="AtoB" t={t} isKorean={isKorean} />
               </motion.div>
             )}
             {activeTab === 'BtoA' && detailedBtoAAdvice && (
@@ -425,7 +446,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <DetailedAdviceSection advice={detailedBtoAAdvice} accentColor="#7D8471" direction="BtoA" />
+                <DetailedAdviceSection advice={detailedBtoAAdvice} accentColor="#7D8471" direction="BtoA" t={t} isKorean={isKorean} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -452,7 +473,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                   className="font-medium text-xs sm:text-sm tracking-wide"
                   style={{ color: '#9D7E57', fontFamily: "'Playfair Display', serif" }}
                 >
-                  {fromAtoB.titleKo || fromAtoB.title}
+                  {isKorean ? (fromAtoB.titleKo || fromAtoB.title) : fromAtoB.title}
                 </h3>
               </div>
               <div className="p-4 sm:p-6">
@@ -495,7 +516,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                   className="font-medium text-xs sm:text-sm tracking-wide"
                   style={{ color: '#7D8471', fontFamily: "'Playfair Display', serif" }}
                 >
-                  {fromBtoA.titleKo || fromBtoA.title}
+                  {isKorean ? (fromBtoA.titleKo || fromBtoA.title) : fromBtoA.title}
                 </h3>
               </div>
               <div className="p-4 sm:p-6">
@@ -554,7 +575,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 className="font-medium text-[#722F37] text-xs sm:text-sm"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                주요 문화적 차이
+                {t('keyCulturalDifferences')}
               </h4>
             </div>
             <ul className="space-y-2 sm:space-y-3">
@@ -584,7 +605,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 className="font-medium text-[#7D8471] text-xs sm:text-sm"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
-                공통 기반
+                {t('commonGround')}
               </h4>
             </div>
             <ul className="space-y-2 sm:space-y-3">
@@ -613,7 +634,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               <span className="text-base sm:text-lg">✨</span>
-              성공 전략
+              {t('successStrategy')}
             </h4>
             <p className="text-xs sm:text-sm text-[#444444] leading-relaxed">
               {mutualUnderstanding.bridgingStrategy}
@@ -634,24 +655,24 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           <div className="accent-bar" />
-          문화 차원 비교
+          {t('culturalDimensionComparison')}
         </h4>
         <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
           <table className="w-full text-xs sm:text-sm modern-table min-w-[400px] sm:min-w-0">
             <thead>
               <tr className="border-b border-black/8">
-                <th className="text-left py-3 sm:py-4 px-3 sm:px-5 font-medium text-[#444444] tracking-wide">차원</th>
+                <th className="text-left py-3 sm:py-4 px-3 sm:px-5 font-medium text-[#444444] tracking-wide">{t('dimension')}</th>
                 <th className="text-center py-3 sm:py-4 px-2 sm:px-5 font-medium" style={{ color: '#B8956A' }}>{nameA}</th>
-                <th className="text-center py-3 sm:py-4 px-2 sm:px-5 font-medium text-[#444444]/50">차이</th>
+                <th className="text-center py-3 sm:py-4 px-2 sm:px-5 font-medium text-[#444444]/50">{t('difference')}</th>
                 <th className="text-center py-3 sm:py-4 px-2 sm:px-5 font-medium" style={{ color: '#7D8471' }}>{nameB}</th>
               </tr>
             </thead>
             <tbody>
               {[
-                { key: 'pdi', label: '권력 거리 (PDI)' },
-                { key: 'idv', label: '개인주의 (IDV)' },
-                { key: 'uai', label: '불확실성 회피 (UAI)' },
-                { key: 'mas', label: '성취 중시 (MAS)' },
+                { key: 'pdi', labelKo: '권력 거리 (PDI)', labelEn: 'Power Distance (PDI)' },
+                { key: 'idv', labelKo: '개인주의 (IDV)', labelEn: 'Individualism (IDV)' },
+                { key: 'uai', labelKo: '불확실성 회피 (UAI)', labelEn: 'Uncertainty Avoidance (UAI)' },
+                { key: 'mas', labelKo: '성취 중시 (MAS)', labelEn: 'Achievement Focus (MAS)' },
               ].map((dim, idx) => {
                 const valueA = countryA.dimensions[dim.key as keyof typeof countryA.dimensions];
                 const valueB = countryB.dimensions[dim.key as keyof typeof countryB.dimensions];
@@ -671,7 +692,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                     }}
                     className="border-b border-black/5 hover:bg-[#F5F4F0] transition-colors duration-300"
                   >
-                    <td className="py-3 sm:py-4 px-3 sm:px-5 text-[#444444] text-[10px] sm:text-sm">{dim.label}</td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-5 text-[#444444] text-[10px] sm:text-sm">{isKorean ? dim.labelKo : dim.labelEn}</td>
                     <td className="py-3 sm:py-4 px-2 sm:px-5 text-center">
                       <span className="px-2 sm:px-4 py-1 sm:py-2 rounded-md bg-[#B8956A]/10 text-[#9D7E57] font-medium">
                         {valueA}
@@ -708,7 +729,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
             className="font-medium text-xs sm:text-sm text-[#6B7B8C]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            {academicReferences.titleKo}
+            {t('academicReferences')}
           </h4>
         </div>
         <p className="text-[10px] sm:text-xs text-[#666666] leading-relaxed mb-3 sm:mb-4 italic">
