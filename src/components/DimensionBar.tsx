@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import type { Country, DimensionInfo } from '../types';
-import { dimensionInfo, getDimensionLevelKo } from '../data/countries';
+import { dimensionInfo, getDimensionLevel } from '../data/countries';
+import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 
 interface DimensionBarProps {
   countries: Country[];
@@ -34,13 +36,37 @@ const itemVariants = {
 const coreDimensions = dimensionInfo.filter(d => ['PDI', 'IDV', 'UAI', 'MAS'].includes(d.key));
 const extendedDimensions = dimensionInfo.filter(d => ['LTO', 'IVR'].includes(d.key));
 
+// Map dimension keys to translation keys
+const dimensionTranslationKeys: Record<string, { name: keyof TranslationKeys; low: keyof TranslationKeys; high: keyof TranslationKeys }> = {
+  PDI: { name: 'dimensionPDI', low: 'pdiLow', high: 'pdiHigh' },
+  IDV: { name: 'dimensionIDV', low: 'idvLow', high: 'idvHigh' },
+  UAI: { name: 'dimensionUAI', low: 'uaiLow', high: 'uaiHigh' },
+  MAS: { name: 'dimensionMAS', low: 'masLow', high: 'masHigh' },
+  LTO: { name: 'dimensionLTO', low: 'ltoLow', high: 'ltoHigh' },
+  IVR: { name: 'dimensionIVR', low: 'ivrLow', high: 'ivrHigh' },
+};
+
 interface DimensionBarItemProps {
   dim: DimensionInfo;
   dimIndex: number;
   countries: Country[];
+  t: (key: keyof TranslationKeys) => string;
+  isKorean: boolean;
 }
 
-function DimensionBarItem({ dim, dimIndex, countries }: DimensionBarItemProps) {
+function DimensionBarItem({ dim, dimIndex, countries, t, isKorean }: DimensionBarItemProps) {
+  const translationKeys = dimensionTranslationKeys[dim.key];
+
+  // Get dimension level text based on language
+  const getDimensionLevelText = (value: number): string => {
+    const level = getDimensionLevel(value);
+    switch (level) {
+      case 'low': return t('levelLow');
+      case 'medium': return t('levelMedium');
+      case 'high': return t('levelHigh');
+    }
+  };
+
   return (
     <motion.div
       key={dim.key}
@@ -53,9 +79,9 @@ function DimensionBarItem({ dim, dimIndex, countries }: DimensionBarItemProps) {
             className="font-medium text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            {dim.nameKo}
+            {isKorean ? dim.nameKo : dim.name}
           </h4>
-          <p className="text-xs text-[#444444]/60 tracking-wide">{dim.name}</p>
+          <p className="text-xs text-[#444444]/60 tracking-wide">{isKorean ? dim.name : dim.nameKo}</p>
         </div>
         <div
           className="w-3 h-3 rounded-full"
@@ -69,7 +95,7 @@ function DimensionBarItem({ dim, dimIndex, countries }: DimensionBarItemProps) {
           return (
             <div key={country.code} className="flex items-center gap-4">
               <span className="w-16 text-sm text-[#444444] truncate">
-                {country.nameKo}
+                {isKorean ? country.nameKo : country.name}
               </span>
               <div className="flex-1 h-8 bg-white rounded-lg overflow-hidden relative border border-black/5">
                 <motion.div
@@ -91,7 +117,7 @@ function DimensionBarItem({ dim, dimIndex, countries }: DimensionBarItemProps) {
                 </motion.div>
               </div>
               <span className="w-10 text-xs text-[#444444]/60 text-right">
-                {getDimensionLevelKo(value)}
+                {getDimensionLevelText(value)}
               </span>
             </div>
           );
@@ -101,10 +127,10 @@ function DimensionBarItem({ dim, dimIndex, countries }: DimensionBarItemProps) {
       <div className="flex justify-between mt-4 text-xs text-[#444444]/50">
         <span className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#EDECEA]" />
-          {dim.lowDescription}
+          {t(translationKeys.low)}
         </span>
         <span className="flex items-center gap-2">
-          {dim.highDescription}
+          {t(translationKeys.high)}
           <span
             className="w-2 h-2 rounded-full"
             style={{ backgroundColor: dim.color }}
@@ -116,6 +142,8 @@ function DimensionBarItem({ dim, dimIndex, countries }: DimensionBarItemProps) {
 }
 
 export function DimensionBar({ countries }: DimensionBarProps) {
+  const { t, isKorean } = useLanguage();
+
   if (countries.length === 0) {
     return null;
   }
@@ -135,10 +163,10 @@ export function DimensionBar({ countries }: DimensionBarProps) {
         >
           <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#B8956A] to-[#9D7E57]" />
           <h3 className="text-sm font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-            핵심 차원
+            {t('coreDimensions').split(' (')[0]}
           </h3>
           <span className="text-[10px] text-[#9D7E57] bg-[#B8956A]/10 px-2 py-0.5 rounded-full font-medium">
-            Wursten 클러스터 기준
+            {isKorean ? 'Wursten 클러스터 기준' : 'Wursten Cluster Basis'}
           </span>
         </motion.div>
         <div className="space-y-4">
@@ -148,6 +176,8 @@ export function DimensionBar({ countries }: DimensionBarProps) {
               dim={dim}
               dimIndex={dimIndex}
               countries={countries}
+              t={t}
+              isKorean={isKorean}
             />
           ))}
         </div>
@@ -167,10 +197,10 @@ export function DimensionBar({ countries }: DimensionBarProps) {
         >
           <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#8B5CF6] to-[#6D28D9]" />
           <h3 className="text-sm font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-            추가 차원
+            {t('extendedDimensions').split(' (')[0]}
           </h3>
           <span className="text-[10px] text-[#7C3AED] bg-[#8B5CF6]/10 px-2 py-0.5 rounded-full font-medium">
-            Hofstede 확장
+            {isKorean ? 'Hofstede 확장' : 'Hofstede Extended'}
           </span>
         </motion.div>
         <div className="space-y-4">
@@ -180,6 +210,8 @@ export function DimensionBar({ countries }: DimensionBarProps) {
               dim={dim}
               dimIndex={dimIndex + coreDimensions.length}
               countries={countries}
+              t={t}
+              isKorean={isKorean}
             />
           ))}
         </div>
