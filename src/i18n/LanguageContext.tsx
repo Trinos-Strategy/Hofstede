@@ -7,7 +7,7 @@
  * - Supports toggle between Korean and English
  */
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { translations, type Language, type TranslationKeys, interpolate } from './translations';
 
 // Storage key for localStorage
