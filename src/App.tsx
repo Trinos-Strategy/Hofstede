@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback } from 'react';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe2, Info, X } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
@@ -37,6 +37,11 @@ function App() {
   const { t, language, isKorean, setLanguage } = useLanguage();
 
   console.log('[App] Render - language:', language, 'isKorean:', isKorean, 'appTitle:', t('appTitle'));
+
+  // Debug: Track when language changes from consumer perspective
+  useEffect(() => {
+    console.log('[App] useEffect - language changed to:', language);
+  }, [language]);
 
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
