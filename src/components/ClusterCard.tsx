@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
 import type { ClusterType } from '../types';
 import { clusterInfo, getCountriesByCluster } from '../data/countries';
+import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 
 interface ClusterCardProps {
   cluster: ClusterType;
@@ -48,10 +50,22 @@ const clusterStyles: Record<ClusterType, {
   },
 };
 
+// Map cluster types to translation keys
+const clusterTranslationKeys: Record<ClusterType, { name: keyof TranslationKeys; desc: keyof TranslationKeys }> = {
+  contest: { name: 'clusterContest', desc: 'descContest' },
+  network: { name: 'clusterNetwork', desc: 'descNetwork' },
+  family: { name: 'clusterFamily', desc: 'descFamily' },
+  pyramid: { name: 'clusterPyramid', desc: 'descPyramid' },
+  solarSystem: { name: 'clusterSolarSystem', desc: 'descSolarSystem' },
+  machine: { name: 'clusterMachine', desc: 'descMachine' },
+};
+
 export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: ClusterCardProps) {
+  const { t, isKorean } = useLanguage();
   const info = clusterInfo[cluster];
   const countriesInCluster = getCountriesByCluster(cluster);
   const style = clusterStyles[cluster];
+  const translationKeys = clusterTranslationKeys[cluster];
 
   const handleClick = () => {
     onClick(cluster);
@@ -121,9 +135,9 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
                 fontFamily: "'Playfair Display', serif"
               }}
             >
-              {info.nameKo}
+              {t(translationKeys.name)}
             </h3>
-            <p className="text-xs text-[#555555] tracking-wide font-medium">{info.name}</p>
+            <p className="text-xs text-[#555555] tracking-wide font-medium">{isKorean ? info.name : info.nameKo}</p>
           </div>
           {/* Info button */}
           {onInfoClick && (
@@ -132,7 +146,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
               whileTap={{ scale: 0.9 }}
               onClick={handleInfoButtonClick}
               className="p-2 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-300"
-              title="상세 정보 보기"
+              title={isKorean ? '상세 정보 보기' : 'View details'}
             >
               <Info className="w-4 h-4 text-[#555555]" strokeWidth={1.5} />
             </motion.button>
@@ -140,7 +154,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
         </div>
 
         <p className="text-sm text-[#444444] mb-4 line-clamp-2 leading-relaxed">
-          {info.description}
+          {t(translationKeys.desc)}
         </p>
 
         <div className="flex flex-wrap gap-2">
@@ -149,7 +163,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
               key={country.code}
               className="text-xs px-3 py-1.5 rounded-lg bg-white/80 text-[#333333] font-medium border border-black/5 shadow-sm"
             >
-              {country.nameKo}
+              {isKorean ? country.nameKo : country.name}
             </span>
           ))}
           {countriesInCluster.length > 3 && (
