@@ -1,0 +1,104 @@
+/**
+ * LanguageSwitcher Styles
+ * 
+ * Modern 2025-2026 UI trends:
+ * - Liquid Glass effect with backdrop blur
+ * - Smooth animations and transitions
+ * - Accessible focus states
+ * - Mobile responsive
+ */
+
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.language-switcher:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.language-switcher:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(184, 146, 108, 0.3);
+}
+
+.language-switcher:active {
+  transform: translateY(0);
+}
+
+.language-switcher__globe {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.language-switcher__options {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.language-switcher__option {
+  font-weight: 500;
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.language-switcher__option.active {
+  color: #B8926C;
+  font-weight: 600;
+}
+
+.language-switcher__divider {
+  color: #ccc;
+  font-weight: 300;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .language-switcher {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .language-switcher__globe {
+    font-size: 14px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .language-switcher {
+    background: rgba(50, 50, 50, 0.7);
+    color: #fff;
+  }
+  
+  .language-switcher:hover {
+    background: rgba(60, 60, 60, 0.9);
+  }
+  
+  .language-switcher__option {
+    color: #888;
+  }
+  
+  .language-switcher__option.active {
+    color: #D4A574;
+  }
+  
+  .language-switcher__divider {
+    color: #555;
+  }
+}
