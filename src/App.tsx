@@ -10,6 +10,7 @@ import { ComparisonTable } from './components/ComparisonTable';
 import { AdviceContextSelector } from './components/AdviceContextSelector';
 import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
 import { HamburgerMenu } from './components/HamburgerMenu';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
@@ -134,6 +135,7 @@ function App() {
               >
                 <Info className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
               </motion.button>
+              <LanguageSwitcher />
               <HamburgerMenu
                 onScrollToSection={handleScrollToSection}
                 onToggleSidebar={handleToggleSidebar}
