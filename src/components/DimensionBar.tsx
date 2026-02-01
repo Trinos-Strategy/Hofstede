@@ -50,11 +50,11 @@ interface DimensionBarItemProps {
   dim: DimensionInfo;
   dimIndex: number;
   countries: Country[];
-  t: (key: keyof TranslationKeys) => string;
-  isKorean: boolean;
 }
 
-function DimensionBarItem({ dim, dimIndex, countries, t, isKorean }: DimensionBarItemProps) {
+// DimensionBarItem uses useLanguage directly to ensure re-render on language change
+function DimensionBarItem({ dim, dimIndex, countries }: DimensionBarItemProps) {
+  const { t, isKorean } = useLanguage();
   const translationKeys = dimensionTranslationKeys[dim.key];
 
   // Get dimension level text based on language
@@ -176,8 +176,6 @@ export function DimensionBar({ countries }: DimensionBarProps) {
               dim={dim}
               dimIndex={dimIndex}
               countries={countries}
-              t={t}
-              isKorean={isKorean}
             />
           ))}
         </div>
@@ -210,8 +208,6 @@ export function DimensionBar({ countries }: DimensionBarProps) {
               dim={dim}
               dimIndex={dimIndex + coreDimensions.length}
               countries={countries}
-              t={t}
-              isKorean={isKorean}
             />
           ))}
         </div>
