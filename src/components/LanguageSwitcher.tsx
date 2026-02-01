@@ -14,7 +14,7 @@ import { Globe } from 'lucide-react';
 import { useLanguage } from '../i18n';
 
 export function LanguageSwitcher() {
-  const { language, toggleLanguage, isKorean } = useLanguage();
+  const { toggleLanguage, isKorean } = useLanguage();
 
   return (
     <motion.button
