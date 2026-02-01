@@ -11,6 +11,7 @@ import {
 import type { Country } from '../types';
 import { dimensionInfo } from '../data/countries';
 import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 
 interface DimensionRadarProps {
   countries: Country[];
@@ -91,6 +92,16 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
 // Separate core dimensions (Wursten cluster basis) and extended dimensions
 const coreDimensions = dimensionInfo.filter(d => ['PDI', 'IDV', 'UAI', 'MAS'].includes(d.key));
 const extendedDimensions = dimensionInfo.filter(d => ['LTO', 'IVR'].includes(d.key));
+
+// Map dimension keys to translation keys
+const dimensionTranslationKeys: Record<string, { name: keyof TranslationKeys; desc: keyof TranslationKeys }> = {
+  PDI: { name: 'dimensionPDI', desc: 'descPDI' },
+  IDV: { name: 'dimensionIDV', desc: 'descIDV' },
+  UAI: { name: 'dimensionUAI', desc: 'descUAI' },
+  MAS: { name: 'dimensionMAS', desc: 'descMAS' },
+  LTO: { name: 'dimensionLTO', desc: 'descLTO' },
+  IVR: { name: 'dimensionIVR', desc: 'descIVR' },
+};
 
 export function DimensionRadar({ countries }: DimensionRadarProps) {
   const { t, isKorean } = useLanguage();
@@ -252,7 +263,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                   />
                   {isKorean ? dim.nameKo : dim.name} ({dim.key})
                 </h4>
-                <p className="text-[10px] text-[#444444] leading-relaxed">{dim.description}</p>
+                <p className="text-[10px] text-[#444444] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -293,7 +304,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                   />
                   {isKorean ? dim.nameKo : dim.name} ({dim.key})
                 </h4>
-                <p className="text-[10px] text-[#444444] leading-relaxed">{dim.description}</p>
+                <p className="text-[10px] text-[#444444] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
               </motion.div>
             ))}
           </div>

@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { Table, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Country } from '../types';
-import { clusterInfo, dimensionInfo, getDimensionLevel, getDimensionLevelKo } from '../data/countries';
+import { clusterInfo, dimensionInfo, getDimensionLevel } from '../data/countries';
+import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 
 interface ComparisonTableProps {
   countries: Country[];
@@ -31,7 +33,28 @@ const getDimensionColorClass = (value: number): { bg: string; text: string } => 
 const coreDimensions = dimensionInfo.filter(d => ['PDI', 'IDV', 'UAI', 'MAS'].includes(d.key));
 const extendedDimensions = dimensionInfo.filter(d => ['LTO', 'IVR'].includes(d.key));
 
+// Map dimension keys to translation keys
+const dimensionTranslationKeys: Record<string, { name: keyof TranslationKeys; desc: keyof TranslationKeys }> = {
+  PDI: { name: 'dimensionPDI', desc: 'descPDI' },
+  IDV: { name: 'dimensionIDV', desc: 'descIDV' },
+  UAI: { name: 'dimensionUAI', desc: 'descUAI' },
+  MAS: { name: 'dimensionMAS', desc: 'descMAS' },
+  LTO: { name: 'dimensionLTO', desc: 'descLTO' },
+  IVR: { name: 'dimensionIVR', desc: 'descIVR' },
+};
+
 export function ComparisonTable({ countries }: ComparisonTableProps) {
+  const { t, isKorean } = useLanguage();
+
+  // Get dimension level text based on language
+  const getDimensionLevelText = (value: number): string => {
+    const level = getDimensionLevel(value);
+    switch (level) {
+      case 'low': return t('levelLow');
+      case 'medium': return t('levelMedium');
+      case 'high': return t('levelHigh');
+    }
+  };
   if (countries.length === 0) {
     return (
       <div className="luxury-card rounded-lg p-4 sm:p-8">
@@ -41,12 +64,12 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
             className="text-base sm:text-xl font-medium text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            차원 상세 비교
+            {t('detailedDimensionComparison')}
           </h3>
         </div>
         <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-black/10 rounded-lg">
           <Table className="w-6 h-6 sm:w-8 sm:h-8 text-[#444444]/40 mb-3" strokeWidth={1.5} />
-          <p className="text-[#444444] text-xs sm:text-sm">국가를 선택하면 비교 테이블이 표시됩니다</p>
+          <p className="text-[#444444] text-xs sm:text-sm">{t('selectCountryToShowTable')}</p>
         </div>
       </div>
     );
@@ -65,14 +88,14 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
           className="text-base sm:text-xl font-medium text-[#1A1A1A]"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          차원 상세 비교
+          {t('detailedDimensionComparison')}
         </h3>
       </div>
 
       {/* Mobile scroll hint */}
       <div className="sm:hidden flex items-center justify-center gap-2 mb-3 py-2 px-3 bg-[#F5F4F0] rounded-lg">
         <ChevronLeft className="w-4 h-4 text-[#9D7E57]" strokeWidth={1.5} />
-        <span className="text-[10px] text-[#555555] font-medium">좌우로 스크롤하여 모든 차원 보기</span>
+        <span className="text-[10px] text-[#555555] font-medium">{t('scrollHorizontal')}</span>
         <ChevronRight className="w-4 h-4 text-[#9D7E57]" strokeWidth={1.5} />
       </div>
 
@@ -81,10 +104,10 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
           <thead>
             <tr className="border-b border-black/8">
               <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">
-                국가
+                {t('country')}
               </th>
               <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">
-                클러스터
+                {t('cluster')}
               </th>
               {/* Core Dimensions Header */}
               <th
@@ -92,7 +115,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                 className="text-center py-2 px-2 text-[10px] sm:text-xs font-medium tracking-wide border-l border-black/5"
                 style={{ color: '#9D7E57', backgroundColor: 'rgba(184, 149, 106, 0.08)' }}
               >
-                핵심 차원 (Wursten 클러스터 기준)
+                {t('coreDimensions')}
               </th>
               {/* Extended Dimensions Header */}
               <th
@@ -100,7 +123,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                 className="text-center py-2 px-2 text-[10px] sm:text-xs font-medium tracking-wide border-l border-black/5"
                 style={{ color: '#7C3AED', backgroundColor: 'rgba(139, 92, 246, 0.08)' }}
               >
-                추가 차원 (Hofstede 확장)
+                {t('extendedDimensions')}
               </th>
             </tr>
             <tr className="border-b border-black/8">
@@ -113,7 +136,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium ${idx === 0 ? 'border-l border-black/5' : ''}`}
                   style={{ color: dim.color }}
                 >
-                  <div>{dim.nameKo}</div>
+                  <div>{t(dimensionTranslationKeys[dim.key].name)}</div>
                   <div className="text-[10px] sm:text-xs font-normal text-[#444444]/50 mt-0.5">{dim.key}</div>
                 </th>
               ))}
@@ -124,7 +147,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium ${idx === 0 ? 'border-l border-black/5' : ''}`}
                   style={{ color: dim.color }}
                 >
-                  <div>{dim.nameKo}</div>
+                  <div>{t(dimensionTranslationKeys[dim.key].name)}</div>
                   <div className="text-[10px] sm:text-xs font-normal text-[#444444]/50 mt-0.5">{dim.key}</div>
                 </th>
               ))}
@@ -154,8 +177,8 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                         style={{ backgroundColor: countryColor.bg }}
                       />
                       <div>
-                        <div className="font-medium text-xs sm:text-sm" style={{ color: countryColor.bg }}>{country.nameKo}</div>
-                        <div className="text-[10px] sm:text-xs text-[#444444]/60 tracking-wide">{country.name}</div>
+                        <div className="font-medium text-xs sm:text-sm" style={{ color: countryColor.bg }}>{isKorean ? country.nameKo : country.name}</div>
+                        <div className="text-[10px] sm:text-xs text-[#444444]/60 tracking-wide">{isKorean ? country.name : country.nameKo}</div>
                       </div>
                     </div>
                   </td>
@@ -168,7 +191,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                       }}
                     >
                       <span className="hidden sm:inline">{cluster.icon}</span>
-                      {cluster.nameKo}
+                      {isKorean ? cluster.nameKo : cluster.name}
                     </span>
                   </td>
                   {/* Core dimensions */}
@@ -190,7 +213,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                               className="ml-1.5 text-[10px] sm:text-xs font-medium"
                               style={{ color: colors.text }}
                             >
-                              {getDimensionLevelKo(value)}
+                              {getDimensionLevelText(value)}
                             </span>
                           </div>
                           {/* Mini Progress Bar */}
@@ -226,7 +249,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                               className="ml-1.5 text-[10px] sm:text-xs font-medium"
                               style={{ color: colors.text }}
                             >
-                              {getDimensionLevelKo(value)}
+                              {getDimensionLevelText(value)}
                             </span>
                           </div>
                           {/* Mini Progress Bar */}
@@ -256,7 +279,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-[#B8956A] to-[#9D7E57]" />
-            <span className="text-xs font-medium text-[#9D7E57]">핵심 차원 (Wursten 클러스터 기준)</span>
+            <span className="text-xs font-medium text-[#9D7E57]">{t('coreDimensions')}</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {coreDimensions.map((dim, index) => (
@@ -282,9 +305,9 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: dim.color }}
                   />
-                  {dim.nameKo} ({dim.key})
+                  {t(dimensionTranslationKeys[dim.key].name)} ({dim.key})
                 </h4>
-                <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{dim.description}</p>
+                <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -297,7 +320,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-[#8B5CF6] to-[#6D28D9]" />
-            <span className="text-xs font-medium text-[#7C3AED]">추가 차원 (Hofstede 확장)</span>
+            <span className="text-xs font-medium text-[#7C3AED]">{t('extendedDimensions')}</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {extendedDimensions.map((dim, index) => (
@@ -323,9 +346,9 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: dim.color }}
                   />
-                  {dim.nameKo} ({dim.key})
+                  {t(dimensionTranslationKeys[dim.key].name)} ({dim.key})
                 </h4>
-                <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{dim.description}</p>
+                <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
               </motion.div>
             ))}
           </div>
