@@ -5,6 +5,8 @@
 
 import { motion } from 'framer-motion';
 import type { AdviceResult, AdviceContext, AdviceBlock } from '../types';
+import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 
 // 컨텍스트별 색상 매핑 - 럭셔리 팔레트
 const contextColors: Record<AdviceContext, { color: string; emoji: string }> = {
@@ -18,25 +20,26 @@ const contextColors: Record<AdviceContext, { color: string; emoji: string }> = {
   CONFLICT_RESOLUTION: { color: '#722F37', emoji: '⚖️' },
 };
 
-// 컨텍스트 한글 이름
-const contextNames: Record<AdviceContext, string> = {
-  MEETING_IDEA: '회의에서 아이디어 제안',
-  DISAGREE_BOSS: '상사와 의견 다를 때',
-  REPORTING: '보고 및 중간 점검',
-  REWARD_RECOGNITION: '성과/보상 커뮤니케이션',
-  TEAM_COLLABORATION: '팀 협업',
-  NEGOTIATION: '협상',
-  FEEDBACK: '피드백 주고받기',
-  CONFLICT_RESOLUTION: '갈등 해결',
+// Map context keys to translation keys
+const contextTranslationKeys: Record<AdviceContext, keyof TranslationKeys> = {
+  MEETING_IDEA: 'contextMeetingIdea',
+  DISAGREE_BOSS: 'contextDisagreeBoss',
+  REPORTING: 'contextReporting',
+  REWARD_RECOGNITION: 'contextRewardRecognition',
+  TEAM_COLLABORATION: 'contextTeamCollaboration',
+  NEGOTIATION: 'contextNegotiation',
+  FEEDBACK: 'contextFeedback',
+  CONFLICT_RESOLUTION: 'contextConflictResolution',
 };
 
 interface AdviceCardProps {
   block: AdviceBlock;
   color: string;
   index: number;
+  isKorean: boolean;
 }
 
-function AdviceCard({ block, color, index }: AdviceCardProps) {
+function AdviceCard({ block, color, index, isKorean }: AdviceCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -53,10 +56,10 @@ function AdviceCard({ block, color, index }: AdviceCardProps) {
         className="text-sm sm:text-base font-medium mb-4 sm:mb-5 text-[#1A1A1A]"
         style={{ fontFamily: "'Playfair Display', serif" }}
       >
-        {block.titleKo || block.title}
+        {isKorean ? (block.titleKo || block.title) : block.title}
       </h3>
       <ul className="space-y-3 sm:space-y-4">
-        {(block.bulletsKo || block.bullets).map((bullet, idx) => (
+        {(isKorean ? (block.bulletsKo || block.bullets) : block.bullets).map((bullet, idx) => (
           <motion.li
             key={idx}
             initial={{ opacity: 0, x: -10 }}
@@ -85,9 +88,10 @@ interface AdviceCardListProps {
 }
 
 export function AdviceCardList({ advice }: AdviceCardListProps) {
+  const { t, isKorean } = useLanguage();
   const { country, context, blocks, summary } = advice;
   const { color, emoji } = contextColors[context];
-  const contextName = contextNames[context];
+  const contextName = t(contextTranslationKeys[context]);
 
   return (
     <div className="space-y-4 sm:space-y-5">
@@ -106,7 +110,7 @@ export function AdviceCardList({ advice }: AdviceCardListProps) {
               className="text-lg sm:text-xl font-medium text-[#1A1A1A]"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              {country.nameKo || country.name}
+              {isKorean ? (country.nameKo || country.name) : country.name}
             </h2>
             <p className="text-xs sm:text-sm mt-1" style={{ color }}>{contextName}</p>
           </div>
@@ -118,7 +122,7 @@ export function AdviceCardList({ advice }: AdviceCardListProps) {
 
       {/* 조언 블록들 */}
       {blocks.map((block, idx) => (
-        <AdviceCard key={idx} block={block} color={color} index={idx} />
+        <AdviceCard key={idx} block={block} color={color} index={idx} isKorean={isKorean} />
       ))}
     </div>
   );
@@ -129,15 +133,18 @@ interface MultipleAdviceCardListProps {
 }
 
 export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListProps) {
+  const { isKorean } = useLanguage();
+
   if (adviceList.length === 0) {
     return (
       <div className="text-center py-8 sm:py-12 text-[#444444] text-sm sm:text-base">
-        조언을 생성할 국가와 상황을 선택해주세요.
+        {isKorean ? '조언을 생성할 국가와 상황을 선택해주세요.' : 'Please select a country and situation to generate advice.'}
       </div>
     );
   }
 
   const country = adviceList[0]?.country;
+  const countryName = isKorean ? (country?.nameKo || country?.name) : country?.name;
 
   return (
     <div className="space-y-5 sm:space-y-8">
@@ -152,10 +159,16 @@ export function MultipleAdviceCardList({ adviceList }: MultipleAdviceCardListPro
           className="text-lg sm:text-xl font-medium text-[#1A1A1A] mb-2 sm:mb-3"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          {country?.nameKo || country?.name} 조직과 일할 때 고려할 점
+          {isKorean
+            ? `${countryName} 조직과 일할 때 고려할 점`
+            : `Considerations when working with ${countryName} organizations`
+          }
         </h2>
         <p className="text-xs sm:text-sm text-[#444444] mb-4 sm:mb-5 leading-relaxed">
-          선택하신 국가의 문화 차원을 바탕으로, 다양한 상황에서 유의하면 좋은 행동 힌트를 정리했습니다.
+          {isKorean
+            ? '선택하신 국가의 문화 차원을 바탕으로, 다양한 상황에서 유의하면 좋은 행동 힌트를 정리했습니다.'
+            : 'Based on the cultural dimensions of the selected country, we have compiled behavioral hints for various situations.'
+          }
         </p>
         <div className="flex flex-wrap gap-2 sm:gap-3">
           <span className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#B8956A]/10 text-[#9D7E57] rounded-md text-[10px] sm:text-xs font-medium tracking-wide">
