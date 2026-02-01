@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronDown, Search, Plus } from 'lucide-react';
 import type { Country, ClusterType } from '../types';
 import { countries, clusterInfo, clusterOrder } from '../data/countries';
+import { useLanguage } from '../i18n';
 
 interface CountrySelectorProps {
   selectedCountries: Country[];
@@ -26,6 +27,7 @@ export function CountrySelector({
   filterCluster,
   maxSelections = 3
 }: CountrySelectorProps) {
+  const { t, isKorean } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -77,7 +79,7 @@ export function CountrySelector({
                   color: countryColors[index % countryColors.length].text,
                 }}
               >
-                <span className="tracking-wide">{country.nameKo}</span>
+                <span className="tracking-wide">{isKorean ? country.nameKo : country.name}</span>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -93,7 +95,7 @@ export function CountrySelector({
         {selectedCountries.length === 0 && (
           <p className="text-sm text-[#444444] flex items-center gap-2">
             <Plus className="w-4 h-4" strokeWidth={1.5} />
-            국가를 선택하세요 (최대 {maxSelections}개)
+            {t('selectCountry', { max: maxSelections })}
           </p>
         )}
       </div>
@@ -113,7 +115,7 @@ export function CountrySelector({
         `}
       >
         <span className={`text-sm ${canAddMore ? 'text-[#444444]' : 'text-[#444444]/50'}`}>
-          {canAddMore ? '국가 추가...' : '최대 선택 완료'}
+          {canAddMore ? t('addCountry') : t('maxSelectionComplete')}
         </span>
         <ChevronDown
           className={`w-4 h-4 transition-transform duration-500 ${isOpen ? 'rotate-180' : ''} ${
@@ -140,7 +142,7 @@ export function CountrySelector({
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#444444]" strokeWidth={1.5} />
                 <input
                   type="text"
-                  placeholder="국가 검색..."
+                  placeholder={t('searchCountry')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-11 pr-4 py-3 text-sm
@@ -162,7 +164,7 @@ export function CountrySelector({
                       style={{ color: info.color }}
                     >
                       <span className="mr-2">{info.icon}</span>
-                      {info.nameKo}
+                      {isKorean ? info.nameKo : info.name}
                     </div>
                     {clusterCountries.map((country) => (
                       <motion.button
@@ -178,8 +180,8 @@ export function CountrySelector({
                         className="w-full px-5 py-4 text-left text-sm flex items-center justify-between
                           transition-colors duration-300 border-b border-black/3 min-h-[52px]"
                       >
-                        <span className="text-[#1A1A1A] font-medium">{country.nameKo}</span>
-                        <span className="text-xs text-[#444444]/60 tracking-wide">{country.name}</span>
+                        <span className="text-[#1A1A1A] font-medium">{isKorean ? country.nameKo : country.name}</span>
+                        <span className="text-xs text-[#444444]/60 tracking-wide">{isKorean ? country.name : country.nameKo}</span>
                       </motion.button>
                     ))}
                   </div>
@@ -188,7 +190,7 @@ export function CountrySelector({
               {Object.keys(groupedCountries).length === 0 && (
                 <div className="px-5 py-10 text-sm text-[#444444] text-center">
                   <Search className="w-8 h-8 mx-auto mb-3 opacity-30" strokeWidth={1.5} />
-                  검색 결과가 없습니다
+                  {t('noSearchResults')}
                 </div>
               )}
             </div>

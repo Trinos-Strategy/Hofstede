@@ -121,32 +121,26 @@ export function LanguageProvider({ children, defaultLanguage }: LanguageProvider
 
   // Toggle between ko and en - use functional update to avoid stale closures
   const toggleLanguage = useCallback(() => {
-    console.log('[LanguageContext] toggleLanguage called, current language:', language);
-    setLanguageState((prev) => {
-      const newLang = prev === 'ko' ? 'en' : 'ko';
-      console.log('[LanguageContext] Changing language from', prev, 'to', newLang);
-      return newLang;
-    });
-  }, [language]);
+    setLanguageState((prev) => (prev === 'ko' ? 'en' : 'ko'));
+  }, []);
 
-  // Translation function - simple function that uses current language
-  const t = (key: keyof TranslationKeys, variables?: Record<string, string | number>): string => {
-    console.log('[LanguageContext] t() called - key:', key, 'language:', language);
-    const text = translations[language][key];
-    if (variables) {
-      return interpolate(text, variables);
-    }
-    return text;
-  };
+  // Translation function with variable interpolation support
+  const t = useCallback(
+    (key: keyof TranslationKeys, variables?: Record<string, string | number>): string => {
+      const text = translations[language][key];
+      if (variables) {
+        return interpolate(text, variables);
+      }
+      return text;
+    },
+    [language]
+  );
 
   // Convenience boolean flags
   const isKorean = language === 'ko';
   const isEnglish = language === 'en';
 
-  // Debug log for render
-  console.log('[LanguageContext] Provider render - language:', language, 'isKorean:', isKorean);
-
-  // Create context value object directly (without useMemo to ensure updates propagate)
+  // Context value - new object every render ensures consumers re-render
   const contextValue: LanguageContextType = {
     language,
     setLanguage,
@@ -155,8 +149,6 @@ export function LanguageProvider({ children, defaultLanguage }: LanguageProvider
     isKorean,
     isEnglish,
   };
-
-  console.log('[LanguageContext] contextValue created:', { language: contextValue.language, isKorean: contextValue.isKorean });
 
   return (
     <LanguageContext.Provider value={contextValue}>
