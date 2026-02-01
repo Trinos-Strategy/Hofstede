@@ -79,9 +79,9 @@ function DimensionBarItem({ dim, dimIndex, countries, t, isKorean }: DimensionBa
             className="font-medium text-[#1A1A1A]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            {isKorean ? dim.nameKo : dim.name}
+            {t(translationKeys.name)}
           </h4>
-          <p className="text-xs text-[#444444]/60 tracking-wide">{isKorean ? dim.name : dim.nameKo}</p>
+          <p className="text-xs text-[#444444]/60 tracking-wide">{dim.key}</p>
         </div>
         <div
           className="w-3 h-3 rounded-full"

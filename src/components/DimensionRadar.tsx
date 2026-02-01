@@ -123,7 +123,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
 
   const data = dimensionInfo.map((dim) => {
     const dataPoint: Record<string, string | number> = {
-      dimension: isKorean ? dim.nameKo : dim.name,
+      dimension: t(dimensionTranslationKeys[dim.key].name),
       fullMark: 100,
     };
     countries.forEach((country) => {
@@ -261,7 +261,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                     className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: dim.color }}
                   />
-                  {isKorean ? dim.nameKo : dim.name} ({dim.key})
+                  {t(dimensionTranslationKeys[dim.key].name)} ({dim.key})
                 </h4>
                 <p className="text-[10px] text-[#444444] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
               </motion.div>
@@ -302,7 +302,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                     className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: dim.color }}
                   />
-                  {isKorean ? dim.nameKo : dim.name} ({dim.key})
+                  {t(dimensionTranslationKeys[dim.key].name)} ({dim.key})
                 </h4>
                 <p className="text-[10px] text-[#444444] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
               </motion.div>
