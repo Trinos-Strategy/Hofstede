@@ -234,6 +234,24 @@ export type TranslationKeys = {
   dataSource: string;
   contact: string;
 
+  // Disclaimer modal
+  disclaimerTitle: string;
+  disclaimerSection1Title: string;
+  disclaimerSection1Content: string;
+  disclaimerSection2Title: string;
+  disclaimerSection2Content: string;
+  disclaimerSection3Title: string;
+  disclaimerSection3Content: string;
+  disclaimerSection4Title: string;
+  disclaimerSection4Content: string;
+  disclaimerRecommendedUse: string;
+  disclaimerDo1: string;
+  disclaimerDo2: string;
+  disclaimerDo3: string;
+  disclaimerDont: string;
+  dontShowAgain: string;
+  confirm: string;
+
   // Countries (nameKo)
   countryUSA: string;
   countryGBR: string;
@@ -506,6 +524,24 @@ export const translations: Record<Language, TranslationKeys> = {
     dataSource: 'Data source:',
     contact: 'Contact',
 
+    // Disclaimer modal
+    disclaimerTitle: 'Hofstede 문화 차원 사용 시 주의사항',
+    disclaimerSection1Title: '국가 점수 ≠ 개인 성향',
+    disclaimerSection1Content: 'Hofstede 점수는 국가 평균일 뿐, 개별 당사자의 성향을 예측하지 않습니다. 같은 국가 내에서도 지역, 세대, 직업, 교육 배경에 따라 큰 편차가 존재합니다.',
+    disclaimerSection2Title: '스테레오타이핑의 위험',
+    disclaimerSection2Content: '문화 차원을 고정된 법칙이 아닌 경향성으로 이해해야 합니다. 대화의 시작점으로 활용하되, 실제 상호작용에서 관찰하고 조정하세요.',
+    disclaimerSection3Title: '데이터의 시대적 한계',
+    disclaimerSection3Content: 'Hofstede의 원 연구는 1960-70년대 IBM 직원 대상으로 수행되었습니다. 세계는 변했고, 문화도 진화합니다. 특히 젊은 세대의 가치관은 이전 세대와 상당히 다를 수 있습니다.',
+    disclaimerSection4Title: '문화지능(CQ)과 함께 사용하세요',
+    disclaimerSection4Content: '문화 차원 지식만으로는 효과적인 상호작용이 보장되지 않습니다. 인지적 CQ(지식), 메타인지적 CQ(자기 점검), 동기적 CQ(관심), 행동적 CQ(적응) 모두가 함께 작동해야 합니다.',
+    disclaimerRecommendedUse: '권장 활용법',
+    disclaimerDo1: '사전 준비 및 가설 수립의 참고자료로 활용',
+    disclaimerDo2: '잠재적 오해 영역을 미리 인지',
+    disclaimerDo3: '자기 문화의 편향을 인식하는 거울로 사용',
+    disclaimerDont: '상대방 행동을 단정짓는 근거로 사용 금지',
+    dontShowAgain: '다시 보지 않기',
+    confirm: '확인',
+
     // Countries
     countryUSA: '미국',
     countryGBR: '영국',
@@ -776,6 +812,24 @@ export const translations: Record<Language, TranslationKeys> = {
     basedOn: "Based on Hofstede's Cultural Dimensions Theory and Huib Wursten's \"Mental Images\" research",
     dataSource: 'Data source:',
     contact: 'Contact',
+
+    // Disclaimer modal
+    disclaimerTitle: 'Important Notes on Using Hofstede Cultural Dimensions',
+    disclaimerSection1Title: 'National Scores ≠ Individual Traits',
+    disclaimerSection1Content: 'These scores represent national averages, not predictions of individual behavior. Significant variations exist within any country based on region, generation, profession, and education.',
+    disclaimerSection2Title: 'Risk of Stereotyping',
+    disclaimerSection2Content: 'Understand these as tendencies, not fixed rules. Use as a starting point for dialogue, then observe and adapt in actual interactions.',
+    disclaimerSection3Title: 'Historical Data Limitations',
+    disclaimerSection3Content: "The original research was conducted with IBM employees in the 1960s-70s. The world has changed and cultures evolve. Younger generations may hold significantly different values.",
+    disclaimerSection4Title: 'Use with Cultural Intelligence (CQ)',
+    disclaimerSection4Content: "Knowledge of cultural dimensions alone doesn't guarantee effective interaction. All four CQ dimensions are needed: Cognitive (knowledge), Metacognitive (self-monitoring), Motivational (interest), and Behavioral (adaptation).",
+    disclaimerRecommendedUse: 'Recommended Use',
+    disclaimerDo1: 'Use as reference for preparation and hypothesis building',
+    disclaimerDo2: 'Anticipate potential areas of misunderstanding',
+    disclaimerDo3: 'Use as a mirror to recognize your own cultural biases',
+    disclaimerDont: "Don't use to make definitive judgments about others",
+    dontShowAgain: "Don't show again",
+    confirm: 'Got it',
 
     // Countries
     countryUSA: 'United States',

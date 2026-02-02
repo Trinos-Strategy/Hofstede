@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Globe2, Info, X } from 'lucide-react';
+import { Globe2, Info } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
 import { CountrySelector } from './components/CountrySelector';
@@ -11,6 +11,7 @@ import { AdviceContextSelector } from './components/AdviceContextSelector';
 import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
 import { HamburgerMenu } from './components/HamburgerMenu';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { DisclaimerModal, useDisclaimerModal } from './components/DisclaimerModal';
 import { useLanguage } from './i18n';
 import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
@@ -38,9 +39,11 @@ function App() {
 
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
-  const [showInfo, setShowInfo] = useState(false);
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
   const [sidebarVisible, setSidebarVisible] = useState(true);
+
+  // Disclaimer modal state
+  const { isOpen: showDisclaimer, openModal: openDisclaimer, closeModal: closeDisclaimer } = useDisclaimerModal();
 
   // Section refs for scroll navigation
   const sidebarRef = useRef<HTMLElement>(null);
@@ -132,7 +135,7 @@ function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
-                onClick={() => setShowInfo(!showInfo)}
+                onClick={openDisclaimer}
                 className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
                 title={t('info')}
               >
@@ -145,53 +148,6 @@ function App() {
               />
             </div>
           </div>
-
-          {/* Info panel */}
-          <AnimatePresence>
-            {showInfo && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                className="overflow-hidden"
-              >
-                <div className="mt-4 sm:mt-6 p-4 sm:p-8 bg-[#F5F4F0] rounded-lg border border-black/5 relative">
-                  <button
-                    onClick={() => setShowInfo(false)}
-                    className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-lg hover:bg-white/50 transition-colors duration-300"
-                  >
-                    <X className="w-4 h-4 text-[#444444]" strokeWidth={1.5} />
-                  </button>
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-5">
-                    <div className="text-2xl sm:text-3xl">📚</div>
-                    <div>
-                      <h3 className="text-lg font-medium text-[#1A1A1A] mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
-                        {t('infoTitle')}
-                      </h3>
-                      <p className="text-sm text-[#444444] mb-4 leading-relaxed">
-                        {t('infoDescription')}
-                      </p>
-                      <div className="flex flex-wrap gap-3">
-                        <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#B8956A] border border-[#B8956A]/20 tracking-wide">
-                          {t('pdiTag')}
-                        </span>
-                        <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#7D8471] border border-[#7D8471]/20 tracking-wide">
-                          {t('idvTag')}
-                        </span>
-                        <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#C4886B] border border-[#C4886B]/20 tracking-wide">
-                          {t('uaiTag')}
-                        </span>
-                        <span className="px-4 py-2 bg-white rounded-md text-xs font-medium text-[#6B7B8C] border border-[#6B7B8C]/20 tracking-wide">
-                          {t('masTag')}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </motion.header>
 
@@ -481,6 +437,9 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Disclaimer Modal */}
+      <DisclaimerModal isOpen={showDisclaimer} onClose={closeDisclaimer} />
     </div>
   );
 }
