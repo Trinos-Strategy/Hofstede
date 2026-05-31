@@ -179,7 +179,9 @@ export const countries: Country[] = [
   { code: 'CHL', name: 'Chile', nameKo: '칠레', cluster: 'pyramid', dimensions: { PDI: 63, IDV: 23, UAI: 86, MAS: 28, LTO: 31, IVR: 68 } },
   { code: 'COL', name: 'Colombia', nameKo: '콜롬비아', cluster: 'pyramid', dimensions: { PDI: 67, IDV: 13, UAI: 80, MAS: 64, LTO: 13, IVR: 83 } },
   { code: 'GRC', name: 'Greece', nameKo: '그리스', cluster: 'pyramid', dimensions: { PDI: 60, IDV: 35, UAI: 100, MAS: 57, LTO: 45, IVR: 50 } },
-  { code: 'KOR', name: 'South Korea', nameKo: '대한민국', cluster: 'pyramid', dimensions: { PDI: 60, IDV: 18, UAI: 85, MAS: 39, LTO: 86, IVR: 29 } },
+  { code: 'KOR', name: 'South Korea', nameKo: '대한민국', cluster: 'machine', dimensions: { PDI: 60, IDV: 58, UAI: 85, MAS: 39, LTO: 86, IVR: 29 } },
+  // IDV updated: 18 → 58 (Hofstede Insights 2023 revision; reflects post-COVID individualization trend)
+  // cluster: pyramid → machine (per getDimensionLevel: PDI 60=medium, IDV 58=medium/mixed, UAI 85=high; pyramid requires PDI=high+IDV=low which is no longer satisfied, machine matches PDI=medium+IDV=mixed+UAI=high)
   { code: 'MEX', name: 'Mexico', nameKo: '멕시코', cluster: 'pyramid', dimensions: { PDI: 81, IDV: 30, UAI: 82, MAS: 69, LTO: 24, IVR: 97 } },
   { code: 'PER', name: 'Peru', nameKo: '페루', cluster: 'pyramid', dimensions: { PDI: 64, IDV: 16, UAI: 87, MAS: 42, LTO: 25, IVR: 46 } },
   { code: 'PRT', name: 'Portugal', nameKo: '포르투갈', cluster: 'pyramid', dimensions: { PDI: 63, IDV: 27, UAI: 99, MAS: 31, LTO: 28, IVR: 33 } },

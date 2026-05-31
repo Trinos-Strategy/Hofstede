@@ -59,7 +59,7 @@ const usToKoreaAdvice: DetailedNegotiationAdvice = {
     {
       dimension: '의사결정',
       countryA: '개인주의: 개인 권한과 빠른 결정',
-      countryB: '집단주의: 합의 기반, 시간 소요',
+      countryB: '개인-집단 과도기: 합의 기반 유지, 단 MZ세대 중심 개인 의사표현 증가',
     },
     {
       dimension: '권력 구조',
@@ -125,9 +125,9 @@ const usToKoreaAdvice: DetailedNegotiationAdvice = {
       title: 'Preserve Harmony',
       titleKo: '집단 조화 유지',
       icon: '☯️',
-      description: '체면(face)과 기분(kibun)을 손상시키지 않도록 주의하세요.',
+      description: '체면(face)과 기분(kibun)을 손상시키지 않도록 주의하세요. 한국은 개인주의 전환기로 세대 간 기대치가 다를 수 있습니다.',
       details: [
-        '공개적인 비판이나 반박은 절대 피하세요. 사적인 자리에서 문제를 제기하세요',
+        '공개적인 비판이나 반박은 절대 피하세요. 단, MZ세대 실무자는 개인 의견을 직접 표현하는 경향이 있어 연령대별 접근을 달리하세요',
         '실수나 문제가 있어도 상대방의 체면을 세워주는 방식으로 해결하세요',
         '팀 전체의 성과를 인정하고, 개인을 지나치게 부각시키지 마세요',
         '감정적 대립을 피하고, 차분하고 존중하는 태도를 유지하세요',
@@ -150,7 +150,7 @@ const usToKoreaAdvice: DetailedNegotiationAdvice = {
       '공개적인 자리에서 비판하거나 반박하지 마세요',
       '직급과 연공서열을 무시하지 마세요',
       '"아니오"나 침묵을 문자 그대로 해석하지 마세요',
-      '개인의 이익만 강조하지 말고 집단적 가치를 고려하세요',
+      '개인의 이익만 강조하지 마세요. 단 세대에 따라 개인 성과 인정이 동기부여가 될 수 있습니다',
       '의사결정을 서두르거나 독촉하지 마세요',
       '계약서 세부사항 검토를 귀찮아하지 마세요',
       '비공식적 관계 구축의 중요성을 과소평가하지 마세요',
@@ -180,7 +180,7 @@ const koreaToUsAdvice: DetailedNegotiationAdvice = {
     },
     {
       dimension: '의사결정',
-      countryA: '집단 합의, 상위 결재',
+      countryA: '집단 합의 전통 유지, 단 개인 의사결정 수용도 증가 (IDV 2023 기준 58)',
       countryB: '개인 권한, 현장 결정',
     },
     {
@@ -331,6 +331,7 @@ export const academicReferences = {
     'Hall, E.T. (1976). Beyond Culture - High/Low Context Theory',
     'Meyer, E. (2014). The Culture Map: Breaking Through the Invisible Boundaries of Global Business',
     'Brett, J.M. (2007). Negotiating Globally: How to Negotiate Deals, Resolve Disputes, and Make Decisions Across Cultural Boundaries',
+    'Hofstede Insights (2023). Updated Country Profiles — South Korea IDV revised to 58 reflecting individualization trend',
   ],
   shortDescription: 'Based on research: Hofstede Cultural Dimensions, Hall\'s Context Theory, Meyer\'s Culture Map, Korean-US negotiation studies',
 };
