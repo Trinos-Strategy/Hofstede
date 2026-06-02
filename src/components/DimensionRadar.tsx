@@ -64,7 +64,7 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
           strokeWidth={1}
         />
       );
-    case 'triangle':
+    case 'triangle': {
       const points = `${cx},${cy - size * 1.2} ${cx - size},${cy + size * 0.8} ${cx + size},${cy + size * 0.8}`;
       return (
         <polygon
@@ -74,6 +74,7 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
           strokeWidth={1}
         />
       );
+    }
     case 'circle':
     default:
       return (

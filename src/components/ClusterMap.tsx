@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Layers, X, ChevronDown } from 'lucide-react';
 import type { ClusterType } from '../types';
@@ -32,10 +32,32 @@ const itemVariants = {
   }
 };
 
+// Breakpoint matching Tailwind's lg breakpoint (1024px)
+const LG_BREAKPOINT = 1024;
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= LG_BREAKPOINT;
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= LG_BREAKPOINT);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isDesktop;
+}
+
 export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps) {
   const { t } = useLanguage();
   const [modalCluster, setModalCluster] = useState<ClusterType | null>(null);
   const [isExpanded, setIsExpanded] = useState(false); // Collapsed by default on mobile
+  const isDesktop = useIsDesktop();
 
   const handleClusterClick = (cluster: ClusterType) => {
     if (selectedCluster === cluster) {
@@ -62,7 +84,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
       {/* Header - Clickable on mobile for accordion */}
       <div
         className="flex items-center justify-between mb-4 sm:mb-5 cursor-pointer lg:cursor-default"
-        onClick={() => window.innerWidth < 1024 && toggleExpand()}
+        onClick={() => !isDesktop && toggleExpand()}
       >
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="accent-bar" />
@@ -115,7 +137,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
 
       {/* Cluster cards - Always visible on desktop, expandable on mobile */}
       <AnimatePresence>
-        {(isExpanded || window.innerWidth >= 1024) && (
+        {(isExpanded || isDesktop) && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}

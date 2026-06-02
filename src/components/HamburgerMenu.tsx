@@ -2,10 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe2, BarChart3, Table, MessageSquare, Layers } from 'lucide-react';
+import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 
 interface MenuItem {
   id: string;
-  label: string;
+  labelKey: string;
   icon: React.ReactNode;
   action: () => void;
 }
@@ -19,11 +21,12 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const { t } = useLanguage();
 
   const menuItems: MenuItem[] = [
     {
       id: 'country-selector',
-      label: '국가 선택',
+      labelKey: 'countrySelection',
       icon: <Globe2 className="w-5 h-5" strokeWidth={1.5} />,
       action: () => {
         onScrollToSection('country-selector');
@@ -32,7 +35,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
     },
     {
       id: 'dimension-comparison',
-      label: '문화 차원 비교',
+      labelKey: 'cultureDimensionComparison',
       icon: <BarChart3 className="w-5 h-5" strokeWidth={1.5} />,
       action: () => {
         onScrollToSection('dimension-comparison');
@@ -41,7 +44,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
     },
     {
       id: 'comparison-table',
-      label: '차원별 비교',
+      labelKey: 'dimensionComparison',
       icon: <Table className="w-5 h-5" strokeWidth={1.5} />,
       action: () => {
         onScrollToSection('comparison-table');
@@ -50,7 +53,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
     },
     {
       id: 'bilateral-advice',
-      label: '양국 간 조언',
+      labelKey: 'bilateralAdvice',
       icon: <MessageSquare className="w-5 h-5" strokeWidth={1.5} />,
       action: () => {
         onScrollToSection('bilateral-advice');
@@ -59,7 +62,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
     },
     {
       id: 'cluster-sidebar',
-      label: '문화 클러스터 정보',
+      labelKey: 'clusterInfo',
       icon: <Layers className="w-5 h-5" strokeWidth={1.5} />,
       action: () => {
         onToggleSidebar();
@@ -158,7 +161,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
                     className="text-base font-medium text-[#1A1A1A]"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
-                    메뉴
+                    {t('menu')}
                   </span>
                 </div>
                 <motion.button
@@ -167,7 +170,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
                   transition={{ duration: 0.3 }}
                   onClick={() => setIsOpen(false)}
                   className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-[#F5F4F0] transition-colors duration-300"
-                  aria-label="메뉴 닫기"
+                  aria-label={t('closeMenu')}
                 >
                   <X className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
                 </motion.button>
@@ -205,7 +208,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
                         </span>
                       </div>
                       <span className="text-[#333333] group-hover:text-[#1A1A1A] font-medium transition-colors duration-300">
-                        {item.label}
+                        {t(item.labelKey as keyof TranslationKeys)}
                       </span>
                     </button>
                   </motion.li>
@@ -235,7 +238,7 @@ export function HamburgerMenu({ onScrollToSection, onToggleSidebar }: HamburgerM
         transition={{ duration: 0.3 }}
         onClick={() => setIsOpen(!isOpen)}
         className="p-3 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
-        aria-label="메뉴 열기"
+        aria-label={t('openMenu')}
         aria-expanded={isOpen}
       >
         <Menu className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />

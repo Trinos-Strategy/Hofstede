@@ -210,6 +210,7 @@ export type TranslationKeys = {
 
   // Bilateral negotiation advice
   bilateralAdviceFor: string;
+  mutualUnderstandingTitle: string;
   dosRecommended: string;
   dontsNotRecommended: string;
   keyCulturalDifferences: string;
@@ -482,6 +483,7 @@ export const translations: Record<Language, TranslationKeys> = {
 
     // Bilateral negotiation advice
     bilateralAdviceFor: '양국 간 {context} 조언',
+    mutualUnderstandingTitle: '{context} - 상호 이해 핵심 포인트',
     dosRecommended: "Do's (권장 사항)",
     dontsNotRecommended: "Don'ts (금지 사항)",
     keyCulturalDifferences: '주요 문화적 차이',
@@ -753,6 +755,7 @@ export const translations: Record<Language, TranslationKeys> = {
 
     // Bilateral negotiation advice
     bilateralAdviceFor: 'Bilateral {context} Advice',
+    mutualUnderstandingTitle: '{context} - Key Mutual Understanding Points',
     dosRecommended: "Do's (Recommended)",
     dontsNotRecommended: "Don'ts (Not Recommended)",
     keyCulturalDifferences: 'Key Cultural Differences',
