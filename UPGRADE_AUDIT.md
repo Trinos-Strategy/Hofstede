@@ -182,12 +182,43 @@ interface Country {
 - `src/hooks/useWindowSize.ts` — new hook for responsive mobile detection
 - `src/i18n/translations.ts` — added Phase B translation keys (countryProfile, highestDimension, lowestDimension, 12 profile phrase keys)
 
-### Phase C — Feature Additions (Higher Risk)
-**Goal:** Add shareability and export capabilities.
+### Phase C — Dynamic Country Nature Ambient Layer ✅ COMPLETED
+**Goal:** Add a subtle, elegant, nature-inspired animated background that changes based on the first selected country.
 
-1. **URL query params** — sync `selectedCountries` and `context` to URL (`?countries=KOR,USA&context=NEGOTIATION`).
-2. **Print / export** — use `html2canvas` or `dom-to-image-more` to export radar as PNG; add `@media print` styles.
-3. **Code-splitting** — lazy-load `BilateralNegotiationAdvice` and `ClusterDetailModal` to reduce initial bundle.
+**Implementation date:** 2026-06-02  
+**Commit:** `feat: add dynamic country nature ambient scenes`
+
+1. ✅ **Country-to-nature mapping** — `src/data/countryNatureProfiles.ts` maps all 41 country codes to a `NatureProfile` (biome, gradientFrom→To, particleType, motionIntensity). Each country gets an evocative assignment: KOR→alpine/snow, JPN→temperate/sakura, BRA→tropical/leaves, SAU→desert/sand, etc.
+2. ✅ **SVG particle system** — `src/components/CountryNatureScene.tsx` renders 20 seeded-random SVG particles per scene. Each `particleType` has distinct shape and CSS keyframe motion:
+   - `snow`: white circles drifting down with sway (8-15s)
+   - `sakura`: pink ellipses rotating while falling (10-18s)
+   - `leaves`: green rounded polygons drifting diagonally (8-12s)
+   - `sand`: beige dots drifting horizontally fast (3-6s)
+   - `rain`: thin vertical lines falling straight (1-2s)
+   - `aurora`: wide blurred gradient bands drifting slowly (20-30s)
+   - `mist`: large white ellipses drifting very slowly (25-40s)
+   - `fireflies`: small yellow circles random float + opacity pulse (4-8s)
+   - `stars`: tiny white dots twinkling opacity only (3-6s)
+3. ✅ **Scene transitions** — `AnimatePresence mode="wait"` cross-fades old→new scene over 600ms when the first selected country changes.
+4. ✅ **Page Visibility API pause** — `document.hidden` listener toggles `nature-scene-paused` CSS class, which sets `animation-play-state: paused !important` on all particles.
+5. ✅ **prefers-reduced-motion** — When `useReducedMotion()` returns true, only the static gradient background is shown (no particles).
+6. ✅ **Seeded random positions** — Particle spawn positions and motion parameters are deterministic per country code using a string-hash RNG, ensuring stable visuals on re-renders.
+7. ✅ **Legibility preserved** — Existing `luxury-card` components have solid `#FFFFFF` backgrounds and cast shadows; they remain fully legible over the dark ambient gradients.
+
+**Files changed:**
+- `src/data/countryNatureProfiles.ts` — new data file with 41 country→nature mappings + fallback
+- `src/components/CountryNatureScene.tsx` — new scene component with SVG particles, Framer Motion transitions, visibility API
+- `src/App.tsx` — integrated `CountryNatureScene` as first child of root container, passing first selected country code
+- `src/index.css` — added `.nature-scene-paused * { animation-play-state: paused !important; }`
+
+### Phase D — Future Ideas
+1. URL query params — sync `selectedCountries` and `context` to URL.
+2. Print / export — export radar as PNG; add `@media print` styles.
+3. Code-splitting — lazy-load heavy components.
+4. React Error Boundary.
+5. OG tags / social meta.
+6. Dark mode toggle.
+7. Keyboard navigation to `CountrySelector`.
 
 ### Phase D — Polish (Low Risk)
 1. Add React Error Boundary.

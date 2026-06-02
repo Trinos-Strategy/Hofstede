@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Globe2, Info, X } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
@@ -11,6 +11,7 @@ import { AdviceContextSelector } from './components/AdviceContextSelector';
 import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
 import { HamburgerMenu } from './components/HamburgerMenu';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { CountryNatureScene } from './components/CountryNatureScene';
 import { useLanguage } from './i18n';
 import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
@@ -35,6 +36,7 @@ const itemVariants = {
 
 function App() {
   const { t } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
 
   const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
@@ -101,6 +103,10 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      <CountryNatureScene
+        countryCode={selectedCountries[0]?.code ?? null}
+        reducedMotion={shouldReduceMotion ?? false}
+      />
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}

@@ -741,3 +741,8 @@ a:hover {
     min-height: 280px;
   }
 }
+
+/* ─── Nature Scene Pause (Page Visibility API) ─── */
+.nature-scene-paused * {
+  animation-play-state: paused !important;
+}
