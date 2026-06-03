@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronDown, Search, Plus } from 'lucide-react';
 import type { Country, ClusterType } from '../types';
@@ -28,14 +28,33 @@ export function CountrySelector({
   maxSelections = 3
 }: CountrySelectorProps) {
   const { t, isKorean } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [isOpen, setIsOpenState] = useState(false);
+  const [searchTerm, setSearchTermState] = useState('');
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const listboxRef = useRef<HTMLDivElement>(null);
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // Controlled open/close with focused index reset
+  const setIsOpen = useCallback((open: boolean) => {
+    setIsOpenState(open);
+    if (open) {
+      setFocusedIndex(-1);
+      optionRefs.current = [];
+    }
+  }, []);
+
+  // Controlled search with focused index reset
+  const setSearchTerm = useCallback((term: string) => {
+    setSearchTermState(term);
+    setFocusedIndex(-1);
+    optionRefs.current = [];
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        setIsOpenState(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -59,7 +78,94 @@ export function CountrySelector({
     return acc;
   }, {} as Record<ClusterType, Country[]>);
 
+  // Flatten all visible options for keyboard navigation — memoized to keep deps stable
+  const flatOptions = useMemo(() => {
+    const options: { country: Country; cluster: ClusterType; index: number }[] = [];
+    Object.entries(groupedCountries).forEach(([cluster, clusterCountries]) => {
+      clusterCountries.forEach((country) => {
+        options.push({ country, cluster: cluster as ClusterType, index: options.length });
+      });
+    });
+    return options;
+  }, [groupedCountries]);
+
   const canAddMore = selectedCountries.length < maxSelections;
+
+  const handleSelectCountry = useCallback((country: Country) => {
+    onCountrySelect(country);
+    setSearchTermState('');
+    if (selectedCountries.length + 1 >= maxSelections) {
+      setIsOpenState(false);
+    }
+    setFocusedIndex(-1);
+    optionRefs.current = [];
+  }, [onCountrySelect, selectedCountries.length, maxSelections]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!isOpen) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (canAddMore) {
+          setIsOpen(true);
+        }
+      }
+      return;
+    }
+
+    switch (e.key) {
+      case 'ArrowDown': {
+        e.preventDefault();
+        setFocusedIndex((prev) => {
+          const next = prev + 1;
+          if (next >= flatOptions.length) return 0;
+          return next;
+        });
+        break;
+      }
+      case 'ArrowUp': {
+        e.preventDefault();
+        setFocusedIndex((prev) => {
+          const next = prev - 1;
+          if (next < 0) return flatOptions.length - 1;
+          return next;
+        });
+        break;
+      }
+      case 'Enter': {
+        e.preventDefault();
+        if (focusedIndex >= 0 && focusedIndex < flatOptions.length) {
+          handleSelectCountry(flatOptions[focusedIndex].country);
+        }
+        break;
+      }
+      case 'Escape': {
+        e.preventDefault();
+        setIsOpenState(false);
+        setFocusedIndex(-1);
+        break;
+      }
+      case 'Home': {
+        e.preventDefault();
+        setFocusedIndex(0);
+        break;
+      }
+      case 'End': {
+        e.preventDefault();
+        setFocusedIndex(flatOptions.length - 1);
+        break;
+      }
+    }
+  }, [isOpen, canAddMore, flatOptions, focusedIndex, handleSelectCountry, setIsOpen]);
+
+  // Scroll focused option into view
+  useEffect(() => {
+    if (focusedIndex >= 0 && optionRefs.current[focusedIndex]) {
+      optionRefs.current[focusedIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [focusedIndex]);
+
+  // Build active descendant ID
+  const activeDescendantId = focusedIndex >= 0 ? `country-option-${flatOptions[focusedIndex]?.country.code}` : undefined;
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -105,6 +211,7 @@ export function CountrySelector({
         whileTap={canAddMore ? { scale: 0.995 } : {}}
         onClick={() => canAddMore && setIsOpen(!isOpen)}
         disabled={!canAddMore}
+        onKeyDown={handleKeyDown}
         className={`
           w-full flex items-center justify-between px-5 py-4
           rounded-lg transition-all duration-500
@@ -113,6 +220,9 @@ export function CountrySelector({
             : 'bg-[#F5F4F0] border border-black/5 cursor-not-allowed opacity-50'
           }
         `}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-controls={isOpen ? 'country-listbox' : undefined}
       >
         <span className={`text-sm ${canAddMore ? 'text-[#444444]' : 'text-[#444444]/50'}`}>
           {canAddMore ? t('addCountry') : t('maxSelectionComplete')}
@@ -145,16 +255,26 @@ export function CountrySelector({
                   placeholder={t('searchCountry')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   className="w-full pl-11 pr-4 py-3 text-sm
                     bg-white border border-black/8 rounded-lg
                     text-[#1A1A1A] placeholder-[#5A5A5A]/60
                     focus:border-[#B8956A] focus:ring-0
                     transition-all duration-300"
                   autoFocus
+                  aria-autocomplete="list"
+                  aria-controls="country-listbox"
+                  aria-activedescendant={activeDescendantId}
                 />
               </div>
             </div>
-            <div className="max-h-[70vh] overflow-y-auto bg-white">
+            <div
+              ref={listboxRef}
+              id="country-listbox"
+              role="listbox"
+              className="max-h-[70vh] overflow-y-auto bg-white"
+              aria-label={t('searchCountry')}
+            >
               {Object.entries(groupedCountries).map(([cluster, clusterCountries]) => {
                 const info = clusterInfo[cluster as ClusterType];
                 return (
@@ -166,24 +286,31 @@ export function CountrySelector({
                       <span className="mr-2">{info.icon}</span>
                       {isKorean ? info.nameKo : info.name}
                     </div>
-                    {clusterCountries.map((country) => (
-                      <motion.button
-                        key={country.code}
-                        whileHover={{ backgroundColor: '#FAFAF8' }}
-                        onClick={() => {
-                          onCountrySelect(country);
-                          setSearchTerm('');
-                          if (selectedCountries.length + 1 >= maxSelections) {
-                            setIsOpen(false);
-                          }
-                        }}
-                        className="w-full px-5 py-4 text-left text-sm flex items-center justify-between
-                          transition-colors duration-300 border-b border-black/3 min-h-[52px]"
-                      >
-                        <span className="text-[#1A1A1A] font-medium">{isKorean ? country.nameKo : country.name}</span>
-                        <span className="text-xs text-[#444444]/60 tracking-wide">{isKorean ? country.name : country.nameKo}</span>
-                      </motion.button>
-                    ))}
+                    {clusterCountries.map((country) => {
+                      const flatIndex = flatOptions.findIndex((o) => o.country.code === country.code);
+                      const isFocused = flatIndex === focusedIndex;
+                      return (
+                        <motion.button
+                          key={country.code}
+                          id={`country-option-${country.code}`}
+                          ref={(el) => { optionRefs.current[flatIndex] = el; }}
+                          role="option"
+                          aria-selected={isFocused}
+                          whileHover={{ backgroundColor: '#FAFAF8' }}
+                          onClick={() => {
+                            handleSelectCountry(country);
+                          }}
+                          onMouseEnter={() => setFocusedIndex(flatIndex)}
+                          className={`w-full px-5 py-4 text-left text-sm flex items-center justify-between
+                            transition-colors duration-300 border-b border-black/3 min-h-[52px]
+                            ${isFocused ? 'bg-[#FAFAF8] outline outline-1 outline-[#B8956A]/40' : ''}
+                          `}
+                        >
+                          <span className="text-[#1A1A1A] font-medium">{isKorean ? country.nameKo : country.name}</span>
+                          <span className="text-xs text-[#444444]/60 tracking-wide">{isKorean ? country.name : country.nameKo}</span>
+                        </motion.button>
+                      );
+                    })}
                   </div>
                 );
               })}

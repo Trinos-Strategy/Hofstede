@@ -239,6 +239,19 @@ export type TranslationKeys = {
   culturalDimensionComparison: string;
   academicReferences: string;
 
+  // Dark mode
+  darkMode: string;
+  lightMode: string;
+
+  // PNG Export
+  saveChart: string;
+  savingChart: string;
+
+  // Error Boundary
+  errorTitle: string;
+  errorDescription: string;
+  reloadPage: string;
+
   // Hamburger menu
   menu: string;
   dimensionComparison: string;
@@ -529,6 +542,19 @@ export const translations: Record<Language, TranslationKeys> = {
     culturalDimensionComparison: '문화 차원 비교',
     academicReferences: '학술 참고문헌',
 
+    // Dark mode
+    darkMode: '다크 모드',
+    lightMode: '라이트 모드',
+
+    // PNG Export
+    saveChart: '차트 저장',
+    savingChart: '저장 중...',
+
+    // Error Boundary
+    errorTitle: '문제가 발생했습니다',
+    errorDescription: '앱 실행 중 오류가 발생했습니다. 페이지를 새로고침해 보세요.',
+    reloadPage: '새로고침',
+
     // Hamburger menu
     menu: '메뉴',
     dimensionComparison: '차원별 비교',
@@ -817,6 +843,19 @@ export const translations: Record<Language, TranslationKeys> = {
     culturalBackground: 'Cultural Background',
     culturalDimensionComparison: 'Cultural Dimension Comparison',
     academicReferences: 'Academic References',
+
+    // Dark mode
+    darkMode: 'Dark Mode',
+    lightMode: 'Light Mode',
+
+    // PNG Export
+    saveChart: 'Save Chart',
+    savingChart: 'Saving...',
+
+    // Error Boundary
+    errorTitle: 'Something went wrong',
+    errorDescription: 'An error occurred while running the app. Please reload the page.',
+    reloadPage: 'Reload',
 
     // Hamburger menu
     menu: 'Menu',
