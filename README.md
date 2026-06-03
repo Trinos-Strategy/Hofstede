@@ -1,73 +1,109 @@
-# React + TypeScript + Vite
+# Hofstede Cultural Compass
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive, bilingual (Korean / English) visualization tool for comparing cultural dimensions across 42 countries using **Geert Hofstede's** framework and **Huib Wursten's** "Mental Images" cultural clusters. Explore Power Distance, Individualism, Masculinity, Uncertainty Avoidance, Long-Term Orientation, and Indulgence through animated radar charts, bar comparisons, and situational bilateral advice.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+### Phase A — Foundation
+- 42 countries mapped to 6 cultural clusters (Contest, Network, Family, Pyramid, Solar System, Machine)
+- Full i18n support (Korean & English) with localStorage persistence
+- Responsive luxury UI inspired by high-end editorial design
+- Sticky header, hamburger navigation, and smooth scroll sections
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Phase B — Radar Chart Upgrade
+- Interactive Recharts radar with 8-color palette, dashed strokes, and shape markers
+- Clickable legend to toggle country visibility
+- Dimension toggle pills (LTO / IVR)
+- Persistent vertex value labels and custom tooltips
+- Per-country profile cards showing highest / lowest dimensions
+- `prefers-reduced-motion` and full ARIA support
 
-## Expanding the ESLint configuration
+### Phase C — Ambient Nature Scenes
+- Dynamic SVG particle backgrounds that change based on the first selected country
+- 9 particle types: snow, sakura, leaves, sand, rain, aurora, mist, fireflies, stars
+- Page Visibility API pause and reduced-motion fallback
+- Framer Motion cross-fade transitions between scenes
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Phase D — UX Polish & Deployment Readiness
+- **URL state sync** — shareable links with `?countries=KOR,USA&context=NEGOTIATION`
+- **React Error Boundary** — friendly fallback UI with reload button
+- **PNG Export** — download radar chart as `hofstede-chart-{timestamp}.png` via dynamic `html2canvas` import
+- **Dark mode toggle** — persisted in `localStorage`, flash-free inline script in `index.html`
+- **Keyboard navigation** — Arrow keys, Enter, Escape in country dropdown
+- **SEO / OG meta tags** — title, description, Open Graph, theme-color
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🚀 Local Setup
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Clone the repository
+git clone https://github.com/Trinos-Strategy/hofstede-culture-viz.git
+cd hofstede-culture-viz
+
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open `http://localhost:5173` in your browser.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🏗️ Build
+
+```bash
+npm run build
 ```
+
+The production bundle is output to `dist/`.
+
+---
+
+## 🌐 Deploy
+
+This project uses **GitHub Pages** via the existing GitHub Actions workflow:
+
+```bash
+# Push to main (or any claude/* branch) to trigger deployment
+git push origin main
+```
+
+The workflow is defined in `.github/workflows/deploy.yml`:
+- Builds on Node.js 20
+- Uploads `dist/` as a Pages artifact
+- Deploys automatically on push to `main`, `master`, or `claude/*`
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Framework | React | `^19.2.0` |
+| Language | TypeScript | `~5.9.3` |
+| Build Tool | Vite | `^7.2.4` |
+| Styling | Tailwind CSS | `^4.1.18` |
+| Charts | Recharts | `^3.6.0` |
+| Animation | Framer Motion | `^12.25.0` |
+| Icons | Lucide React | `^0.562.0` |
+| Export | html2canvas | `^1.4.1` (dynamic import) |
+| Lint | ESLint | `^9.39.1` |
+| Deploy | GitHub Pages | — |
+
+---
+
+## 📚 Credits
+
+- **Geert Hofstede** — Cultural Dimensions Theory
+- **Huib Wursten** — "Mental Images" cultural cluster research
+- **Trinos Strategy** — Research Lab, design & development
+- Data source: [The Culture Factor](https://www.theculturefactor.com/country-comparison-tool)
+
+---
+
+*© 2026 Trinos Research Lab. All rights reserved.*

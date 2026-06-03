@@ -3,112 +3,33 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  MessageSquare,
-  Lightbulb,
-  Users,
-  FileText,
-  Award,
-  Handshake,
-  MessageCircle,
-  Scale,
-} from 'lucide-react';
 import type { AdviceContext } from '../types';
-
-interface ContextOption {
-  key: AdviceContext;
-  name: string;
-  nameKo: string;
-  icon: React.ReactNode;
-  color: string;
-  emoji: string;
-  description: string;
-}
-
-const contextOptions: ContextOption[] = [
-  {
-    key: 'MEETING_IDEA',
-    name: 'Meeting Ideas',
-    nameKo: '회의에서 아이디어 제안',
-    icon: <Lightbulb className="w-5 h-5" strokeWidth={1.5} />,
-    color: '#B8956A',
-    emoji: '💡',
-    description: '회의 중 새로운 아이디어를 효과적으로 제안하는 방법',
-  },
-  {
-    key: 'DISAGREE_BOSS',
-    name: 'Disagree with Boss',
-    nameKo: '상사와 의견 다를 때',
-    icon: <MessageSquare className="w-5 h-5" strokeWidth={1.5} />,
-    color: '#C4886B',
-    emoji: '🗣️',
-    description: '상사와 의견 차이가 있을 때 현명하게 대처하는 방법',
-  },
-  {
-    key: 'REPORTING',
-    name: 'Reporting',
-    nameKo: '보고 및 중간 점검',
-    icon: <FileText className="w-5 h-5" strokeWidth={1.5} />,
-    color: '#7D8471',
-    emoji: '📋',
-    description: '업무 진행 상황을 효과적으로 보고하는 방법',
-  },
-  {
-    key: 'REWARD_RECOGNITION',
-    name: 'Reward & Recognition',
-    nameKo: '성과/보상 커뮤니케이션',
-    icon: <Award className="w-5 h-5" strokeWidth={1.5} />,
-    color: '#C9A227',
-    emoji: '🏆',
-    description: '성과를 인정하고 보상을 전달하는 효과적인 방법',
-  },
-  {
-    key: 'TEAM_COLLABORATION',
-    name: 'Team Collaboration',
-    nameKo: '팀 협업',
-    icon: <Users className="w-5 h-5" strokeWidth={1.5} />,
-    color: '#8B7355',
-    emoji: '🤝',
-    description: '팀원들과 효과적으로 협업하는 방법',
-  },
-  {
-    key: 'NEGOTIATION',
-    name: 'Negotiation',
-    nameKo: '협상',
-    icon: <Handshake className="w-5 h-5" strokeWidth={1.5} />,
-    color: '#9D7E57',
-    emoji: '🎯',
-    description: '성공적인 협상을 위한 접근법',
-  },
-  {
-    key: 'FEEDBACK',
-    name: 'Feedback',
-    nameKo: '피드백 주고받기',
-    icon: <MessageCircle className="w-5 h-5" strokeWidth={1.5} />,
-    color: '#6B7B8C',
-    emoji: '💬',
-    description: '피드백을 효과적으로 주고받는 방법',
-  },
-  {
-    key: 'CONFLICT_RESOLUTION',
-    name: 'Conflict Resolution',
-    nameKo: '갈등 해결',
-    icon: <Scale className="w-5 h-5" strokeWidth={1.5} />,
-    color: '#722F37',
-    emoji: '⚖️',
-    description: '갈등 상황을 원만하게 해결하는 방법',
-  },
-];
+import { contextOptions } from '../data/adviceContextOptions';
+import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 
 interface AdviceContextSelectorProps {
   selectedContext: AdviceContext | null;
   onContextSelect: (context: AdviceContext | null) => void;
 }
 
+const contextTranslationKeys: Record<AdviceContext, { name: keyof TranslationKeys; desc: keyof TranslationKeys }> = {
+  MEETING_IDEA: { name: 'contextMeetingIdea', desc: 'contextMeetingIdeaDesc' },
+  DISAGREE_BOSS: { name: 'contextDisagreeBoss', desc: 'contextDisagreeBossDesc' },
+  REPORTING: { name: 'contextReporting', desc: 'contextReportingDesc' },
+  REWARD_RECOGNITION: { name: 'contextRewardRecognition', desc: 'contextRewardRecognitionDesc' },
+  TEAM_COLLABORATION: { name: 'contextTeamCollaboration', desc: 'contextTeamCollaborationDesc' },
+  NEGOTIATION: { name: 'contextNegotiation', desc: 'contextNegotiationDesc' },
+  FEEDBACK: { name: 'contextFeedback', desc: 'contextFeedbackDesc' },
+  CONFLICT_RESOLUTION: { name: 'contextConflictResolution', desc: 'contextConflictResolutionDesc' },
+};
+
 export function AdviceContextSelector({
   selectedContext,
   onContextSelect,
 }: AdviceContextSelectorProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="luxury-card rounded-lg p-4 sm:p-8">
       <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
@@ -117,17 +38,18 @@ export function AdviceContextSelector({
           className="text-lg sm:text-xl font-medium text-[#1A1A1A]"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
-          상황 선택
+          {t('selectSituation')}
         </h2>
       </div>
       <p className="text-xs sm:text-sm text-[#444444] mb-4 sm:mb-6 flex items-center gap-2">
         <span className="text-base sm:text-lg">💼</span>
-        어떤 상황에서의 조언이 필요한가요?
+        {t('whatSituationAdvice')}
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
         {contextOptions.map((option, index) => {
           const isSelected = selectedContext === option.key;
+          const keys = contextTranslationKeys[option.key];
           return (
             <motion.button
               key={option.key}
@@ -154,7 +76,7 @@ export function AdviceContextSelector({
               style={{
                 borderBottomColor: isSelected ? option.color : 'transparent',
               }}
-              title={option.description}
+              title={t(keys.desc)}
             >
               {/* Emoji */}
               <span className="text-xl sm:text-2xl">{option.emoji}</span>
@@ -165,7 +87,7 @@ export function AdviceContextSelector({
                   isSelected ? 'text-[#1A1A1A]' : 'text-[#444444]'
                 }`}
               >
-                {option.nameKo}
+                {t(keys.name)}
               </span>
 
               {/* Selected indicator */}
@@ -204,7 +126,7 @@ export function AdviceContextSelector({
               }}
             >
               <p className="text-sm text-[#444444] leading-relaxed">
-                {contextOptions.find((o) => o.key === selectedContext)?.description}
+                {t(contextTranslationKeys[selectedContext].desc)}
               </p>
             </div>
           </motion.div>
@@ -214,5 +136,4 @@ export function AdviceContextSelector({
   );
 }
 
-export { contextOptions };
 export default AdviceContextSelector;

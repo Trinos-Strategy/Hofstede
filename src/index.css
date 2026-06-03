@@ -741,3 +741,107 @@ a:hover {
     min-height: 280px;
   }
 }
+
+/* ─── Nature Scene Pause (Page Visibility API) ─── */
+.nature-scene-paused * {
+  animation-play-state: paused !important;
+}
+
+/* ============================================
+   Dark Mode Overrides
+   ============================================ */
+
+.dark {
+  --ivory-light: #0f172a;
+  --ivory: #1e293b;
+  --ivory-dark: #334155;
+  --cream: #1e293b;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+
+  --charcoal-deep: #f8fafc;
+  --charcoal: #f1f5f9;
+  --charcoal-light: #e2e8f0;
+  --charcoal-muted: #94a3b8;
+
+  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+.dark body {
+  background: var(--ivory-light);
+  color: var(--text-secondary);
+}
+
+.dark .luxury-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .matte-card {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .modern-table th,
+.dark .modern-table td {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .modern-table tr:hover td {
+  background: var(--ivory-dark);
+}
+
+.dark ::selection {
+  background: rgba(184, 149, 106, 0.4);
+  color: var(--charcoal-deep);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: var(--ivory-dark);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--charcoal-muted);
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  box-shadow: 0 0 0 3px rgba(184, 149, 106, 0.25);
+}
+
+.dark .tag-luxury {
+  background: var(--ivory-dark);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--charcoal-muted);
+}
+
+.dark .badge-gold {
+  background: rgba(184, 149, 106, 0.15);
+}
+
+.dark .quote-luxury {
+  color: var(--charcoal-muted);
+}
+
+.dark .country-pill .remove-btn {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dark .country-pill .remove-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.dark a {
+  color: var(--gold-light);
+}
+
+.dark a:hover {
+  color: var(--gold);
+}

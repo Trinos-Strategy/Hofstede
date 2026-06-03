@@ -1,6 +1,6 @@
-import { useState, useMemo, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Globe2, Info, X } from 'lucide-react';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Globe2, Info, X, Moon, Sun, Download } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
 import { CountrySelector } from './components/CountrySelector';
@@ -11,7 +11,11 @@ import { AdviceContextSelector } from './components/AdviceContextSelector';
 import { BilateralNegotiationAdvice } from './components/BilateralNegotiationAdvice';
 import { HamburgerMenu } from './components/HamburgerMenu';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { CountryNatureScene } from './components/CountryNatureScene';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { useLanguage } from './i18n';
+import { useUrlState } from './hooks/useUrlState';
+import { useDarkMode } from './hooks/useDarkMode';
 import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
@@ -35,15 +39,57 @@ const itemVariants = {
 
 function App() {
   const { t } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
+  const { theme, toggleTheme } = useDarkMode();
+  const { initialCountries, initialContext, syncUrl, popStateTrigger, parseFromUrl } = useUrlState();
 
-  const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<Country[]>(initialCountries);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
   const [showInfo, setShowInfo] = useState(false);
-  const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
+  const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(initialContext);
   const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
+
+  // Ref for radar chart export
+  const radarContainerRef = useRef<HTMLDivElement>(null);
 
   // Section refs for scroll navigation
   const sidebarRef = useRef<HTMLElement>(null);
+
+  // Sync URL when selections change
+  useEffect(() => {
+    syncUrl(selectedCountries, selectedContext);
+  }, [selectedCountries, selectedContext, syncUrl]);
+
+  // React to browser back/forward
+  useEffect(() => {
+    const { parsedCountries, parsedContext } = parseFromUrl();
+    setSelectedCountries(parsedCountries);
+    setSelectedContext(parsedContext);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [popStateTrigger]);
+
+  // PNG Export handler (dynamic import to avoid bundle bloat)
+  const handleExportChart = useCallback(async () => {
+    if (!radarContainerRef.current) return;
+    setIsExporting(true);
+    try {
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(radarContainerRef.current, {
+        backgroundColor: '#FFFFFF',
+        scale: 2,
+      });
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      const link = document.createElement('a');
+      link.download = `hofstede-chart-${timestamp}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Chart export failed:', err);
+    } finally {
+      setIsExporting(false);
+    }
+  }, []);
 
   // Bilateral advice - only when exactly 2 countries selected
   const bilateralAdvice = useMemo<BilateralAdviceResult | null>(() => {
@@ -101,6 +147,11 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      <CountryNatureScene
+        countryCode={selectedCountries[0]?.code ?? null}
+        reducedMotion={shouldReduceMotion ?? false}
+      />
+      <ErrorBoundary>
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
@@ -137,6 +188,19 @@ function App() {
                 title={t('info')}
               >
                 <Info className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.6 }}
+                onClick={toggleTheme}
+                className="p-3 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
+                title={theme === 'dark' ? t('lightMode') : t('darkMode')}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
+                ) : (
+                  <Moon className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
+                )}
               </motion.button>
               <LanguageSwitcher />
               <HamburgerMenu
@@ -268,15 +332,28 @@ function App() {
             {selectedCountries.length > 0 && (
             <motion.div variants={itemVariants} className="space-y-5 sm:space-y-8">
               {/* Radar chart - full width with dimension explanations */}
-              <div className="luxury-card rounded-lg p-4 sm:p-8">
-                <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-                  <div className="accent-bar" />
-                  <h2 className="text-base sm:text-lg font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    {t('radarChart')}
-                  </h2>
-                  <span className="text-[10px] sm:text-xs text-[#9D7E57] bg-[#B8956A]/10 px-2 py-0.5 rounded-full font-medium">
-                    {t('sixDimensionComparison')}
-                  </span>
+              <div ref={radarContainerRef} className="luxury-card rounded-lg p-4 sm:p-8">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="accent-bar" />
+                    <h2 className="text-base sm:text-lg font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      {t('radarChart')}
+                    </h2>
+                    <span className="text-[10px] sm:text-xs text-[#9D7E57] bg-[#B8956A]/10 px-2 py-0.5 rounded-full font-medium">
+                      {t('sixDimensionComparison')}
+                    </span>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.6 }}
+                    onClick={handleExportChart}
+                    disabled={isExporting}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500 text-xs font-medium text-[#444444] disabled:opacity-50"
+                    title={t('saveChart')}
+                  >
+                    <Download className="w-4 h-4" strokeWidth={1.5} />
+                    <span className="hidden sm:inline">{isExporting ? t('savingChart') : t('saveChart')}</span>
+                  </motion.button>
                 </div>
                 <DimensionRadar countries={selectedCountries} />
               </div>
@@ -481,6 +558,7 @@ function App() {
           </div>
         </div>
       </footer>
+      </ErrorBoundary>
     </div>
   );
 }

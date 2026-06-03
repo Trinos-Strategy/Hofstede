@@ -208,8 +208,26 @@ export type TranslationKeys = {
   contextConflictResolution: string;
   contextConflictResolutionDesc: string;
 
+  // Radar chart
+  countryProfile: string;
+  highestDimension: string;
+  lowestDimension: string;
+  profileHighPDI: string;
+  profileLowPDI: string;
+  profileHighIDV: string;
+  profileLowIDV: string;
+  profileHighUAI: string;
+  profileLowUAI: string;
+  profileHighMAS: string;
+  profileLowMAS: string;
+  profileHighLTO: string;
+  profileLowLTO: string;
+  profileHighIVR: string;
+  profileLowIVR: string;
+
   // Bilateral negotiation advice
   bilateralAdviceFor: string;
+  mutualUnderstandingTitle: string;
   dosRecommended: string;
   dontsNotRecommended: string;
   keyCulturalDifferences: string;
@@ -220,6 +238,19 @@ export type TranslationKeys = {
   culturalBackground: string;
   culturalDimensionComparison: string;
   academicReferences: string;
+
+  // Dark mode
+  darkMode: string;
+  lightMode: string;
+
+  // PNG Export
+  saveChart: string;
+  savingChart: string;
+
+  // Error Boundary
+  errorTitle: string;
+  errorDescription: string;
+  reloadPage: string;
 
   // Hamburger menu
   menu: string;
@@ -480,8 +511,26 @@ export const translations: Record<Language, TranslationKeys> = {
     contextConflictResolution: '갈등 해결',
     contextConflictResolutionDesc: '갈등 상황을 원만하게 해결하는 방법',
 
+    // Radar chart
+    countryProfile: '국가 프로필',
+    highestDimension: '최고 차원',
+    lowestDimension: '최저 차원',
+    profileHighPDI: '강한 위계 지향',
+    profileLowPDI: '평등주의 문화',
+    profileHighIDV: '강한 개인주의',
+    profileLowIDV: '집단 중심 문화',
+    profileHighUAI: '규칙 중시, 리스크 회피',
+    profileLowUAI: '유연하고 적응력 높음',
+    profileHighMAS: '성취 지향적',
+    profileLowMAS: '협력 지향적',
+    profileHighLTO: '장기 계획 지향',
+    profileLowLTO: '전통 중시',
+    profileHighIVR: '탐닉적, 즐거움 추구',
+    profileLowIVR: '절제적, 규율 중시',
+
     // Bilateral negotiation advice
     bilateralAdviceFor: '양국 간 {context} 조언',
+    mutualUnderstandingTitle: '{context} - 상호 이해 핵심 포인트',
     dosRecommended: "Do's (권장 사항)",
     dontsNotRecommended: "Don'ts (금지 사항)",
     keyCulturalDifferences: '주요 문화적 차이',
@@ -492,6 +541,19 @@ export const translations: Record<Language, TranslationKeys> = {
     culturalBackground: '문화적 배경',
     culturalDimensionComparison: '문화 차원 비교',
     academicReferences: '학술 참고문헌',
+
+    // Dark mode
+    darkMode: '다크 모드',
+    lightMode: '라이트 모드',
+
+    // PNG Export
+    saveChart: '차트 저장',
+    savingChart: '저장 중...',
+
+    // Error Boundary
+    errorTitle: '문제가 발생했습니다',
+    errorDescription: '앱 실행 중 오류가 발생했습니다. 페이지를 새로고침해 보세요.',
+    reloadPage: '새로고침',
 
     // Hamburger menu
     menu: '메뉴',
@@ -751,8 +813,26 @@ export const translations: Record<Language, TranslationKeys> = {
     contextConflictResolution: 'Conflict Resolution',
     contextConflictResolutionDesc: 'How to resolve conflict situations smoothly',
 
+    // Radar chart
+    countryProfile: 'Country Profile',
+    highestDimension: 'Highest Dimension',
+    lowestDimension: 'Lowest Dimension',
+    profileHighPDI: 'Strong hierarchical orientation',
+    profileLowPDI: 'Egalitarian culture',
+    profileHighIDV: 'Highly individualistic',
+    profileLowIDV: 'Collectivist culture',
+    profileHighUAI: 'Rule-oriented, risk-averse',
+    profileLowUAI: 'Flexible and adaptable',
+    profileHighMAS: 'Achievement-driven',
+    profileLowMAS: 'Collaboration-oriented',
+    profileHighLTO: 'Long-term planner',
+    profileLowLTO: 'Tradition-minded',
+    profileHighIVR: 'Indulgent, pleasure-seeking',
+    profileLowIVR: 'Restrained, disciplined',
+
     // Bilateral negotiation advice
     bilateralAdviceFor: 'Bilateral {context} Advice',
+    mutualUnderstandingTitle: '{context} - Key Mutual Understanding Points',
     dosRecommended: "Do's (Recommended)",
     dontsNotRecommended: "Don'ts (Not Recommended)",
     keyCulturalDifferences: 'Key Cultural Differences',
@@ -763,6 +843,19 @@ export const translations: Record<Language, TranslationKeys> = {
     culturalBackground: 'Cultural Background',
     culturalDimensionComparison: 'Cultural Dimension Comparison',
     academicReferences: 'Academic References',
+
+    // Dark mode
+    darkMode: 'Dark Mode',
+    lightMode: 'Light Mode',
+
+    // PNG Export
+    saveChart: 'Save Chart',
+    savingChart: 'Saving...',
+
+    // Error Boundary
+    errorTitle: 'Something went wrong',
+    errorDescription: 'An error occurred while running the app. Please reload the page.',
+    reloadPage: 'Reload',
 
     // Hamburger menu
     menu: 'Menu',
