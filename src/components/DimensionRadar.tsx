@@ -137,7 +137,7 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
         />
       );
     case 'triangle': {
-      const points = `${cx},${cy - size * 1.2} ${cx - size},${cy + size * 0.8} ${cx + size},${cy + size * 0.8}`;
+            const points = `${x},${y - size * 1.2} ${x - size},${y + size * 0.8} ${x + size},${y + size * 0.8}`;
       return (
         <polygon points={points} fill={fill} stroke={fill} strokeWidth={1} />
       );
