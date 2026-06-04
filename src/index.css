@@ -1,71 +1,133 @@
 @import "tailwindcss";
 
 /* ============================================
-   Luxury Design System
-   Inspired by Louis Vuitton, Hermès, Burberry
+   Premium Design System
+   Inspired by Luxury Dark Aesthetics
    ============================================ */
 
 :root {
-  /* Luxury Color Palette */
-  --ivory-light: #FAFAF8;
-  --ivory: #F5F4F0;
-  --ivory-dark: #EDECEA;
-  --cream: #F8F7F4;
+  /* Core Tokens */
+  --color-midnight: #0A0E1A;
+  --color-night-blue: #141928;
+  --color-brass: #B8960C;
+  --color-brass-light: #D4AF37;
+  --color-ivory: #F5F0E8;
+  --color-ivory-muted: #C8C0B0;
+  --color-sage: #6B8E6B;
+  --color-teal: #2D7D9A;
+  --color-coral: #E07B54;
+  --color-glass: rgba(255,255,255,0.06);
+  --color-glass-border: rgba(255,255,255,0.10);
 
-  /* Text Colors - WCAG AA Compliant (4.5:1 contrast ratio) */
-  --text-primary: #1A1A1A;       /* Primary text - high contrast */
-  --text-secondary: #333333;     /* Secondary text - still readable */
-  --text-muted: #555555;         /* Muted text - WCAG AA compliant */
-  --text-subtle: #666666;        /* Subtle text - minimum readable */
+  --font-heading: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
-  /* Legacy charcoal colors (for backwards compatibility) */
-  --charcoal-deep: #1A1A1A;
-  --charcoal: #2D2D2D;
-  --charcoal-light: #3D3D3D;
-  --charcoal-muted: #555555;     /* Updated from #5A5A5A for better contrast */
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-96: 96px;
+  --spacing-128: 128px;
 
-  --gold: #B8956A;
-  --gold-light: #C9A97D;
-  --gold-dark: #9D7E57;
-  --bronze: #8B7355;
+  --shadow-subtle: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-medium: 0 4px 16px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+  --shadow-dramatic: 0 20px 60px rgba(0,0,0,0.6), 0 8px 16px rgba(0,0,0,0.4);
+  --shadow-gold: 0 0 20px rgba(184,150,12,0.3);
 
-  --terracotta: #C4886B;
-  --mustard: #C9A227;
-  --sage: #7D8471;
-  --burgundy: #722F37;
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 600ms;
+  --duration-cinematic: 1200ms;
 
-  /* Cluster Accent Colors - Stronger for readability */
-  --contest-color: #8B6914;      /* Darker gold - WCAG compliant */
-  --network-color: #5A6350;      /* Darker sage */
-  --family-color: #9D7E00;       /* Darker mustard */
-  --pyramid-color: #6B5A42;      /* Darker bronze */
-  --solar-color: #A0654A;        /* Darker terracotta */
-  --machine-color: #4A5A6B;      /* Darker slate */
+  --radius-sharp: 2px;
+  --radius-soft: 8px;
+  --radius-medium: 12px;
+  --radius-large: 20px;
+  --radius-pill: 999px;
 
-  /* Dimension Colors - Elegant Tones */
-  --pdi-color: #B8956A;
-  --idv-color: #7D8471;
-  --uai-color: #C4886B;
-  --mas-color: #6B7B8C;
+  /* Legacy Mapping for Seamless Backward Compatibility */
+  --ivory-light: var(--color-midnight);
+  --ivory: var(--color-night-blue);
+  --ivory-dark: var(--color-midnight);
+  --cream: var(--color-night-blue);
 
-  /* Typography */
-  --font-heading: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --text-primary: var(--color-ivory);
+  --text-secondary: var(--color-ivory-muted);
+  --text-muted: var(--color-ivory-muted);
+  --text-subtle: var(--color-ivory-muted);
 
-  /* Spacing */
-  --section-gap: 4rem;
-  --card-padding: 2rem;
+  --charcoal-deep: var(--color-midnight);
+  --charcoal: var(--color-night-blue);
+  --charcoal-light: var(--color-glass-border);
+  --charcoal-muted: var(--color-ivory-muted);
 
-  /* Shadows - Subtle */
-  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.06);
-  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.10);
+  --gold: var(--color-brass);
+  --gold-light: var(--color-brass-light);
+  --gold-dark: var(--color-brass);
+  --bronze: var(--color-brass);
 
-  /* Transitions */
-  --transition-slow: 600ms ease-out;
-  --transition-medium: 400ms ease-out;
-  --transition-fast: 200ms ease-out;
+  /* Keep legacy functional colors if referenced */
+  --contest-color: #8B6914;
+  --network-color: #5A6350;
+  --family-color: #9D7E00;
+  --pyramid-color: #6B5A42;
+  --solar-color: #A0654A;
+  --machine-color: #4A5A6B;
+
+  --pdi-color: var(--color-brass);
+  --idv-color: var(--color-sage);
+  --uai-color: var(--color-coral);
+  --mas-color: var(--color-teal);
+
+  --transition-slow: var(--duration-slow);
+  --transition-medium: var(--duration-normal);
+  --transition-fast: var(--duration-fast);
+
+  --shadow-card: var(--shadow-medium);
+  --shadow-hover: var(--shadow-dramatic);
+  --shadow-elevated: var(--shadow-dramatic);
+}
+
+/* Premium Utilities */
+.glass-card {
+  background: var(--color-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-medium);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-strong {
+  background: rgba(10, 14, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-glass-border);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--color-brass-light) 0%, var(--color-brass) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-aurora {
+  background: radial-gradient(circle at 10% 20%, rgba(45, 125, 154, 0.08) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(184, 150, 12, 0.06) 0%, transparent 40%),
+              var(--color-midnight);
 }
 
 * {
@@ -134,23 +196,23 @@ small, .text-sm, .text-xs {
   font-weight: 450;
 }
 
-/* Custom Scrollbar - Minimal */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--ivory-dark);
+  background: var(--color-midnight);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--charcoal-muted);
-  border-radius: 3px;
+  background: var(--color-glass-border);
+  border-radius: var(--radius-pill);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--charcoal-light);
+  background: var(--color-brass);
 }
 
 /* Luxury Card */
@@ -257,10 +319,10 @@ small, .text-sm, .text-xs {
 
 /* Divider - Gold Line */
 .divider-gold {
-  width: 60px;
+  width: 80px;
   height: 1px;
-  background: var(--gold);
-  margin: 2rem auto;
+  background: linear-gradient(90deg, transparent, var(--color-brass), transparent);
+  margin: var(--spacing-24) auto;
 }
 
 .divider-subtle {
@@ -342,8 +404,8 @@ small, .text-sm, .text-xs {
 
 /* Selection Highlight */
 ::selection {
-  background: rgba(184, 149, 106, 0.3);
-  color: var(--charcoal-deep);
+  background: rgba(184, 150, 12, 0.25);
+  color: var(--color-ivory);
 }
 
 /* Input Focus Styles */

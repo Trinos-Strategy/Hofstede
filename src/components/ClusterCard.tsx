@@ -12,45 +12,44 @@ interface ClusterCardProps {
   onInfoClick?: (cluster: ClusterType) => void;
 }
 
-// Cluster styles with unique icon colors
+// Cluster styles mapping to WCAG AA theme colors
 const clusterStyles: Record<ClusterType, {
   color: string;
-  iconColor: string;  // Vivid color for the icon
+  iconColor: string;
   lightBg: string;
 }> = {
   contest: {
-    color: '#7A5D2E',
-    iconColor: '#D4A017',  // Gold/Orange - Trophy color
-    lightBg: 'linear-gradient(135deg, rgba(212, 160, 23, 0.06), rgba(255, 215, 0, 0.03))',
+    color: 'var(--contest-color, #8B6914)',
+    iconColor: 'var(--contest-color, #8B6914)',
+    lightBg: 'linear-gradient(135deg, rgba(139, 105, 20, 0.08), rgba(139, 105, 20, 0.03))',
   },
   network: {
-    color: '#2E6B5E',
-    iconColor: '#1B9E77',  // Teal/Blue-green
-    lightBg: 'linear-gradient(135deg, rgba(27, 158, 119, 0.06), rgba(46, 107, 94, 0.03))',
+    color: 'var(--network-color, #5A6350)',
+    iconColor: 'var(--network-color, #5A6350)',
+    lightBg: 'linear-gradient(135deg, rgba(90, 99, 80, 0.08), rgba(90, 99, 80, 0.03))',
   },
   family: {
-    color: '#8B4513',
-    iconColor: '#CD853F',  // Warm brown/Peru
-    lightBg: 'linear-gradient(135deg, rgba(205, 133, 63, 0.06), rgba(139, 69, 19, 0.03))',
+    color: 'var(--family-color, #9D7E00)',
+    iconColor: 'var(--family-color, #9D7E00)',
+    lightBg: 'linear-gradient(135deg, rgba(157, 126, 0, 0.08), rgba(157, 126, 0, 0.03))',
   },
   pyramid: {
-    color: '#8B2323',
-    iconColor: '#C41E3A',  // Cardinal Red
-    lightBg: 'linear-gradient(135deg, rgba(196, 30, 58, 0.06), rgba(139, 35, 35, 0.03))',
+    color: 'var(--pyramid-color, #6B5A42)',
+    iconColor: 'var(--pyramid-color, #6B5A42)',
+    lightBg: 'linear-gradient(135deg, rgba(107, 90, 66, 0.08), rgba(107, 90, 66, 0.03))',
   },
   solarSystem: {
-    color: '#B8860B',
-    iconColor: '#FFB300',  // Amber/Gold - Sun color
-    lightBg: 'linear-gradient(135deg, rgba(255, 179, 0, 0.06), rgba(184, 134, 11, 0.03))',
+    color: 'var(--solar-color, #A0654A)',
+    iconColor: 'var(--solar-color, #A0654A)',
+    lightBg: 'linear-gradient(135deg, rgba(160, 101, 74, 0.08), rgba(160, 101, 74, 0.03))',
   },
   machine: {
-    color: '#4A5568',
-    iconColor: '#5B7C99',  // Steel Blue
-    lightBg: 'linear-gradient(135deg, rgba(91, 124, 153, 0.06), rgba(74, 85, 104, 0.03))',
+    color: 'var(--machine-color, #4A5A6B)',
+    iconColor: 'var(--machine-color, #4A5A6B)',
+    lightBg: 'linear-gradient(135deg, rgba(74, 90, 107, 0.08), rgba(74, 90, 107, 0.03))',
   },
 };
 
-// Map cluster types to translation keys
 const clusterTranslationKeys: Record<ClusterType, { name: keyof TranslationKeys; desc: keyof TranslationKeys }> = {
   contest: { name: 'clusterContest', desc: 'descContest' },
   network: { name: 'clusterNetwork', desc: 'descNetwork' },
@@ -92,16 +91,17 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
       onDoubleClick={handleDoubleClick}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className={`
-        cursor-pointer rounded-xl p-5 relative overflow-hidden
-        transition-all duration-500
+        cursor-pointer rounded-xl p-5 relative overflow-hidden glass-card
+        transition-all duration-500 border
         ${isSelected
-          ? 'shadow-lg border-l-4'
-          : 'border border-black/6 hover:shadow-lg hover:border-transparent'
+          ? 'shadow-md border-l-4'
+          : 'border-white/10 hover:border-[var(--color-brass)]/40 hover:shadow-[0_0_15px_rgba(184,150,12,0.1)]'
         }
       `}
       style={{
-        background: isSelected ? style.lightBg : '#FFFFFF',
-        borderLeftColor: isSelected ? style.iconColor : 'transparent',
+        background: isSelected ? style.lightBg : 'rgba(255, 255, 255, 0.03)',
+        borderLeftColor: isSelected ? style.iconColor : 'rgba(255, 255, 255, 0.1)',
+        boxShadow: isSelected ? `0 0 20px ${style.iconColor}15` : undefined,
       }}
     >
       {/* Subtle gradient overlay on hover */}
@@ -112,7 +112,6 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
 
       <div className="relative z-10">
         <div className="flex items-center gap-4 mb-4">
-          {/* Large colorful icon without background */}
           <motion.div
             whileHover={{ scale: 1.15, rotate: 8 }}
             transition={{ duration: 0.3 }}
@@ -129,15 +128,16 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
           </motion.div>
           <div className="flex-1">
             <h3
-              className="font-semibold text-base tracking-wide"
+              className="font-bold text-base tracking-wide"
               style={{
                 color: style.color,
-                fontFamily: "'Playfair Display', serif"
+                fontFamily: "'Cormorant Garamond', serif",
+                letterSpacing: '0.06em'
               }}
             >
               {t(translationKeys.name)}
             </h3>
-            <p className="text-xs text-[#555555] tracking-wide font-medium">{isKorean ? info.name : info.nameKo}</p>
+            <p className="text-xs text-[var(--color-ivory-muted)] opacity-60 tracking-wide font-medium">{isKorean ? info.name : info.nameKo}</p>
           </div>
           {/* Info button */}
           {onInfoClick && (
@@ -145,15 +145,15 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={handleInfoButtonClick}
-              className="p-2 rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-300"
+              className="p-2 rounded-lg border border-white/10 hover:border-[var(--color-brass)] hover:bg-white/5 transition-all duration-300 cursor-pointer"
               title={isKorean ? '상세 정보 보기' : 'View details'}
             >
-              <Info className="w-4 h-4 text-[#555555]" strokeWidth={1.5} />
+              <Info className="w-4 h-4 text-[var(--color-ivory-muted)]" strokeWidth={1.5} />
             </motion.button>
           )}
         </div>
 
-        <p className="text-sm text-[#444444] mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-sm text-[var(--color-ivory-muted)] opacity-95 mb-4 line-clamp-2 leading-relaxed">
           {t(translationKeys.desc)}
         </p>
 
@@ -161,18 +161,18 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
           {countriesInCluster.slice(0, 3).map((country) => (
             <span
               key={country.code}
-              className="text-xs px-3 py-1.5 rounded-lg bg-white/80 text-[#333333] font-medium border border-black/5 shadow-sm"
+              className="text-xs px-3 py-1.5 rounded-lg bg-white/5 text-[var(--color-ivory)] font-medium border border-white/5 shadow-sm"
             >
               {isKorean ? country.nameKo : country.name}
             </span>
           ))}
           {countriesInCluster.length > 3 && (
             <span
-              className="text-xs px-3 py-1.5 rounded-lg font-medium border shadow-sm"
+              className="text-xs px-3 py-1.5 rounded-lg font-medium border shadow-sm animate-pulse"
               style={{
-                backgroundColor: `${style.iconColor}15`,
+                backgroundColor: `${style.iconColor}10`,
                 color: style.color,
-                borderColor: `${style.iconColor}25`,
+                borderColor: `${style.iconColor}20`,
               }}
             >
               +{countriesInCluster.length - 3}

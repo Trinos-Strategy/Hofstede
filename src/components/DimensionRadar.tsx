@@ -1,4 +1,3 @@
-import { useState, useMemo, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   RadarChart,
@@ -19,16 +18,56 @@ interface DimensionRadarProps {
   countries: Country[];
 }
 
-// ─── Color Palette (8 distinct luxury colors) ───
+// 8 Premium colors qualitative palette
 const chartColors = [
-  { stroke: '#B8956A', fill: 'rgba(184, 149, 106, 0.2)', strokeDasharray: undefined as string | undefined, marker: 'circle' as const },
-  { stroke: '#7D8471', fill: 'rgba(125, 132, 113, 0.2)', strokeDasharray: '8 4', marker: 'square' as const },
-  { stroke: '#C4886B', fill: 'rgba(196, 136, 107, 0.2)', strokeDasharray: '3 3', marker: 'triangle' as const },
-  { stroke: '#6B7B8C', fill: 'rgba(107, 123, 140, 0.2)', strokeDasharray: undefined as string | undefined, marker: 'circle' as const },
-  { stroke: '#9D7E57', fill: 'rgba(157, 126, 87, 0.2)', strokeDasharray: '8 4', marker: 'square' as const },
-  { stroke: '#C9A227', fill: 'rgba(201, 162, 39, 0.2)', strokeDasharray: '3 3', marker: 'triangle' as const },
-  { stroke: '#722F37', fill: 'rgba(114, 47, 55, 0.2)', strokeDasharray: undefined as string | undefined, marker: 'circle' as const },
-  { stroke: '#8B9E8B', fill: 'rgba(139, 158, 139, 0.2)', strokeDasharray: '8 4', marker: 'square' as const },
+  {
+    stroke: '#4FC3C3',
+    fill: 'rgba(79, 195, 195, 0.15)',
+    strokeDasharray: undefined,
+    marker: 'circle' as const,
+  },
+  {
+    stroke: '#E8A838',
+    fill: 'rgba(232, 168, 56, 0.15)',
+    strokeDasharray: '8 4',
+    marker: 'square' as const,
+  },
+  {
+    stroke: '#7B68EE',
+    fill: 'rgba(123, 104, 238, 0.15)',
+    strokeDasharray: '3 3',
+    marker: 'triangle' as const,
+  },
+  {
+    stroke: '#FF6B9D',
+    fill: 'rgba(255, 107, 157, 0.15)',
+    strokeDasharray: undefined,
+    marker: 'circle' as const,
+  },
+  {
+    stroke: '#56D4A0',
+    fill: 'rgba(86, 212, 160, 0.15)',
+    strokeDasharray: '8 4',
+    marker: 'square' as const,
+  },
+  {
+    stroke: '#FF8C69',
+    fill: 'rgba(255, 140, 105, 0.15)',
+    strokeDasharray: '3 3',
+    marker: 'triangle' as const,
+  },
+  {
+    stroke: '#87CEEB',
+    fill: 'rgba(135, 206, 235, 0.15)',
+    strokeDasharray: undefined,
+    marker: 'circle' as const,
+  },
+  {
+    stroke: '#DDA0DD',
+    fill: 'rgba(221, 160, 221, 0.15)',
+    strokeDasharray: '8 4',
+    marker: 'square' as const,
+  },
 ];
 
 // ─── Flag Emoji Helper ───
@@ -99,7 +138,7 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
         />
       );
     case 'triangle': {
-      const points = `${x},${y - size * 1.2} ${x - size},${y + size * 0.8} ${x + size},${y + size * 0.8}`;
+      const points = `${cx},${cy - size * 1.2} ${cx - size},${cy + size * 0.8} ${cx + size},${cy + size * 0.8}`;
       return (
         <polygon points={points} fill={fill} stroke={fill} strokeWidth={1} />
       );
@@ -108,6 +147,89 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
     default:
       return <circle cx={x} cy={y} r={size} fill={fill} stroke={fill} strokeWidth={1} />;
   }
+}
+interface CustomTickProps {
+  x?: string | number;
+  y?: string | number;
+  cx?: string | number;
+  cy?: string | number;
+  index?: number;
+  textAnchor?: 'inherit' | 'end' | 'middle' | 'start';
+  countries: Country[];
+  shouldReduceMotion: boolean;
+}
+
+function CustomTick({
+  x = 0,
+  y = 0,
+  cx = 0,
+  cy = 0,
+  index = 0,
+  textAnchor = 'middle',
+  countries,
+  shouldReduceMotion,
+}: CustomTickProps) {
+  const dim = dimensionInfo[index];
+  if (!dim) return null;
+
+  const scoresStr = countries
+    .map((country) => `${country.code}: ${country.dimensions[dim.key]}`)
+    .join(' / ');
+  const labelText = `${dim.key} (${scoresStr})`;
+
+  const numericX = typeof x === 'string' ? parseFloat(x) : x;
+  const numericY = typeof y === 'string' ? parseFloat(y) : y;
+  const numericCx = typeof cx === 'string' ? parseFloat(cx) : cx;
+  const numericCy = typeof cy === 'string' ? parseFloat(cy) : cy;
+
+  const dx = numericX - numericCx;
+  const dy = numericY - numericCy;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const offsetDist = 18;
+  const ux = distance > 0 ? dx / distance : 0;
+  const uy = distance > 0 ? dy / distance : 0;
+  const badgeX = numericX + ux * offsetDist;
+  const badgeY = numericY + uy * offsetDist;
+
+  return (
+    <g className="select-none">
+      {/* Mobile-only fallback */}
+      <text
+        x={x}
+        y={y}
+        textAnchor={textAnchor}
+        className="sm:hidden text-[9px] font-bold fill-[#444444]"
+        dy={4}
+      >
+        {dim.key}
+      </text>
+
+      {/* Desktop-only brass-gold badge pill */}
+      <foreignObject
+        x={badgeX - 120}
+        y={badgeY - 18}
+        width={240}
+        height={36}
+        className="hidden sm:block overflow-visible pointer-events-none"
+      >
+        <div className="w-full h-full flex items-center justify-center">
+          <motion.div
+            initial={shouldReduceMotion ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              type: 'spring',
+              stiffness: 260,
+              damping: 20,
+              delay: shouldReduceMotion ? 0 : index * 0.1,
+            }}
+            className="bg-gradient-to-r from-[#DFC495] via-[#C5A059] to-[#B8956A] text-[#2D1F10] border border-[#9C7A3C]/40 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-md whitespace-nowrap"
+          >
+            {labelText}
+          </motion.div>
+        </div>
+      </foreignObject>
+    </g>
+  );
 }
 
 // ─── Radar Vertex Label ───
@@ -321,90 +443,15 @@ function CountryProfileCard({
 // ─── Main Component ───
 export function DimensionRadar({ countries }: DimensionRadarProps) {
   const { t, isKorean } = useLanguage();
-  const { width } = useWindowSize();
-  const shouldReduceMotion = useReducedMotion();
-
-  const isMobile = width < 640;
-
-  // Visibility state for interactive legend — Set of hidden country codes
-  const [hiddenCountries, setHiddenCountries] = useState<Set<string>>(new Set());
-
-  // Compute visibility map from current countries + hidden set
-  const visibilityMap = useMemo(() => {
-    const map: Record<string, boolean> = {};
-    for (const c of countries) {
-      map[c.code] = !hiddenCountries.has(c.code);
-    }
-    return map;
-  }, [countries, hiddenCountries]);
-
-  const toggleCountryVisibility = useCallback((code: string) => {
-    setHiddenCountries((prev) => {
-      const next = new Set(prev);
-      if (next.has(code)) next.delete(code);
-      else next.add(code);
-      return next;
-    });
-  }, []);
-
-  // Active dimensions toggle (LTO / IVR)
-  const [activeDimensions, setActiveDimensions] = useState<Set<string>>(
-    new Set(['PDI', 'IDV', 'UAI', 'MAS', 'LTO', 'IVR'])
-  );
-
-  const toggleDimension = useCallback((key: string) => {
-    setActiveDimensions((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) {
-        // Prevent hiding all dimensions — keep at least one
-        if (next.size > 1) next.delete(key);
-      } else {
-        next.add(key);
-      }
-      return next;
-    });
-  }, []);
-
-  const activeDimensionInfo = useMemo(
-    () => dimensionInfo.filter((d) => activeDimensions.has(d.key)),
-    [activeDimensions]
-  );
-
-  const coreDimensions = activeDimensionInfo.filter((d) =>
-    ['PDI', 'IDV', 'UAI', 'MAS'].includes(d.key)
-  );
-  const extendedDimensions = activeDimensionInfo.filter((d) =>
-    ['LTO', 'IVR'].includes(d.key)
-  );
-
-  // Build radar data from active dimensions only
-  const data = useMemo(() => {
-    return activeDimensionInfo.map((dim) => {
-      const dataPoint: Record<string, string | number> = {
-        dimension: isKorean ? dim.nameKo : dim.name,
-        dimensionKey: dim.key,
-        fullMark: 100,
-      };
-      for (const country of countries) {
-        dataPoint[country.code] = country.dimensions[dim.key];
-      }
-      return dataPoint;
-    });
-  }, [activeDimensionInfo, countries, isKorean]);
-
-  // Aria label
-  const ariaLabel = useMemo(() => {
-    const names = countries.map((c) => (isKorean ? c.nameKo : c.name)).join(', ');
-    return `Cultural dimensions radar chart comparing ${names}`;
-  }, [countries, isKorean]);
+  const shouldReduceMotion = !!useReducedMotion();
 
   if (countries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] border border-dashed border-black/10 rounded-lg">
         <motion.div
-          initial={shouldReduceMotion ? undefined : { scale: 0.8, opacity: 0 }}
+          initial={shouldReduceMotion ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <span className="text-3xl sm:text-4xl mb-3 block text-center">📈</span>
         </motion.div>
@@ -415,21 +462,86 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
 
   return (
     <div className="space-y-6">
+      <style dangerouslySetInnerHTML={{ __html: `
+        .custom-radar-grid .recharts-polar-grid-concentric > * {
+          stroke: #8E8D8A;
+        }
+        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(2) {
+          stroke-opacity: 0.4;
+        }
+        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(3) {
+          stroke-opacity: 0.25;
+        }
+        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(4) {
+          stroke-opacity: 0.15;
+        }
+        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(5),
+        .custom-radar-grid .recharts-polar-grid-concentric > *:last-child {
+          stroke: #B8956A !important;
+          stroke-opacity: 0.5 !important;
+          stroke-width: 1.5px;
+        }
+      `}} />
+
       {/* Radar Chart */}
       <motion.div
-        initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.95 }}
+        initial={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: 'easeOut' }}
         className="h-[350px] sm:h-[500px]"
-        role="img"
-        aria-label={ariaLabel}
+        style={{ overflow: 'visible' }}
       >
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart data={data} margin={{ top: 30, right: 30, bottom: 30, left: 30 }}>
-            <PolarGrid stroke="rgba(0, 0, 0, 0.08)" />
+          <RadarChart
+            data={data}
+            margin={{ top: 30, right: 90, bottom: 30, left: 90 }}
+            className="custom-radar-grid"
+            style={{ overflow: 'visible' }}
+          >
+            <defs>
+              {countries.map((country, index) => {
+                const colorConfig = chartColors[index % chartColors.length];
+                return (
+                  <radialGradient
+                    key={`radial-gradient-${country.code}`}
+                    id={`radial-gradient-${country.code}`}
+                    cx="50%"
+                    cy="50%"
+                    r="50%"
+                  >
+                    {!shouldReduceMotion && (
+                      <animate
+                        attributeName="r"
+                        values="35%;55%;35%"
+                        dur="10s"
+                        repeatCount="indefinite"
+                      />
+                    )}
+                    <stop offset="0%" stopColor={colorConfig.stroke} stopOpacity={0.3} />
+                    <stop offset="100%" stopColor={colorConfig.stroke} stopOpacity={0} />
+                  </radialGradient>
+                );
+              })}
+              {countries.map((country) => {
+                return (
+                  <filter key={`glow-${country.code}`} id={`glow-${country.code}`}>
+                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                  </filter>
+                );
+              })}
+            </defs>
+
+            <PolarGrid gridType="circle" stroke="rgba(0, 0, 0, 0.08)" />
             <PolarAngleAxis
               dataKey="dimension"
-              tick={(props) => <PolarTick {...props} isMobile={isMobile} />}
+              tick={(props) => (
+                <CustomTick
+                  {...props}
+                  countries={countries}
+                  shouldReduceMotion={shouldReduceMotion}
+                />
+              )}
             />
             <PolarRadiusAxis
               angle={90}
@@ -442,13 +554,21 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
               const isVisible = visibilityMap[country.code] !== false;
               if (!isVisible) return null;
               const colorConfig = chartColors[index % chartColors.length];
+              const fillValue = shouldReduceMotion
+                ? colorConfig.stroke
+                : `url(#radial-gradient-${country.code})`;
+              const filterValue = shouldReduceMotion
+                ? undefined
+                : `url(#glow-${country.code})`;
               return (
                 <Radar
                   key={country.code}
                   name={isKorean ? country.nameKo : country.name}
                   dataKey={country.code}
                   stroke={colorConfig.stroke}
-                  fill={colorConfig.fill}
+                  fill={fillValue}
+                  fillOpacity={0.2}
+                  filter={filterValue}
                   strokeWidth={2.5}
                   strokeDasharray={colorConfig.strokeDasharray}
                   dot={(props) => (
@@ -460,20 +580,9 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                       fill={colorConfig.stroke}
                     />
                   )}
-                  label={
-                    !isMobile
-                      ? (props) => (
-                          <RadarVertexLabel
-                            cx={props.cx}
-                            cy={props.cy}
-                            value={props.value}
-                          />
-                        )
-                      : false
-                  }
-                  animationDuration={shouldReduceMotion ? 0 : 600}
-                  animationEasing="ease-in-out"
-                  animationBegin={shouldReduceMotion ? 0 : index * 100}
+                  isAnimationActive={!shouldReduceMotion}
+                  animationDuration={shouldReduceMotion ? 0 : 800}
+                  animationBegin={shouldReduceMotion ? 0 : index * 150}
                 />
               );
             })}

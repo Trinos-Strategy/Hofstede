@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /**
  * Language Context for i18n support
  *
@@ -100,6 +101,17 @@ export function LanguageProvider({ children, defaultLanguage }: LanguageProvider
   const [language, setLanguageState] = useState<Language>(() =>
     getInitialLanguage(defaultLanguage)
   );
+
+  // Sync with localStorage on mount (handle SSR)
+  useEffect(() => {
+    const stored = getInitialLanguage(defaultLanguage);
+    if (stored !== language) {
+      const handle = requestAnimationFrame(() => {
+        setLanguageState(stored);
+      });
+      return () => cancelAnimationFrame(handle);
+    }
+  }, [defaultLanguage, language]);
 
   // Persist to localStorage when language changes
   useEffect(() => {

@@ -1,65 +1,461 @@
-export interface NatureProfile {
-  biome: 'alpine' | 'forest' | 'coastal' | 'desert' | 'aurora' | 'tropical' | 'temperate' | 'steppe' | 'neutral';
-  gradientFrom: string;
-  gradientTo: string;
-  particleType: 'snow' | 'leaves' | 'sand' | 'rain' | 'aurora' | 'sakura' | 'mist' | 'fireflies' | 'stars' | 'none';
-  motionIntensity: 1 | 2 | 3;
+export type BiomeType =
+  | 'aurora'
+  | 'stars'
+  | 'forest'
+  | 'desert'
+  | 'mountains'
+  | 'ocean'
+  | 'plains'
+  | 'savanna'
+  | 'tundra';
+
+export type ParticleType =
+  | 'aurora'
+  | 'star'
+  | 'leaf'
+  | 'sand'
+  | 'mist'
+  | 'bubble'
+  | 'petal'
+  | 'sparkle'
+  | 'snow';
+
+export interface CountryNatureProfile {
+  countryCode: string;
+  biome: BiomeType;
+  particleType: ParticleType;
+  gradients: {
+    light: string;
+    dark: string;
+  };
+  particleColors: string[];
 }
 
-export const countryNatureProfiles: Record<string, NatureProfile> = {
-  KOR: { biome: 'alpine', gradientFrom: '#0f172a', gradientTo: '#1e1b4b', particleType: 'snow', motionIntensity: 2 },
-  JPN: { biome: 'temperate', gradientFrom: '#1a0f2e', gradientTo: '#2d1b4e', particleType: 'sakura', motionIntensity: 2 },
-  CHN: { biome: 'temperate', gradientFrom: '#0f1a2e', gradientTo: '#1e2d4e', particleType: 'mist', motionIntensity: 1 },
-  USA: { biome: 'temperate', gradientFrom: '#0f1e2e', gradientTo: '#1a2d4e', particleType: 'fireflies', motionIntensity: 1 },
-  GBR: { biome: 'coastal', gradientFrom: '#0f172e', gradientTo: '#1a2340', particleType: 'rain', motionIntensity: 2 },
-  DEU: { biome: 'forest', gradientFrom: '#0f1a14', gradientTo: '#1a2d1e', particleType: 'mist', motionIntensity: 1 },
-  FRA: { biome: 'temperate', gradientFrom: '#1a0f2e', gradientTo: '#2d1a3e', particleType: 'mist', motionIntensity: 1 },
-  ITA: { biome: 'coastal', gradientFrom: '#0f1a2e', gradientTo: '#1e2a3e', particleType: 'mist', motionIntensity: 1 },
-  NLD: { biome: 'coastal', gradientFrom: '#0f1e2e', gradientTo: '#1a2e3e', particleType: 'rain', motionIntensity: 1 },
-  BEL: { biome: 'forest', gradientFrom: '#0f1a14', gradientTo: '#1e2e1e', particleType: 'mist', motionIntensity: 1 },
-  SWE: { biome: 'aurora', gradientFrom: '#050e1a', gradientTo: '#0a1a2e', particleType: 'aurora', motionIntensity: 2 },
-  NOR: { biome: 'aurora', gradientFrom: '#050e14', gradientTo: '#081a1e', particleType: 'aurora', motionIntensity: 1 },
-  DNK: { biome: 'coastal', gradientFrom: '#0f1e2e', gradientTo: '#1a2e3e', particleType: 'rain', motionIntensity: 1 },
-  FIN: { biome: 'aurora', gradientFrom: '#050e1a', gradientTo: '#0a1428', particleType: 'aurora', motionIntensity: 2 },
-  POL: { biome: 'forest', gradientFrom: '#0f1a14', gradientTo: '#1a2e1e', particleType: 'leaves', motionIntensity: 1 },
-  RUS: { biome: 'steppe', gradientFrom: '#0a0f1a', gradientTo: '#141e2e', particleType: 'snow', motionIntensity: 2 },
-  CHE: { biome: 'alpine', gradientFrom: '#0f1a2e', gradientTo: '#1a2e4e', particleType: 'snow', motionIntensity: 2 },
-  AUT: { biome: 'alpine', gradientFrom: '#0f1a2e', gradientTo: '#1a2840', particleType: 'snow', motionIntensity: 1 },
-  ESP: { biome: 'temperate', gradientFrom: '#1a0f0a', gradientTo: '#2e1a0f', particleType: 'mist', motionIntensity: 1 },
-  PRT: { biome: 'coastal', gradientFrom: '#0f1a28', gradientTo: '#1a2840', particleType: 'rain', motionIntensity: 1 },
-  GRC: { biome: 'coastal', gradientFrom: '#0f1e2e', gradientTo: '#1e3040', particleType: 'mist', motionIntensity: 1 },
-  TUR: { biome: 'steppe', gradientFrom: '#1a0f0a', gradientTo: '#2e1a14', particleType: 'sand', motionIntensity: 2 },
-  IND: { biome: 'tropical', gradientFrom: '#0f1a0a', gradientTo: '#1e2e14', particleType: 'leaves', motionIntensity: 2 },
-  THA: { biome: 'tropical', gradientFrom: '#0a1a0f', gradientTo: '#142e1e', particleType: 'leaves', motionIntensity: 3 },
-  IDN: { biome: 'tropical', gradientFrom: '#0a1e14', gradientTo: '#142e1e', particleType: 'leaves', motionIntensity: 3 },
-  MYS: { biome: 'tropical', gradientFrom: '#0a1a0f', gradientTo: '#142814', particleType: 'leaves', motionIntensity: 2 },
-  SGP: { biome: 'coastal', gradientFrom: '#0f1e28', gradientTo: '#1a2e3e', particleType: 'rain', motionIntensity: 1 },
-  PHL: { biome: 'tropical', gradientFrom: '#0a1e14', gradientTo: '#142e1e', particleType: 'leaves', motionIntensity: 2 },
-  AUS: { biome: 'coastal', gradientFrom: '#0f1e28', gradientTo: '#1a2e40', particleType: 'mist', motionIntensity: 1 },
-  NZL: { biome: 'coastal', gradientFrom: '#0f1e2e', gradientTo: '#1a2e40', particleType: 'mist', motionIntensity: 1 },
-  BRA: { biome: 'tropical', gradientFrom: '#0a1e0f', gradientTo: '#142e1a', particleType: 'leaves', motionIntensity: 3 },
-  MEX: { biome: 'desert', gradientFrom: '#1a0f0a', gradientTo: '#2e1e0f', particleType: 'sand', motionIntensity: 2 },
-  COL: { biome: 'tropical', gradientFrom: '#0a1a0f', gradientTo: '#14281e', particleType: 'leaves', motionIntensity: 2 },
-  // Codes present in dataset but not explicitly assigned in Phase C instructions
-  IRL: { biome: 'coastal', gradientFrom: '#0f1e2e', gradientTo: '#1a2e40', particleType: 'rain', motionIntensity: 1 },
-  HKG: { biome: 'coastal', gradientFrom: '#0f1e28', gradientTo: '#1a2e3e', particleType: 'rain', motionIntensity: 1 },
-  CHL: { biome: 'coastal', gradientFrom: '#0f1e2e', gradientTo: '#1a2e3e', particleType: 'mist', motionIntensity: 1 },
-  PER: { biome: 'coastal', gradientFrom: '#0f1e2e', gradientTo: '#1a2e3e', particleType: 'mist', motionIntensity: 1 },
-  TWN: { biome: 'coastal', gradientFrom: '#0f1e28', gradientTo: '#1a2e3e', particleType: 'rain', motionIntensity: 2 },
-  VEN: { biome: 'tropical', gradientFrom: '#0a1e0f', gradientTo: '#142e1a', particleType: 'leaves', motionIntensity: 2 },
-  CZE: { biome: 'forest', gradientFrom: '#0f1a14', gradientTo: '#1a2e1e', particleType: 'mist', motionIntensity: 1 },
-  HUN: { biome: 'forest', gradientFrom: '#0f1a14', gradientTo: '#1a2e1e', particleType: 'mist', motionIntensity: 1 },
+export const countryNatureProfiles: Record<string, CountryNatureProfile> = {
+  USA: {
+    countryCode: 'USA',
+    biome: 'plains',
+    particleType: 'petal',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(232, 245, 233, 0.2) 0%, rgba(200, 230, 201, 0.1) 100%)',
+      dark: 'linear-gradient(180deg, #0F1F15 0%, #0A140E 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFCDD2', '#EF9A9A', '#E8F5E9', '#FFF9C4'],
+  },
+  GBR: {
+    countryCode: 'GBR',
+    biome: 'ocean',
+    particleType: 'bubble',
+    gradients: {
+      light: 'radial-gradient(circle at 70% 30%, rgba(0, 180, 216, 0.12) 0%, rgba(2, 62, 138, 0.04) 70%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 70% 30%, rgba(0, 119, 182, 0.2) 0%, rgba(3, 4, 94, 0.35) 70%, #0A0E1A 100%)',
+    },
+    particleColors: ['#B2EBF2', '#80DEEA', '#4DD0E1', '#E0F7FA'],
+  },
+  AUS: {
+    countryCode: 'AUS',
+    biome: 'desert',
+    particleType: 'sand',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(250, 217, 97, 0.15) 0%, rgba(247, 107, 28, 0.08) 100%)',
+      dark: 'linear-gradient(180deg, #1A0B05 0%, #30180D 50%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FF8A65', '#FFB74D', '#FFD54F', '#D84315'],
+  },
+  IRL: {
+    countryCode: 'IRL',
+    biome: 'ocean',
+    particleType: 'bubble',
+    gradients: {
+      light: 'radial-gradient(circle at 70% 30%, rgba(0, 180, 216, 0.12) 0%, rgba(2, 62, 138, 0.04) 70%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 70% 30%, rgba(0, 119, 182, 0.2) 0%, rgba(3, 4, 94, 0.35) 70%, #0A0E1A 100%)',
+    },
+    particleColors: ['#B2EBF2', '#80DEEA', '#4DD0E1', '#E0F7FA'],
+  },
+  NZL: {
+    countryCode: 'NZL',
+    biome: 'ocean',
+    particleType: 'bubble',
+    gradients: {
+      light: 'radial-gradient(circle at 70% 30%, rgba(0, 180, 216, 0.12) 0%, rgba(2, 62, 138, 0.04) 70%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 70% 30%, rgba(0, 119, 182, 0.2) 0%, rgba(3, 4, 94, 0.35) 70%, #0A0E1A 100%)',
+    },
+    particleColors: ['#B2EBF2', '#80DEEA', '#4DD0E1', '#E0F7FA'],
+  },
+  DNK: {
+    countryCode: 'DNK',
+    biome: 'ocean',
+    particleType: 'bubble',
+    gradients: {
+      light: 'radial-gradient(circle at 70% 30%, rgba(0, 180, 216, 0.12) 0%, rgba(2, 62, 138, 0.04) 70%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 70% 30%, rgba(0, 119, 182, 0.2) 0%, rgba(3, 4, 94, 0.35) 70%, #0A0E1A 100%)',
+    },
+    particleColors: ['#B2EBF2', '#80DEEA', '#4DD0E1', '#E0F7FA'],
+  },
+  NLD: {
+    countryCode: 'NLD',
+    biome: 'ocean',
+    particleType: 'bubble',
+    gradients: {
+      light: 'radial-gradient(circle at 70% 30%, rgba(0, 180, 216, 0.12) 0%, rgba(2, 62, 138, 0.04) 70%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 70% 30%, rgba(0, 119, 182, 0.2) 0%, rgba(3, 4, 94, 0.35) 70%, #0A0E1A 100%)',
+    },
+    particleColors: ['#B2EBF2', '#80DEEA', '#4DD0E1', '#E0F7FA'],
+  },
+  NOR: {
+    countryCode: 'NOR',
+    biome: 'aurora',
+    particleType: 'aurora',
+    gradients: {
+      light: 'radial-gradient(circle at 50% -20%, rgba(0, 242, 96, 0.15) 0%, rgba(5, 117, 230, 0.05) 50%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 50% -20%, rgba(0, 242, 96, 0.2) 0%, rgba(5, 117, 230, 0.08) 50%, #0A0E1A 100%)',
+    },
+    particleColors: ['#00F260', '#0575E6', '#8E2DE2', '#4A00E0'],
+  },
+  SWE: {
+    countryCode: 'SWE',
+    biome: 'aurora',
+    particleType: 'aurora',
+    gradients: {
+      light: 'radial-gradient(circle at 50% -20%, rgba(0, 242, 96, 0.15) 0%, rgba(5, 117, 230, 0.05) 50%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 50% -20%, rgba(0, 242, 96, 0.2) 0%, rgba(5, 117, 230, 0.08) 50%, #0A0E1A 100%)',
+    },
+    particleColors: ['#00F260', '#0575E6', '#8E2DE2', '#4A00E0'],
+  },
+  FIN: {
+    countryCode: 'FIN',
+    biome: 'aurora',
+    particleType: 'aurora',
+    gradients: {
+      light: 'radial-gradient(circle at 50% -20%, rgba(0, 242, 96, 0.15) 0%, rgba(5, 117, 230, 0.05) 50%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 50% -20%, rgba(0, 242, 96, 0.2) 0%, rgba(5, 117, 230, 0.08) 50%, #0A0E1A 100%)',
+    },
+    particleColors: ['#00F260', '#0575E6', '#8E2DE2', '#4A00E0'],
+  },
+  CHN: {
+    countryCode: 'CHN',
+    biome: 'mountains',
+    particleType: 'mist',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(176, 190, 197, 0.18) 0%, rgba(120, 144, 156, 0.08) 100%)',
+      dark: 'linear-gradient(135deg, #1A2332 0%, #101725 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE'],
+  },
+  HKG: {
+    countryCode: 'HKG',
+    biome: 'ocean',
+    particleType: 'bubble',
+    gradients: {
+      light: 'radial-gradient(circle at 70% 30%, rgba(0, 180, 216, 0.12) 0%, rgba(2, 62, 138, 0.04) 70%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 70% 30%, rgba(0, 119, 182, 0.2) 0%, rgba(3, 4, 94, 0.35) 70%, #0A0E1A 100%)',
+    },
+    particleColors: ['#B2EBF2', '#80DEEA', '#4DD0E1', '#E0F7FA'],
+  },
+  IND: {
+    countryCode: 'IND',
+    biome: 'savanna',
+    particleType: 'sparkle',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(255, 224, 178, 0.2) 0%, rgba(255, 204, 128, 0.1) 100%)',
+      dark: 'linear-gradient(135deg, #2D1A04 0%, #190F02 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFB74D', '#FFA726', '#FF8F00', '#FF6F00'],
+  },
+  IDN: {
+    countryCode: 'IDN',
+    biome: 'savanna',
+    particleType: 'sparkle',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(255, 224, 178, 0.2) 0%, rgba(255, 204, 128, 0.1) 100%)',
+      dark: 'linear-gradient(135deg, #2D1A04 0%, #190F02 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFB74D', '#FFA726', '#FF8F00', '#FF6F00'],
+  },
+  MYS: {
+    countryCode: 'MYS',
+    biome: 'savanna',
+    particleType: 'sparkle',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(255, 224, 178, 0.2) 0%, rgba(255, 204, 128, 0.1) 100%)',
+      dark: 'linear-gradient(135deg, #2D1A04 0%, #190F02 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFB74D', '#FFA726', '#FF8F00', '#FF6F00'],
+  },
+  PHL: {
+    countryCode: 'PHL',
+    biome: 'savanna',
+    particleType: 'sparkle',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(255, 224, 178, 0.2) 0%, rgba(255, 204, 128, 0.1) 100%)',
+      dark: 'linear-gradient(135deg, #2D1A04 0%, #190F02 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFB74D', '#FFA726', '#FF8F00', '#FF6F00'],
+  },
+  SGP: {
+    countryCode: 'SGP',
+    biome: 'ocean',
+    particleType: 'bubble',
+    gradients: {
+      light: 'radial-gradient(circle at 70% 30%, rgba(0, 180, 216, 0.12) 0%, rgba(2, 62, 138, 0.04) 70%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 70% 30%, rgba(0, 119, 182, 0.2) 0%, rgba(3, 4, 94, 0.35) 70%, #0A0E1A 100%)',
+    },
+    particleColors: ['#B2EBF2', '#80DEEA', '#4DD0E1', '#E0F7FA'],
+  },
+  BRA: {
+    countryCode: 'BRA',
+    biome: 'forest',
+    particleType: 'leaf',
+    gradients: {
+      light: 'radial-gradient(circle at 30% 20%, rgba(76, 175, 80, 0.12) 0%, rgba(139, 195, 74, 0.04) 60%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 30% 20%, rgba(20, 50, 20, 0.35) 0%, rgba(10, 25, 10, 0.5) 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#81C784', '#AED581', '#FFD54F', '#D4AF37'],
+  },
+  CHL: {
+    countryCode: 'CHL',
+    biome: 'mountains',
+    particleType: 'mist',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(176, 190, 197, 0.18) 0%, rgba(120, 144, 156, 0.08) 100%)',
+      dark: 'linear-gradient(135deg, #1A2332 0%, #101725 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE'],
+  },
+  COL: {
+    countryCode: 'COL',
+    biome: 'mountains',
+    particleType: 'mist',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(176, 190, 197, 0.18) 0%, rgba(120, 144, 156, 0.08) 100%)',
+      dark: 'linear-gradient(135deg, #1A2332 0%, #101725 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE'],
+  },
+  GRC: {
+    countryCode: 'GRC',
+    biome: 'mountains',
+    particleType: 'mist',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(176, 190, 197, 0.18) 0%, rgba(120, 144, 156, 0.08) 100%)',
+      dark: 'linear-gradient(135deg, #1A2332 0%, #101725 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE'],
+  },
+  KOR: {
+    countryCode: 'KOR',
+    biome: 'stars',
+    particleType: 'star',
+    gradients: {
+      light: 'linear-gradient(180deg, #1A1C29 0%, #2B3A55 60%, #E8D5C4 100%)',
+      dark: 'linear-gradient(180deg, #090A0F 0%, #0D1321 50%, #151E3D 100%)',
+    },
+    particleColors: ['#FFE082', '#FFF59D', '#ECEFF1', '#FFFFFF'],
+  },
+  MEX: {
+    countryCode: 'MEX',
+    biome: 'desert',
+    particleType: 'sand',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(250, 217, 97, 0.15) 0%, rgba(247, 107, 28, 0.08) 100%)',
+      dark: 'linear-gradient(180deg, #1A0B05 0%, #30180D 50%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FF8A65', '#FFB74D', '#FFD54F', '#D84315'],
+  },
+  PER: {
+    countryCode: 'PER',
+    biome: 'mountains',
+    particleType: 'mist',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(176, 190, 197, 0.18) 0%, rgba(120, 144, 156, 0.08) 100%)',
+      dark: 'linear-gradient(135deg, #1A2332 0%, #101725 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE'],
+  },
+  PRT: {
+    countryCode: 'PRT',
+    biome: 'ocean',
+    particleType: 'bubble',
+    gradients: {
+      light: 'radial-gradient(circle at 70% 30%, rgba(0, 180, 216, 0.12) 0%, rgba(2, 62, 138, 0.04) 70%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 70% 30%, rgba(0, 119, 182, 0.2) 0%, rgba(3, 4, 94, 0.35) 70%, #0A0E1A 100%)',
+    },
+    particleColors: ['#B2EBF2', '#80DEEA', '#4DD0E1', '#E0F7FA'],
+  },
+  RUS: {
+    countryCode: 'RUS',
+    biome: 'tundra',
+    particleType: 'snow',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(224, 247, 250, 0.2) 0%, rgba(178, 235, 242, 0.1) 100%)',
+      dark: 'linear-gradient(180deg, #102A35 0%, #0C1E26 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFFFFF', '#E0F7FA', '#B2EBF2', '#ECEFF1'],
+  },
+  TWN: {
+    countryCode: 'TWN',
+    biome: 'plains',
+    particleType: 'petal',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(232, 245, 233, 0.2) 0%, rgba(200, 230, 201, 0.1) 100%)',
+      dark: 'linear-gradient(180deg, #0F1F15 0%, #0A140E 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFCDD2', '#EF9A9A', '#E8F5E9', '#FFF9C4'],
+  },
+  THA: {
+    countryCode: 'THA',
+    biome: 'savanna',
+    particleType: 'sparkle',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(255, 224, 178, 0.2) 0%, rgba(255, 204, 128, 0.1) 100%)',
+      dark: 'linear-gradient(135deg, #2D1A04 0%, #190F02 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFB74D', '#FFA726', '#FF8F00', '#FF6F00'],
+  },
+  TUR: {
+    countryCode: 'TUR',
+    biome: 'plains',
+    particleType: 'petal',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(232, 245, 233, 0.2) 0%, rgba(200, 230, 201, 0.1) 100%)',
+      dark: 'linear-gradient(180deg, #0F1F15 0%, #0A140E 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFCDD2', '#EF9A9A', '#E8F5E9', '#FFF9C4'],
+  },
+  VEN: {
+    countryCode: 'VEN',
+    biome: 'savanna',
+    particleType: 'sparkle',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(255, 224, 178, 0.2) 0%, rgba(255, 204, 128, 0.1) 100%)',
+      dark: 'linear-gradient(135deg, #2D1A04 0%, #190F02 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFB74D', '#FFA726', '#FF8F00', '#FF6F00'],
+  },
+  JPN: {
+    countryCode: 'JPN',
+    biome: 'mountains',
+    particleType: 'mist',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(176, 190, 197, 0.18) 0%, rgba(120, 144, 156, 0.08) 100%)',
+      dark: 'linear-gradient(135deg, #1A2332 0%, #101725 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE'],
+  },
+  BEL: {
+    countryCode: 'BEL',
+    biome: 'forest',
+    particleType: 'leaf',
+    gradients: {
+      light: 'radial-gradient(circle at 30% 20%, rgba(76, 175, 80, 0.12) 0%, rgba(139, 195, 74, 0.04) 60%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 30% 20%, rgba(20, 50, 20, 0.35) 0%, rgba(10, 25, 10, 0.5) 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#81C784', '#AED581', '#FFD54F', '#D4AF37'],
+  },
+  FRA: {
+    countryCode: 'FRA',
+    biome: 'plains',
+    particleType: 'petal',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(232, 245, 233, 0.2) 0%, rgba(200, 230, 201, 0.1) 100%)',
+      dark: 'linear-gradient(180deg, #0F1F15 0%, #0A140E 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFCDD2', '#EF9A9A', '#E8F5E9', '#FFF9C4'],
+  },
+  ITA: {
+    countryCode: 'ITA',
+    biome: 'plains',
+    particleType: 'petal',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(232, 245, 233, 0.2) 0%, rgba(200, 230, 201, 0.1) 100%)',
+      dark: 'linear-gradient(180deg, #0F1F15 0%, #0A140E 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFCDD2', '#EF9A9A', '#E8F5E9', '#FFF9C4'],
+  },
+  ESP: {
+    countryCode: 'ESP',
+    biome: 'plains',
+    particleType: 'petal',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(232, 245, 233, 0.2) 0%, rgba(200, 230, 201, 0.1) 100%)',
+      dark: 'linear-gradient(180deg, #0F1F15 0%, #0A140E 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFCDD2', '#EF9A9A', '#E8F5E9', '#FFF9C4'],
+  },
+  POL: {
+    countryCode: 'POL',
+    biome: 'forest',
+    particleType: 'leaf',
+    gradients: {
+      light: 'radial-gradient(circle at 30% 20%, rgba(76, 175, 80, 0.12) 0%, rgba(139, 195, 74, 0.04) 60%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 30% 20%, rgba(20, 50, 20, 0.35) 0%, rgba(10, 25, 10, 0.5) 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#81C784', '#AED581', '#FFD54F', '#D4AF37'],
+  },
+  AUT: {
+    countryCode: 'AUT',
+    biome: 'forest',
+    particleType: 'leaf',
+    gradients: {
+      light: 'radial-gradient(circle at 30% 20%, rgba(76, 175, 80, 0.12) 0%, rgba(139, 195, 74, 0.04) 60%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 30% 20%, rgba(20, 50, 20, 0.35) 0%, rgba(10, 25, 10, 0.5) 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#81C784', '#AED581', '#FFD54F', '#D4AF37'],
+  },
+  CZE: {
+    countryCode: 'CZE',
+    biome: 'forest',
+    particleType: 'leaf',
+    gradients: {
+      light: 'radial-gradient(circle at 30% 20%, rgba(76, 175, 80, 0.12) 0%, rgba(139, 195, 74, 0.04) 60%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 30% 20%, rgba(20, 50, 20, 0.35) 0%, rgba(10, 25, 10, 0.5) 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#81C784', '#AED581', '#FFD54F', '#D4AF37'],
+  },
+  DEU: {
+    countryCode: 'DEU',
+    biome: 'forest',
+    particleType: 'leaf',
+    gradients: {
+      light: 'radial-gradient(circle at 30% 20%, rgba(76, 175, 80, 0.12) 0%, rgba(139, 195, 74, 0.04) 60%, #F5F0E8 100%)',
+      dark: 'radial-gradient(circle at 30% 20%, rgba(20, 50, 20, 0.35) 0%, rgba(10, 25, 10, 0.5) 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#81C784', '#AED581', '#FFD54F', '#D4AF37'],
+  },
+  HUN: {
+    countryCode: 'HUN',
+    biome: 'plains',
+    particleType: 'petal',
+    gradients: {
+      light: 'linear-gradient(180deg, rgba(232, 245, 233, 0.2) 0%, rgba(200, 230, 201, 0.1) 100%)',
+      dark: 'linear-gradient(180deg, #0F1F15 0%, #0A140E 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#FFCDD2', '#EF9A9A', '#E8F5E9', '#FFF9C4'],
+  },
+  CHE: {
+    countryCode: 'CHE',
+    biome: 'mountains',
+    particleType: 'mist',
+    gradients: {
+      light: 'linear-gradient(135deg, rgba(176, 190, 197, 0.18) 0%, rgba(120, 144, 156, 0.08) 100%)',
+      dark: 'linear-gradient(135deg, #1A2332 0%, #101725 60%, #0A0E1A 100%)',
+    },
+    particleColors: ['#ECEFF1', '#CFD8DC', '#B0BEC5', '#90A4AE'],
+  },
 };
 
-export const fallbackNatureProfile: NatureProfile = {
-  biome: 'neutral',
-  gradientFrom: '#0f172a',
-  gradientTo: '#1e2040',
-  particleType: 'stars',
-  motionIntensity: 1,
+// Fallback profile if country code isn't mapped
+export const defaultNatureProfile: CountryNatureProfile = {
+  countryCode: 'DEFAULT',
+  biome: 'stars',
+  particleType: 'star',
+  gradients: {
+    light: 'linear-gradient(180deg, #1A1C29 0%, #2B3A55 60%, #E8D5C4 100%)',
+    dark: 'linear-gradient(180deg, #090A0F 0%, #0D1321 50%, #151E3D 100%)',
+  },
+  particleColors: ['#FFE082', '#FFF59D', '#ECEFF1', '#FFFFFF'],
 };
 
-export function getNatureProfile(countryCode: string | null | undefined): NatureProfile {
-  if (!countryCode) return fallbackNatureProfile;
-  return countryNatureProfiles[countryCode] || fallbackNatureProfile;
-}
+export const getCountryNatureProfile = (countryCode: string): CountryNatureProfile => {
+  return countryNatureProfiles[countryCode] || defaultNatureProfile;
+};
