@@ -220,7 +220,7 @@ function DetailedAdviceSection({
   accentColor: string;
   direction: 'AtoB' | 'BtoA';
 }) {
-  const { t } = useLanguage();
+  const { t: _t } = useLanguage();
 
   return (
     <motion.div
