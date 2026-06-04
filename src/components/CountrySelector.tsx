@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronDown, Search, Plus } from 'lucide-react';
+import { X, Search } from 'lucide-react';
 import type { Country, ClusterType } from '../types';
-import { countries, clusterInfo, clusterOrder } from '../data/countries';
+import { countries, clusterInfo } from '../data/countries';
 import { useLanguage } from '../i18n';
 
 interface CountrySelectorProps {
@@ -13,12 +13,33 @@ interface CountrySelectorProps {
   maxSelections?: number;
 }
 
-// ColorBrewer qualitative palette - consistent with radar chart
 const countryColors = [
-  { bg: '#1b9e77', text: '#FFFFFF' }, // Teal - 1st country
-  { bg: '#d95f02', text: '#FFFFFF' }, // Orange - 2nd country
-  { bg: '#7570b3', text: '#FFFFFF' }, // Purple - 3rd country
+  { bg: 'var(--color-teal, #1b9e77)', text: 'var(--color-ivory, #F5F0E8)' },   // Teal
+  { bg: 'var(--color-coral, #d95f02)', text: 'var(--color-ivory, #F5F0E8)' },  // Orange
+  { bg: 'var(--color-sage, #7570b3)', text: 'var(--color-ivory, #F5F0E8)' },   // Purple
 ];
+
+const clusterColors: Record<ClusterType, string> = {
+  contest: 'var(--contest-color, #8B6914)',
+  network: 'var(--network-color, #5A6350)',
+  family: 'var(--family-color, #9D7E00)',
+  pyramid: 'var(--pyramid-color, #6B5A42)',
+  solarSystem: 'var(--solar-color, #A0654A)',
+  machine: 'var(--machine-color, #4A5A6B)',
+};
+
+function getCountryFlag(code: string): string {
+  const flags: Record<string, string> = {
+    USA: '🇺🇸', GBR: '🇬🇧', AUS: '🇦🇺', IRL: '🇮🇪', NZL: '🇳🇿',
+    DNK: '🇩🇰', NLD: '🇳🇱', NOR: '🇳🇴', SWE: '🇸🇪', FIN: '🇫🇮',
+    CHN: '🇨🇳', HKG: '🇭🇰', IND: '🇮🇳', IDN: '🇮🇩', MYS: '🇲🇾', PHL: '🇵🇭', SGP: '🇸🇬',
+    BRA: '🇧🇷', CHL: '🇨🇱', COL: '🇨🇴', GRC: '🇬🇷', KOR: '🇰🇷', MEX: '🇲🇽', PER: '🇵🇪',
+    PRT: '🇵🇹', RUS: '🇷🇺', TWN: '🇹🇼', THA: '🇹🇭', TUR: '🇹🇷', VEN: '🇻🇪', JPN: '🇯🇵',
+    BEL: '🇧🇪', FRA: '🇫🇷', ITA: '🇮🇹', ESP: '🇪🇸', POL: '🇵🇱',
+    AUT: '🇦🇹', CZE: '🇨🇿', DEU: '🇩🇪', HUN: '🇭🇺', CHE: '🇨🇭'
+  };
+  return flags[code] || '🏳️';
+}
 
 export function CountrySelector({
   selectedCountries,
@@ -30,7 +51,10 @@ export function CountrySelector({
   const { t, isKorean } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeIndex, setActiveIndex] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const optionsListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -42,161 +66,230 @@ export function CountrySelector({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const filteredCountries = countries.filter((country) => {
-    const matchesSearch =
-      country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      country.nameKo.includes(searchTerm);
-    const matchesCluster = filterCluster ? country.cluster === filterCluster : true;
-    const notSelected = !selectedCountries.find((c) => c.code === country.code);
-    return matchesSearch && matchesCluster && notSelected;
-  });
+  const filteredCountries = useMemo(() => {
+    return countries.filter((country) => {
+      const query = searchTerm.toLowerCase();
+      const matchesSearch =
+        country.name.toLowerCase().includes(query) ||
+        country.nameKo.includes(searchTerm) ||
+        country.code.toLowerCase().includes(query);
+      const matchesCluster = filterCluster ? country.cluster === filterCluster : true;
+      const notSelected = !selectedCountries.find((c) => c.code === country.code);
+      return matchesSearch && matchesCluster && notSelected;
+    });
+  }, [searchTerm, filterCluster, selectedCountries]);
 
-  const groupedCountries = clusterOrder.reduce((acc, cluster) => {
-    const clusterCountries = filteredCountries.filter((c) => c.cluster === cluster);
-    if (clusterCountries.length > 0) {
-      acc[cluster] = clusterCountries;
+  // Reset active index when search or list changes
+  useEffect(() => {
+    const handle = requestAnimationFrame(() => {
+      setActiveIndex(0);
+    });
+    return () => cancelAnimationFrame(handle);
+  }, [filteredCountries]);
+
+  // Scroll active item into view
+  useEffect(() => {
+    if (isOpen && optionsListRef.current) {
+      const activeEl = optionsListRef.current.children[activeIndex] as HTMLElement;
+      if (activeEl) {
+        const listHeight = optionsListRef.current.clientHeight;
+        const listScrollTop = optionsListRef.current.scrollTop;
+        const elOffsetTop = activeEl.offsetTop;
+        const elHeight = activeEl.clientHeight;
+
+        if (elOffsetTop < listScrollTop) {
+          optionsListRef.current.scrollTop = elOffsetTop;
+        } else if (elOffsetTop + elHeight > listScrollTop + listHeight) {
+          optionsListRef.current.scrollTop = elOffsetTop + elHeight - listHeight;
+        }
+      }
     }
-    return acc;
-  }, {} as Record<ClusterType, Country[]>);
+  }, [activeIndex, isOpen]);
 
   const canAddMore = selectedCountries.length < maxSelections;
 
+  const selectCountry = (country: Country) => {
+    onCountrySelect(country);
+    setSearchTerm('');
+    if (selectedCountries.length + 1 >= maxSelections) {
+      setIsOpen(false);
+      inputRef.current?.blur();
+    } else {
+      inputRef.current?.focus();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!canAddMore) return;
+
+    if (!isOpen) {
+      if (e.key === 'ArrowDown' || e.key === 'Enter') {
+        setIsOpen(true);
+        e.preventDefault();
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActiveIndex((prev) => (filteredCountries.length > 0 ? (prev + 1) % filteredCountries.length : 0));
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActiveIndex((prev) => (filteredCountries.length > 0 ? (prev - 1 + filteredCountries.length) % filteredCountries.length : 0));
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filteredCountries[activeIndex]) {
+        selectCountry(filteredCountries[activeIndex]);
+      }
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      setIsOpen(false);
+      inputRef.current?.blur();
+    }
+  };
+
   return (
-    <div className="relative" ref={dropdownRef}>
-      <div className="mb-5">
-        <div className="flex flex-wrap gap-3 mb-3">
-          <AnimatePresence mode="popLayout">
-            {selectedCountries.map((country, index) => (
-              <motion.div
-                key={country.code}
-                initial={{ opacity: 0, scale: 0.9, y: -10 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                className="country-pill flex items-center gap-3 px-5 py-3 rounded-lg text-sm font-medium"
-                style={{
-                  backgroundColor: countryColors[index % countryColors.length].bg,
-                  color: countryColors[index % countryColors.length].text,
+    <div className="relative w-full" ref={dropdownRef}>
+      {/* Selected Countries Pills ABOVE the input */}
+      <div className="flex flex-wrap gap-2.5 mb-4 min-h-[40px] items-center">
+        <AnimatePresence mode="popLayout">
+          {selectedCountries.map((country, index) => (
+            <motion.div
+              key={country.code}
+              initial={{ opacity: 0, scale: 0.85, y: -8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.85, y: -8 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold shadow-sm border border-white/10"
+              style={{
+                backgroundColor: countryColors[index % countryColors.length].bg,
+                color: countryColors[index % countryColors.length].text,
+              }}
+            >
+              <span className="text-sm">{getCountryFlag(country.code)}</span>
+              <span className="tracking-wide">
+                {isKorean ? country.nameKo : country.name}
+              </span>
+              <button
+                onClick={() => {
+                  onCountryRemove(country.code);
+                  inputRef.current?.focus();
                 }}
+                className="p-0.5 rounded-full hover:bg-white/20 transition-colors duration-200 cursor-pointer flex items-center justify-center ml-1"
+                aria-label={`Remove ${country.name}`}
               >
-                <span className="tracking-wide">{isKorean ? country.nameKo : country.name}</span>
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => onCountryRemove(country.code)}
-                  className="remove-btn p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-300"
-                >
-                  <X className="w-3.5 h-3.5" strokeWidth={1.5} />
-                </motion.button>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+                <X className="w-3.5 h-3.5" strokeWidth={2} />
+              </button>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
         {selectedCountries.length === 0 && (
-          <p className="text-sm text-[#444444] flex items-center gap-2">
-            <Plus className="w-4 h-4" strokeWidth={1.5} />
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-xs text-[var(--color-ivory-muted, #C8C0B0)] italic tracking-wide pl-1"
+          >
             {t('selectCountry', { max: maxSelections })}
-          </p>
+          </motion.span>
         )}
       </div>
 
-      <motion.button
-        whileHover={canAddMore ? { scale: 1.005 } : {}}
-        whileTap={canAddMore ? { scale: 0.995 } : {}}
-        onClick={() => canAddMore && setIsOpen(!isOpen)}
-        disabled={!canAddMore}
-        className={`
-          w-full flex items-center justify-between px-5 py-4
-          rounded-lg transition-all duration-500
-          ${canAddMore
-            ? 'bg-[#F5F4F0] border border-black/8 hover:border-[#B8956A]/50 cursor-pointer'
-            : 'bg-[#F5F4F0] border border-black/5 cursor-not-allowed opacity-50'
+      {/* Input Field with Search Icon */}
+      <div className="relative w-full">
+        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center pointer-events-none">
+          <Search className="w-4 h-4 text-[var(--color-ivory-muted, #C8C0B0)]" strokeWidth={1.5} />
+        </div>
+        <input
+          ref={inputRef}
+          type="text"
+          disabled={!canAddMore}
+          value={canAddMore ? searchTerm : ''}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            if (!isOpen) setIsOpen(true);
+          }}
+          onFocus={() => canAddMore && setIsOpen(true)}
+          onKeyDown={handleKeyDown}
+          placeholder={
+            canAddMore
+              ? (isKorean ? '국가 검색...' : 'Search countries...')
+              : t('maxSelectionComplete')
           }
-        `}
-      >
-        <span className={`text-sm ${canAddMore ? 'text-[#444444]' : 'text-[#444444]/50'}`}>
-          {canAddMore ? t('addCountry') : t('maxSelectionComplete')}
-        </span>
-        <ChevronDown
-          className={`w-4 h-4 transition-transform duration-500 ${isOpen ? 'rotate-180' : ''} ${
-            canAddMore ? 'text-[#444444]' : 'text-[#444444]/50'
-          }`}
-          strokeWidth={1.5}
+          className={`
+            w-full pl-11 pr-4 py-3.5 text-sm rounded-lg transition-all duration-300 border
+            ${canAddMore
+              ? 'bg-white/5 border-white/10 text-[var(--color-ivory, #F5F0E8)] placeholder-[var(--color-ivory-muted, #C8C0B0)]/50 focus:border-[var(--color-brass)] focus:bg-white/10 focus:ring-0'
+              : 'bg-white/5 border-white/5 text-[var(--color-ivory-muted, #C8C0B0)]/40 cursor-not-allowed opacity-50'
+            }
+          `}
         />
-      </motion.button>
+      </div>
 
+      {/* Dropdown Container using glass-card styling */}
       <AnimatePresence>
-        {isOpen && (
+        {isOpen && canAddMore && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-            className="absolute z-50 w-full mt-3 rounded-lg overflow-hidden border border-black/8 bg-white"
-            style={{
-              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.12)'
-            }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+            className="absolute z-50 w-full mt-2 rounded-lg overflow-hidden glass-card max-h-[300px] overflow-y-auto"
+            ref={optionsListRef}
           >
-            <div className="p-4 border-b border-black/5 bg-[#FAFAF8]">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#444444]" strokeWidth={1.5} />
-                <input
-                  type="text"
-                  placeholder={t('searchCountry')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 text-sm
-                    bg-white border border-black/8 rounded-lg
-                    text-[#1A1A1A] placeholder-[#5A5A5A]/60
-                    focus:border-[#B8956A] focus:ring-0
-                    transition-all duration-300"
-                  autoFocus
-                />
+            {filteredCountries.map((country, index) => {
+              const isActive = index === activeIndex;
+              const clr = clusterColors[country.cluster];
+              return (
+                <button
+                  key={country.code}
+                  onClick={() => selectCountry(country)}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  className={`
+                    w-full px-5 py-3 text-left text-sm flex items-center justify-between
+                    transition-all duration-200 border-b border-white/5 cursor-pointer min-h-[48px]
+                    ${isActive
+                      ? 'bg-white/10 border-l-4 border-l-[var(--color-brass)] pl-4'
+                      : 'bg-transparent'
+                    }
+                  `}
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="text-base">{getCountryFlag(country.code)}</span>
+                    <span className={`text-[var(--color-ivory)] ${isActive ? 'font-bold' : 'font-medium'}`}>
+                      {isKorean ? country.nameKo : country.name}
+                    </span>
+                    <span className="text-xs text-[var(--color-ivory-muted)] opacity-60">
+                      ({country.code})
+                    </span>
+                  </span>
+
+                  {/* Cluster badge */}
+                  <span
+                    className="text-[10px] px-2 py-0.5 rounded-full font-medium tracking-wide uppercase border"
+                    style={{
+                      backgroundColor: `${clr}15`,
+                      color: clr,
+                      borderColor: `${clr}35`,
+                    }}
+                  >
+                    {isKorean ? clusterInfo[country.cluster].nameKo : clusterInfo[country.cluster].name}
+                  </span>
+                </button>
+              );
+            })}
+
+            {filteredCountries.length === 0 && (
+              <div className="px-5 py-8 text-sm text-[var(--color-ivory-muted)] text-center flex flex-col items-center justify-center gap-2">
+                <Search className="w-6 h-6 opacity-30" strokeWidth={1.5} />
+                <span>{t('noSearchResults')}</span>
               </div>
-            </div>
-            <div className="max-h-[70vh] overflow-y-auto bg-white">
-              {Object.entries(groupedCountries).map(([cluster, clusterCountries]) => {
-                const info = clusterInfo[cluster as ClusterType];
-                return (
-                  <div key={cluster}>
-                    <div
-                      className="px-5 py-2.5 text-xs font-medium uppercase tracking-wider sticky top-0 bg-[#F5F4F0] border-b border-black/5"
-                      style={{ color: info.color }}
-                    >
-                      <span className="mr-2">{info.icon}</span>
-                      {isKorean ? info.nameKo : info.name}
-                    </div>
-                    {clusterCountries.map((country) => (
-                      <motion.button
-                        key={country.code}
-                        whileHover={{ backgroundColor: '#FAFAF8' }}
-                        onClick={() => {
-                          onCountrySelect(country);
-                          setSearchTerm('');
-                          if (selectedCountries.length + 1 >= maxSelections) {
-                            setIsOpen(false);
-                          }
-                        }}
-                        className="w-full px-5 py-4 text-left text-sm flex items-center justify-between
-                          transition-colors duration-300 border-b border-black/3 min-h-[52px]"
-                      >
-                        <span className="text-[#1A1A1A] font-medium">{isKorean ? country.nameKo : country.name}</span>
-                        <span className="text-xs text-[#444444]/60 tracking-wide">{isKorean ? country.name : country.nameKo}</span>
-                      </motion.button>
-                    ))}
-                  </div>
-                );
-              })}
-              {Object.keys(groupedCountries).length === 0 && (
-                <div className="px-5 py-10 text-sm text-[#444444] text-center">
-                  <Search className="w-8 h-8 mx-auto mb-3 opacity-30" strokeWidth={1.5} />
-                  {t('noSearchResults')}
-                </div>
-              )}
-            </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 }
+
+export default CountrySelector;

@@ -11,7 +11,7 @@ interface ClusterDetailModalProps {
   onClose: () => void;
 }
 
-// Cluster styles with unique colors
+// Cluster styles with unique colors mapping to WCAG AA variables
 const clusterStyles: Record<ClusterType, {
   color: string;
   iconColor: string;
@@ -19,40 +19,40 @@ const clusterStyles: Record<ClusterType, {
   gradientBg: string;
 }> = {
   contest: {
-    color: '#7A5D2E',
-    iconColor: '#D4A017',
-    lightBg: 'rgba(212, 160, 23, 0.08)',
-    gradientBg: 'linear-gradient(135deg, rgba(212, 160, 23, 0.15), rgba(255, 215, 0, 0.05))',
+    color: 'var(--contest-color, #8B6914)',
+    iconColor: 'var(--contest-color, #8B6914)',
+    lightBg: 'rgba(139, 105, 20, 0.08)',
+    gradientBg: 'linear-gradient(135deg, rgba(139, 105, 20, 0.15), rgba(139, 105, 20, 0.05))',
   },
   network: {
-    color: '#2E6B5E',
-    iconColor: '#1B9E77',
-    lightBg: 'rgba(27, 158, 119, 0.08)',
-    gradientBg: 'linear-gradient(135deg, rgba(27, 158, 119, 0.15), rgba(46, 107, 94, 0.05))',
+    color: 'var(--network-color, #5A6350)',
+    iconColor: 'var(--network-color, #5A6350)',
+    lightBg: 'rgba(90, 99, 80, 0.08)',
+    gradientBg: 'linear-gradient(135deg, rgba(90, 99, 80, 0.15), rgba(90, 99, 80, 0.05))',
   },
   family: {
-    color: '#8B4513',
-    iconColor: '#CD853F',
-    lightBg: 'rgba(205, 133, 63, 0.08)',
-    gradientBg: 'linear-gradient(135deg, rgba(205, 133, 63, 0.15), rgba(139, 69, 19, 0.05))',
+    color: 'var(--family-color, #9D7E00)',
+    iconColor: 'var(--family-color, #9D7E00)',
+    lightBg: 'rgba(157, 126, 0, 0.08)',
+    gradientBg: 'linear-gradient(135deg, rgba(157, 126, 0, 0.15), rgba(157, 126, 0, 0.05))',
   },
   pyramid: {
-    color: '#8B2323',
-    iconColor: '#C41E3A',
-    lightBg: 'rgba(196, 30, 58, 0.08)',
-    gradientBg: 'linear-gradient(135deg, rgba(196, 30, 58, 0.15), rgba(139, 35, 35, 0.05))',
+    color: 'var(--pyramid-color, #6B5A42)',
+    iconColor: 'var(--pyramid-color, #6B5A42)',
+    lightBg: 'rgba(107, 90, 66, 0.08)',
+    gradientBg: 'linear-gradient(135deg, rgba(107, 90, 66, 0.15), rgba(107, 90, 66, 0.05))',
   },
   solarSystem: {
-    color: '#B8860B',
-    iconColor: '#FFB300',
-    lightBg: 'rgba(255, 179, 0, 0.08)',
-    gradientBg: 'linear-gradient(135deg, rgba(255, 179, 0, 0.15), rgba(184, 134, 11, 0.05))',
+    color: 'var(--solar-color, #A0654A)',
+    iconColor: 'var(--solar-color, #A0654A)',
+    lightBg: 'rgba(160, 101, 74, 0.08)',
+    gradientBg: 'linear-gradient(135deg, rgba(160, 101, 74, 0.15), rgba(160, 101, 74, 0.05))',
   },
   machine: {
-    color: '#4A5568',
-    iconColor: '#5B7C99',
-    lightBg: 'rgba(91, 124, 153, 0.08)',
-    gradientBg: 'linear-gradient(135deg, rgba(91, 124, 153, 0.15), rgba(74, 85, 104, 0.05))',
+    color: 'var(--machine-color, #4A5A6B)',
+    iconColor: 'var(--machine-color, #4A5A6B)',
+    lightBg: 'rgba(74, 90, 107, 0.08)',
+    gradientBg: 'linear-gradient(135deg, rgba(74, 90, 107, 0.15), rgba(74, 90, 107, 0.05))',
   },
 };
 
@@ -158,7 +158,7 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 backdrop-blur-md"
             style={{ zIndex: 9998 }}
             onClick={onClose}
           />
@@ -176,13 +176,13 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
             }}
             className="fixed inset-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2
               sm:max-w-lg sm:w-[calc(100%-2rem)] sm:max-h-[90vh] h-full sm:h-auto overflow-y-auto
-              bg-white sm:rounded-2xl shadow-2xl"
+              glass-strong sm:rounded-2xl shadow-2xl border border-white/10"
             style={{ zIndex: 9999 }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with gradient background */}
             <div
-              className="sticky top-0 p-4 sm:p-6 sm:rounded-t-2xl border-b border-black/5"
+              className="sticky top-0 p-4 sm:p-6 sm:rounded-t-2xl border-b border-white/5"
               style={{ background: style.gradientBg }}
             >
               <div className="flex items-start justify-between gap-3">
@@ -197,13 +197,13 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                   </motion.span>
                   <div>
                     <h2
-                      className="text-lg sm:text-2xl font-semibold"
-                      style={{ color: style.color, fontFamily: "'Playfair Display', serif" }}
+                      className="text-lg sm:text-2xl font-bold"
+                      style={{ color: style.color, fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
                     >
                       {info.nameKo}
                     </h2>
-                    <p className="text-xs sm:text-sm text-[#555555] mt-0.5 sm:mt-1">{info.name}</p>
-                    <p className="text-[10px] sm:text-xs text-[#777777] mt-0.5">{info.conceptKo}</p>
+                    <p className="text-xs sm:text-sm text-[var(--color-ivory-muted)] opacity-60 mt-0.5 sm:mt-1">{info.name}</p>
+                    <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] opacity-50 mt-0.5">{info.conceptKo}</p>
                   </div>
                 </div>
                 <motion.button
@@ -211,16 +211,16 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                   whileTap={{ scale: 0.9 }}
                   transition={{ duration: 0.2 }}
                   onClick={onClose}
-                  className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/50 transition-colors duration-300"
+                  className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-white/10 transition-colors duration-300 cursor-pointer"
                   aria-label="닫기"
                 >
-                  <X className="w-5 h-5 text-[#444444]" strokeWidth={1.5} />
+                  <X className="w-5 h-5 text-[var(--color-ivory)]" strokeWidth={1.5} />
                 </motion.button>
               </div>
             </div>
 
             {/* Content */}
-            <div className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+            <div className="p-4 sm:p-6 space-y-5">
               {/* Description */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -228,12 +228,12 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                 transition={{ delay: 0.15 }}
               >
                 <h3
-                  className="text-sm font-medium text-[#1A1A1A] mb-2"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="text-sm font-semibold text-[var(--color-brass)] mb-2"
+                  style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
                 >
                   클러스터 설명
                 </h3>
-                <p className="text-sm text-[#444444] leading-relaxed">
+                <p className="text-sm text-[var(--color-ivory)] leading-relaxed">
                   {info.description}
                 </p>
               </motion.div>
@@ -245,8 +245,8 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                 transition={{ delay: 0.2 }}
               >
                 <h3
-                  className="text-sm font-medium text-[#1A1A1A] mb-3"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="text-sm font-semibold text-[var(--color-brass)] mb-3"
+                  style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
                 >
                   {characteristics.title}
                 </h3>
@@ -257,13 +257,13 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.25 + index * 0.05 }}
-                      className="flex items-start gap-3 text-sm text-[#444444]"
+                      className="flex items-start gap-3 text-sm text-[var(--color-ivory-muted)]"
                     >
                       <span
                         className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
                         style={{ backgroundColor: style.iconColor }}
                       />
-                      {value}
+                      <span className="text-[var(--color-ivory)]">{value}</span>
                     </motion.li>
                   ))}
                 </ul>
@@ -276,8 +276,8 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                 transition={{ delay: 0.35 }}
               >
                 <h3
-                  className="text-sm font-medium text-[#1A1A1A] mb-3"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="text-sm font-semibold text-[var(--color-brass)] mb-3"
+                  style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
                 >
                   소속 국가 ({countriesInCluster.length}개국)
                 </h3>
@@ -311,7 +311,7 @@ export function ClusterDetailModal({ cluster, isOpen, onClose }: ClusterDetailMo
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onClose}
-                className="w-full py-3.5 sm:py-3 min-h-[48px] rounded-xl font-medium text-sm text-white transition-all duration-300"
+                className="w-full py-3 min-h-[48px] rounded-xl font-semibold text-sm text-white transition-all duration-300 cursor-pointer border border-white/10"
                 style={{
                   background: `linear-gradient(135deg, ${style.iconColor}, ${style.color})`,
                   boxShadow: `0 4px 12px ${style.iconColor}40`,

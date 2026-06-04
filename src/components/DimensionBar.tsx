@@ -8,11 +8,11 @@ interface DimensionBarProps {
   countries: Country[];
 }
 
-// ColorBrewer qualitative palette - consistent with radar chart
+// Accent/Country colors mapped to theme variables
 const chartColors = [
-  { bg: '#1b9e77', light: 'rgba(27, 158, 119, 0.15)' },  // Teal - 1st country
-  { bg: '#d95f02', light: 'rgba(217, 95, 2, 0.15)' },    // Orange - 2nd country
-  { bg: '#7570b3', light: 'rgba(117, 112, 179, 0.15)' }, // Purple - 3rd country
+  { bg: 'var(--color-brass, #B8956A)', light: 'rgba(184, 149, 106, 0.15)' },
+  { bg: 'var(--color-sage, #7D8471)', light: 'rgba(125, 132, 113, 0.15)' },
+  { bg: 'var(--color-coral, #C4886B)', light: 'rgba(196, 136, 107, 0.15)' },
 ];
 
 const containerVariants = {
@@ -71,21 +71,21 @@ function DimensionBarItem({ dim, dimIndex, countries, t, isKorean }: DimensionBa
     <motion.div
       key={dim.key}
       variants={itemVariants}
-      className="bg-[#F5F4F0] rounded-lg p-5 border border-black/5 hover:border-[#B8956A]/30 transition-all duration-500"
+      className="glass-card rounded-lg p-5 border border-white/5 hover:border-[var(--color-brass)]/30 transition-all duration-500"
     >
       <div className="flex items-center justify-between mb-4">
         <div>
           <h4
-            className="font-medium text-[#1A1A1A]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="font-bold text-[var(--color-ivory)]"
+            style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
           >
             {isKorean ? dim.nameKo : dim.name}
           </h4>
-          <p className="text-xs text-[#444444]/60 tracking-wide">{isKorean ? dim.name : dim.nameKo}</p>
+          <p className="text-xs text-[var(--color-ivory-muted)] opacity-60 tracking-wide">{isKorean ? dim.name : dim.nameKo}</p>
         </div>
         <div
-          className="w-3 h-3 rounded-full"
-          style={{ backgroundColor: dim.color }}
+          className="w-3 h-3 rounded-full shadow-sm"
+          style={{ backgroundColor: dim.color, boxShadow: `0 0 8px ${dim.color}50` }}
         />
       </div>
 
@@ -94,10 +94,10 @@ function DimensionBarItem({ dim, dimIndex, countries, t, isKorean }: DimensionBa
           const value = country.dimensions[dim.key];
           return (
             <div key={country.code} className="flex items-center gap-4">
-              <span className="w-16 text-sm text-[#444444] truncate">
+              <span className="w-16 text-sm text-[var(--color-ivory)] truncate">
                 {isKorean ? country.nameKo : country.name}
               </span>
-              <div className="flex-1 h-8 bg-white rounded-lg overflow-hidden relative border border-black/5">
+              <div className="flex-1 h-8 bg-white/5 rounded-lg overflow-hidden relative border border-white/5">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${value}%` }}
@@ -111,12 +111,12 @@ function DimensionBarItem({ dim, dimIndex, countries, t, isKorean }: DimensionBa
                     backgroundColor: chartColors[index % chartColors.length].bg,
                   }}
                 >
-                  <span className="text-xs text-white font-medium">
+                  <span className="text-xs text-white font-semibold">
                     {value}
                   </span>
                 </motion.div>
               </div>
-              <span className="w-10 text-xs text-[#444444]/60 text-right">
+              <span className="w-10 text-xs text-[var(--color-ivory-muted)] opacity-70 text-right">
                 {getDimensionLevelText(value)}
               </span>
             </div>
@@ -124,9 +124,9 @@ function DimensionBarItem({ dim, dimIndex, countries, t, isKorean }: DimensionBa
         })}
       </div>
 
-      <div className="flex justify-between mt-4 text-xs text-[#444444]/50">
+      <div className="flex justify-between mt-4 text-[10px] sm:text-xs text-[var(--color-ivory-muted)] opacity-55">
         <span className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#EDECEA]" />
+          <span className="w-2 h-2 rounded-full bg-white/10" />
           {t(translationKeys.low)}
         </span>
         <span className="flex items-center gap-2">
@@ -162,10 +162,10 @@ export function DimensionBar({ countries }: DimensionBarProps) {
           className="flex items-center gap-2 mb-4"
         >
           <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#B8956A] to-[#9D7E57]" />
-          <h3 className="text-sm font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h3 className="text-sm font-semibold text-[var(--color-brass)]" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}>
             {t('coreDimensions').split(' (')[0]}
           </h3>
-          <span className="text-[10px] text-[#9D7E57] bg-[#B8956A]/10 px-2 py-0.5 rounded-full font-medium">
+          <span className="text-[10px] text-[var(--color-brass)] bg-white/5 px-2.5 py-0.5 rounded-full font-medium border border-white/5">
             {isKorean ? 'Wursten 클러스터 기준' : 'Wursten Cluster Basis'}
           </span>
         </motion.div>
@@ -186,7 +186,7 @@ export function DimensionBar({ countries }: DimensionBarProps) {
       {/* Divider */}
       <motion.div
         variants={itemVariants}
-        className="border-t border-dashed border-[#B8956A]/30"
+        className="border-t border-dashed border-white/10"
       />
 
       {/* Extended Dimensions Section */}
@@ -196,10 +196,10 @@ export function DimensionBar({ countries }: DimensionBarProps) {
           className="flex items-center gap-2 mb-4"
         >
           <div className="w-1 h-5 rounded-full bg-gradient-to-b from-[#8B5CF6] to-[#6D28D9]" />
-          <h3 className="text-sm font-medium text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h3 className="text-sm font-semibold text-purple-400" style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}>
             {t('extendedDimensions').split(' (')[0]}
           </h3>
-          <span className="text-[10px] text-[#7C3AED] bg-[#8B5CF6]/10 px-2 py-0.5 rounded-full font-medium">
+          <span className="text-[10px] text-purple-400 bg-white/5 px-2.5 py-0.5 rounded-full font-medium border border-white/5">
             {isKorean ? 'Hofstede 확장' : 'Hofstede Extended'}
           </span>
         </motion.div>

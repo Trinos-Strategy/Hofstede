@@ -11,6 +11,8 @@ export type TranslationKeys = {
   // App header
   appTitle: string;
   appSubtitle: string;
+  heroTitle: string;
+  heroSubtitle: string;
   info: string;
 
   // Info panel
@@ -283,6 +285,8 @@ export const translations: Record<Language, TranslationKeys> = {
     // App header
     appTitle: '호프스테드 문화 차원 비교',
     appSubtitle: '글로벌 비즈니스를 위한 문화 지능',
+    heroTitle: '문화 지성',
+    heroSubtitle: '데이터 기반 인사이트로 탐색하는 문화적 복잡성',
     info: '정보',
 
     // Info panel
@@ -554,6 +558,8 @@ export const translations: Record<Language, TranslationKeys> = {
     // App header
     appTitle: 'Hofstede Cultural Dimensions Comparison',
     appSubtitle: 'Cultural Intelligence for Global Business',
+    heroTitle: 'Cultural Intelligence',
+    heroSubtitle: 'Navigating cultural complexity with data-driven insights',
     info: 'Information',
 
     // Info panel

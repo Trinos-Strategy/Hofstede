@@ -11,9 +11,9 @@ interface ComparisonTableProps {
 
 // ColorBrewer qualitative palette - consistent with radar chart
 const countryColors = [
-  { bg: '#1b9e77', light: 'rgba(27, 158, 119, 0.12)' },  // Teal - 1st country
-  { bg: '#d95f02', light: 'rgba(217, 95, 2, 0.12)' },    // Orange - 2nd country
-  { bg: '#7570b3', light: 'rgba(117, 112, 179, 0.12)' }, // Purple - 3rd country
+  { bg: 'var(--color-brass, #B8956A)', light: 'rgba(184, 149, 106, 0.12)' },
+  { bg: 'var(--color-sage, #7D8471)', light: 'rgba(125, 132, 113, 0.12)' },
+  { bg: 'var(--color-coral, #C4886B)', light: 'rgba(196, 136, 107, 0.12)' },
 ];
 
 // Dimension level colors - WCAG AA compliant with stronger contrast
@@ -21,11 +21,11 @@ const getDimensionColorClass = (value: number): { bg: string; text: string } => 
   const level = getDimensionLevel(value);
   switch (level) {
     case 'low':
-      return { bg: 'rgba(74, 90, 62, 0.15)', text: '#3D4D32' };   // Darker sage
+      return { bg: 'rgba(125, 132, 113, 0.15)', text: 'var(--color-sage, #7D8471)' };
     case 'medium':
-      return { bg: 'rgba(60, 60, 60, 0.10)', text: '#444444' };   // Darker gray
+      return { bg: 'rgba(255, 255, 255, 0.10)', text: 'var(--color-ivory-muted)' };
     case 'high':
-      return { bg: 'rgba(139, 89, 42, 0.15)', text: '#6B4420' };  // Darker gold
+      return { bg: 'rgba(184, 149, 106, 0.15)', text: 'var(--color-brass, #B8956A)' };
   }
 };
 
@@ -55,21 +55,22 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
       case 'high': return t('levelHigh');
     }
   };
+
   if (countries.length === 0) {
     return (
-      <div className="luxury-card rounded-lg p-4 sm:p-8">
-        <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-          <div className="accent-bar" />
+      <div className="glass-card rounded-lg p-4 sm:p-8">
+        <div className="flex items-center gap-3 mb-4 sm:mb-6">
+          <div className="w-1.5 h-6 rounded-full bg-[var(--color-brass)] animate-pulse" />
           <h3
-            className="text-base sm:text-xl font-medium text-[#1A1A1A]"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-base sm:text-xl font-semibold text-[var(--color-brass)]"
+            style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
           >
             {t('detailedDimensionComparison')}
           </h3>
         </div>
-        <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-black/10 rounded-lg">
-          <Table className="w-6 h-6 sm:w-8 sm:h-8 text-[#444444]/40 mb-3" strokeWidth={1.5} />
-          <p className="text-[#444444] text-xs sm:text-sm">{t('selectCountryToShowTable')}</p>
+        <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-white/10 rounded-lg">
+          <Table className="w-6 h-6 sm:w-8 sm:h-8 text-[var(--color-ivory-muted)]/40 mb-3" strokeWidth={1.5} />
+          <p className="text-[var(--color-ivory-muted)] text-xs sm:text-sm">{t('selectCountryToShowTable')}</p>
         </div>
       </div>
     );
@@ -80,75 +81,75 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-      className="luxury-card rounded-lg p-4 sm:p-8"
+      className="glass-card rounded-lg p-4 sm:p-8"
     >
-      <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-        <div className="accent-bar" />
+      <div className="flex items-center gap-3 mb-4 sm:mb-6">
+        <div className="w-1.5 h-6 rounded-full bg-[var(--color-brass)]" />
         <h3
-          className="text-base sm:text-xl font-medium text-[#1A1A1A]"
-          style={{ fontFamily: "'Playfair Display', serif" }}
+          className="text-base sm:text-xl font-semibold text-[var(--color-brass)]"
+          style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
         >
           {t('detailedDimensionComparison')}
         </h3>
       </div>
 
       {/* Mobile scroll hint */}
-      <div className="sm:hidden flex items-center justify-center gap-2 mb-3 py-2 px-3 bg-[#F5F4F0] rounded-lg">
-        <ChevronLeft className="w-4 h-4 text-[#9D7E57]" strokeWidth={1.5} />
-        <span className="text-[10px] text-[#555555] font-medium">{t('scrollHorizontal')}</span>
-        <ChevronRight className="w-4 h-4 text-[#9D7E57]" strokeWidth={1.5} />
+      <div className="sm:hidden flex items-center justify-center gap-2 mb-3 py-2 px-3 bg-white/5 rounded-lg border border-white/5">
+        <ChevronLeft className="w-4 h-4 text-[var(--color-brass)]" strokeWidth={1.5} />
+        <span className="text-[10px] text-[var(--color-ivory-muted)] font-medium">{t('scrollHorizontal')}</span>
+        <ChevronRight className="w-4 h-4 text-[var(--color-brass)]" strokeWidth={1.5} />
       </div>
 
       <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 scrollbar-thin">
         <table className="w-full modern-table min-w-[600px] sm:min-w-0">
           <thead>
-            <tr className="border-b border-black/8">
-              <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">
+            <tr className="border-b border-white/10">
+              <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[var(--color-ivory-muted)] tracking-wide">
                 {t('country')}
               </th>
-              <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[#444444] tracking-wide">
+              <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[var(--color-ivory-muted)] tracking-wide">
                 {t('cluster')}
               </th>
               {/* Core Dimensions Header */}
               <th
                 colSpan={4}
-                className="text-center py-2 px-2 text-[10px] sm:text-xs font-medium tracking-wide border-l border-black/5"
-                style={{ color: '#9D7E57', backgroundColor: 'rgba(184, 149, 106, 0.08)' }}
+                className="text-center py-2 px-2 text-[10px] sm:text-xs font-semibold tracking-wide border-l border-white/10"
+                style={{ color: 'var(--color-brass)', backgroundColor: 'rgba(184, 149, 106, 0.05)' }}
               >
                 {t('coreDimensions')}
               </th>
               {/* Extended Dimensions Header */}
               <th
                 colSpan={2}
-                className="text-center py-2 px-2 text-[10px] sm:text-xs font-medium tracking-wide border-l border-black/5"
-                style={{ color: '#7C3AED', backgroundColor: 'rgba(139, 92, 246, 0.08)' }}
+                className="text-center py-2 px-2 text-[10px] sm:text-xs font-semibold tracking-wide border-l border-white/10"
+                style={{ color: 'var(--color-coral)', backgroundColor: 'rgba(196, 136, 107, 0.05)' }}
               >
                 {t('extendedDimensions')}
               </th>
             </tr>
-            <tr className="border-b border-black/8">
+            <tr className="border-b border-white/10">
               <th className="py-2"></th>
               <th className="py-2"></th>
               {/* Core dimension columns */}
               {coreDimensions.map((dim, idx) => (
                 <th
                   key={dim.key}
-                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium ${idx === 0 ? 'border-l border-black/5' : ''}`}
+                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold ${idx === 0 ? 'border-l border-white/10' : ''}`}
                   style={{ color: dim.color }}
                 >
                   <div>{t(dimensionTranslationKeys[dim.key].name)}</div>
-                  <div className="text-[10px] sm:text-xs font-normal text-[#444444]/50 mt-0.5">{dim.key}</div>
+                  <div className="text-[10px] sm:text-xs font-normal text-[var(--color-ivory-muted)]/50 mt-0.5">{dim.key}</div>
                 </th>
               ))}
               {/* Extended dimension columns */}
               {extendedDimensions.map((dim, idx) => (
                 <th
                   key={dim.key}
-                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-medium ${idx === 0 ? 'border-l border-black/5' : ''}`}
+                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold ${idx === 0 ? 'border-l border-white/10' : ''}`}
                   style={{ color: dim.color }}
                 >
                   <div>{t(dimensionTranslationKeys[dim.key].name)}</div>
-                  <div className="text-[10px] sm:text-xs font-normal text-[#444444]/50 mt-0.5">{dim.key}</div>
+                  <div className="text-[10px] sm:text-xs font-normal text-[var(--color-ivory-muted)]/50 mt-0.5">{dim.key}</div>
                 </th>
               ))}
             </tr>
@@ -167,7 +168,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     duration: 0.5,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  className="border-b border-black/5 hover:bg-[#F5F4F0] transition-colors duration-300"
+                  className="border-b border-white/5 hover:bg-white/5 transition-colors duration-300"
                   style={{ borderLeftWidth: '3px', borderLeftColor: countryColor.bg }}
                 >
                   <td className="py-3 sm:py-4 px-3 sm:px-5">
@@ -177,8 +178,8 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                         style={{ backgroundColor: countryColor.bg }}
                       />
                       <div>
-                        <div className="font-medium text-xs sm:text-sm" style={{ color: countryColor.bg }}>{isKorean ? country.nameKo : country.name}</div>
-                        <div className="text-[10px] sm:text-xs text-[#444444]/60 tracking-wide">{isKorean ? country.name : country.nameKo}</div>
+                        <div className="font-semibold text-xs sm:text-sm" style={{ color: countryColor.bg }}>{isKorean ? country.nameKo : country.name}</div>
+                        <div className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)]/60 tracking-wide">{isKorean ? country.name : country.nameKo}</div>
                       </div>
                     </div>
                   </td>
@@ -186,7 +187,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     <span
                       className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-md text-[10px] sm:text-xs font-medium"
                       style={{
-                        backgroundColor: `${cluster.color}12`,
+                        backgroundColor: `${cluster.color}15`,
                         color: cluster.color,
                       }}
                     >
@@ -199,12 +200,12 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     const value = country.dimensions[dim.key];
                     const colors = getDimensionColorClass(value);
                     return (
-                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-black/5' : ''}`}>
+                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-white/10' : ''}`}>
                         <div className="flex flex-col items-center gap-1.5">
                           {/* Value and Level */}
                           <div className="text-center">
                             <span
-                              className="text-sm sm:text-base font-semibold"
+                              className="text-sm sm:text-base font-bold"
                               style={{ color: countryColor.bg }}
                             >
                               {value}
@@ -217,7 +218,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                             </span>
                           </div>
                           {/* Mini Progress Bar */}
-                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-[#E8E7E3] rounded-full overflow-hidden">
+                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${value}%` }}
@@ -235,12 +236,12 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     const value = country.dimensions[dim.key];
                     const colors = getDimensionColorClass(value);
                     return (
-                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-black/5' : ''}`}>
+                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-white/10' : ''}`}>
                         <div className="flex flex-col items-center gap-1.5">
                           {/* Value and Level */}
                           <div className="text-center">
                             <span
-                              className="text-sm sm:text-base font-semibold"
+                              className="text-sm sm:text-base font-bold"
                               style={{ color: countryColor.bg }}
                             >
                               {value}
@@ -253,7 +254,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                             </span>
                           </div>
                           {/* Mini Progress Bar */}
-                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-[#E8E7E3] rounded-full overflow-hidden">
+                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${value}%` }}
@@ -279,7 +280,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-[#B8956A] to-[#9D7E57]" />
-            <span className="text-xs font-medium text-[#9D7E57]">{t('coreDimensions')}</span>
+            <span className="text-xs font-medium text-[var(--color-brass)]">{t('coreDimensions')}</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {coreDimensions.map((dim, index) => (
@@ -292,14 +293,14 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   duration: 0.5,
                   ease: [0.25, 0.1, 0.25, 1]
                 }}
-                className="p-4 sm:p-5 rounded-lg bg-[#F5F4F0] border border-black/5 hover:border-[#B8956A]/30 transition-all duration-500 border-l-2"
+                className="p-4 sm:p-5 rounded-lg bg-white/5 border border-white/5 hover:border-[var(--color-brass)]/30 transition-all duration-500 border-l-2"
                 style={{
                   borderLeftColor: dim.color,
                 }}
               >
                 <h4
-                  className="font-medium text-xs sm:text-sm text-[#1A1A1A] mb-2 flex items-center gap-2"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="font-semibold text-xs sm:text-sm text-[var(--color-ivory)] mb-2 flex items-center gap-2"
+                  style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
                 >
                   <span
                     className="w-2 h-2 rounded-full"
@@ -307,20 +308,20 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   />
                   {t(dimensionTranslationKeys[dim.key].name)} ({dim.key})
                 </h4>
-                <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
+                <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
               </motion.div>
             ))}
           </div>
         </div>
 
         {/* Divider */}
-        <div className="border-t border-dashed border-[#8B5CF6]/30" />
+        <div className="border-t border-dashed border-white/10" />
 
         {/* Extended Dimensions */}
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-[#8B5CF6] to-[#6D28D9]" />
-            <span className="text-xs font-medium text-[#7C3AED]">{t('extendedDimensions')}</span>
+            <span className="text-xs font-medium text-purple-400">{t('extendedDimensions')}</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {extendedDimensions.map((dim, index) => (
@@ -333,14 +334,14 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   duration: 0.5,
                   ease: [0.25, 0.1, 0.25, 1]
                 }}
-                className="p-4 sm:p-5 rounded-lg bg-[#F5F4F0] border border-black/5 hover:border-[#8B5CF6]/30 transition-all duration-500 border-l-2"
+                className="p-4 sm:p-5 rounded-lg bg-white/5 border border-white/5 hover:border-purple-500/30 transition-all duration-500 border-l-2"
                 style={{
                   borderLeftColor: dim.color,
                 }}
               >
                 <h4
-                  className="font-medium text-xs sm:text-sm text-[#1A1A1A] mb-2 flex items-center gap-2"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  className="font-semibold text-xs sm:text-sm text-[var(--color-ivory)] mb-2 flex items-center gap-2"
+                  style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
                 >
                   <span
                     className="w-2 h-2 rounded-full"
@@ -348,7 +349,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   />
                   {t(dimensionTranslationKeys[dim.key].name)} ({dim.key})
                 </h4>
-                <p className="text-[10px] sm:text-xs text-[#444444] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
+                <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] leading-relaxed">{t(dimensionTranslationKeys[dim.key].desc)}</p>
               </motion.div>
             ))}
           </div>

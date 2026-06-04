@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview --port 5174",
+    "install-deps": "npm install"
   },
   "dependencies": {
     "framer-motion": "^12.25.0",
@@ -28,8 +30,10 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "tailwindcss": "^4.1.18",
+    "terser": "^5.39.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
-    "vite": "^7.2.4"
+    "vite": "^7.2.4",
+    "vite-bundle-visualizer": "latest"
   }
 }

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   RadarChart,
   PolarGrid,
@@ -17,25 +17,55 @@ interface DimensionRadarProps {
   countries: Country[];
 }
 
-// ColorBrewer qualitative palette - high contrast colors
+// 8 Premium colors qualitative palette
 const chartColors = [
   {
-    stroke: '#1b9e77', // Teal
-    fill: 'rgba(27, 158, 119, 0.2)',
-    strokeDasharray: undefined, // Solid line
+    stroke: '#4FC3C3',
+    fill: 'rgba(79, 195, 195, 0.15)',
+    strokeDasharray: undefined,
     marker: 'circle' as const,
   },
   {
-    stroke: '#d95f02', // Orange
-    fill: 'rgba(217, 95, 2, 0.15)',
-    strokeDasharray: '8 4', // Dashed line
+    stroke: '#E8A838',
+    fill: 'rgba(232, 168, 56, 0.15)',
+    strokeDasharray: '8 4',
     marker: 'square' as const,
   },
   {
-    stroke: '#7570b3', // Purple
-    fill: 'rgba(117, 112, 179, 0.15)',
-    strokeDasharray: '3 3', // Dotted line
+    stroke: '#7B68EE',
+    fill: 'rgba(123, 104, 238, 0.15)',
+    strokeDasharray: '3 3',
     marker: 'triangle' as const,
+  },
+  {
+    stroke: '#FF6B9D',
+    fill: 'rgba(255, 107, 157, 0.15)',
+    strokeDasharray: undefined,
+    marker: 'circle' as const,
+  },
+  {
+    stroke: '#56D4A0',
+    fill: 'rgba(86, 212, 160, 0.15)',
+    strokeDasharray: '8 4',
+    marker: 'square' as const,
+  },
+  {
+    stroke: '#FF8C69',
+    fill: 'rgba(255, 140, 105, 0.15)',
+    strokeDasharray: '3 3',
+    marker: 'triangle' as const,
+  },
+  {
+    stroke: '#87CEEB',
+    fill: 'rgba(135, 206, 235, 0.15)',
+    strokeDasharray: undefined,
+    marker: 'circle' as const,
+  },
+  {
+    stroke: '#DDA0DD',
+    fill: 'rgba(221, 160, 221, 0.15)',
+    strokeDasharray: '8 4',
+    marker: 'square' as const,
   },
 ];
 
@@ -64,7 +94,7 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
           strokeWidth={1}
         />
       );
-    case 'triangle':
+    case 'triangle': {
       const points = `${cx},${cy - size * 1.2} ${cx - size},${cy + size * 0.8} ${cx + size},${cy + size * 0.8}`;
       return (
         <polygon
@@ -74,6 +104,7 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
           strokeWidth={1}
         />
       );
+    }
     case 'circle':
     default:
       return (
@@ -87,6 +118,89 @@ function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
         />
       );
   }
+}
+interface CustomTickProps {
+  x?: string | number;
+  y?: string | number;
+  cx?: string | number;
+  cy?: string | number;
+  index?: number;
+  textAnchor?: 'inherit' | 'end' | 'middle' | 'start';
+  countries: Country[];
+  shouldReduceMotion: boolean;
+}
+
+function CustomTick({
+  x = 0,
+  y = 0,
+  cx = 0,
+  cy = 0,
+  index = 0,
+  textAnchor = 'middle',
+  countries,
+  shouldReduceMotion,
+}: CustomTickProps) {
+  const dim = dimensionInfo[index];
+  if (!dim) return null;
+
+  const scoresStr = countries
+    .map((country) => `${country.code}: ${country.dimensions[dim.key]}`)
+    .join(' / ');
+  const labelText = `${dim.key} (${scoresStr})`;
+
+  const numericX = typeof x === 'string' ? parseFloat(x) : x;
+  const numericY = typeof y === 'string' ? parseFloat(y) : y;
+  const numericCx = typeof cx === 'string' ? parseFloat(cx) : cx;
+  const numericCy = typeof cy === 'string' ? parseFloat(cy) : cy;
+
+  const dx = numericX - numericCx;
+  const dy = numericY - numericCy;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const offsetDist = 18;
+  const ux = distance > 0 ? dx / distance : 0;
+  const uy = distance > 0 ? dy / distance : 0;
+  const badgeX = numericX + ux * offsetDist;
+  const badgeY = numericY + uy * offsetDist;
+
+  return (
+    <g className="select-none">
+      {/* Mobile-only fallback */}
+      <text
+        x={x}
+        y={y}
+        textAnchor={textAnchor}
+        className="sm:hidden text-[9px] font-bold fill-[#444444]"
+        dy={4}
+      >
+        {dim.key}
+      </text>
+
+      {/* Desktop-only brass-gold badge pill */}
+      <foreignObject
+        x={badgeX - 120}
+        y={badgeY - 18}
+        width={240}
+        height={36}
+        className="hidden sm:block overflow-visible pointer-events-none"
+      >
+        <div className="w-full h-full flex items-center justify-center">
+          <motion.div
+            initial={shouldReduceMotion ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              type: 'spring',
+              stiffness: 260,
+              damping: 20,
+              delay: shouldReduceMotion ? 0 : index * 0.1,
+            }}
+            className="bg-gradient-to-r from-[#DFC495] via-[#C5A059] to-[#B8956A] text-[#2D1F10] border border-[#9C7A3C]/40 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-md whitespace-nowrap"
+          >
+            {labelText}
+          </motion.div>
+        </div>
+      </foreignObject>
+    </g>
+  );
 }
 
 // Separate core dimensions (Wursten cluster basis) and extended dimensions
@@ -105,14 +219,15 @@ const dimensionTranslationKeys: Record<string, { name: keyof TranslationKeys; de
 
 export function DimensionRadar({ countries }: DimensionRadarProps) {
   const { t, isKorean } = useLanguage();
+  const shouldReduceMotion = !!useReducedMotion();
 
   if (countries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[500px] border border-dashed border-black/10 rounded-lg">
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={shouldReduceMotion ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <span className="text-3xl sm:text-4xl mb-3 block text-center">📈</span>
         </motion.div>
@@ -134,19 +249,86 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
 
   return (
     <div className="space-y-6">
+      <style dangerouslySetInnerHTML={{ __html: `
+        .custom-radar-grid .recharts-polar-grid-concentric > * {
+          stroke: #8E8D8A;
+        }
+        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(2) {
+          stroke-opacity: 0.4;
+        }
+        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(3) {
+          stroke-opacity: 0.25;
+        }
+        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(4) {
+          stroke-opacity: 0.15;
+        }
+        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(5),
+        .custom-radar-grid .recharts-polar-grid-concentric > *:last-child {
+          stroke: #B8956A !important;
+          stroke-opacity: 0.5 !important;
+          stroke-width: 1.5px;
+        }
+      `}} />
+
       {/* Radar Chart */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
+        initial={shouldReduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={{ duration: shouldReduceMotion ? 0 : 0.6, ease: 'easeOut' }}
         className="h-[350px] sm:h-[500px]"
+        style={{ overflow: 'visible' }}
       >
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart data={data} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
-            <PolarGrid stroke="rgba(0, 0, 0, 0.08)" />
+          <RadarChart
+            data={data}
+            margin={{ top: 30, right: 90, bottom: 30, left: 90 }}
+            className="custom-radar-grid"
+            style={{ overflow: 'visible' }}
+          >
+            <defs>
+              {countries.map((country, index) => {
+                const colorConfig = chartColors[index % chartColors.length];
+                return (
+                  <radialGradient
+                    key={`radial-gradient-${country.code}`}
+                    id={`radial-gradient-${country.code}`}
+                    cx="50%"
+                    cy="50%"
+                    r="50%"
+                  >
+                    {!shouldReduceMotion && (
+                      <animate
+                        attributeName="r"
+                        values="35%;55%;35%"
+                        dur="10s"
+                        repeatCount="indefinite"
+                      />
+                    )}
+                    <stop offset="0%" stopColor={colorConfig.stroke} stopOpacity={0.3} />
+                    <stop offset="100%" stopColor={colorConfig.stroke} stopOpacity={0} />
+                  </radialGradient>
+                );
+              })}
+              {countries.map((country) => {
+                return (
+                  <filter key={`glow-${country.code}`} id={`glow-${country.code}`}>
+                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                  </filter>
+                );
+              })}
+            </defs>
+
+            <PolarGrid gridType="circle" stroke="rgba(0, 0, 0, 0.08)" />
             <PolarAngleAxis
               dataKey="dimension"
-              tick={{ fill: '#444444', fontSize: 10, fontWeight: 500 }}
+              tick={(props) => (
+                <CustomTick
+                  {...props}
+                  countries={countries}
+                  shouldReduceMotion={shouldReduceMotion}
+                />
+              )}
             />
             <PolarRadiusAxis
               angle={90}
@@ -157,13 +339,21 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
             />
             {countries.map((country, index) => {
               const colorConfig = chartColors[index % chartColors.length];
+              const fillValue = shouldReduceMotion
+                ? colorConfig.stroke
+                : `url(#radial-gradient-${country.code})`;
+              const filterValue = shouldReduceMotion
+                ? undefined
+                : `url(#glow-${country.code})`;
               return (
                 <Radar
                   key={country.code}
                   name={isKorean ? country.nameKo : country.name}
                   dataKey={country.code}
                   stroke={colorConfig.stroke}
-                  fill={colorConfig.fill}
+                  fill={fillValue}
+                  fillOpacity={0.2}
+                  filter={filterValue}
                   strokeWidth={2.5}
                   strokeDasharray={colorConfig.strokeDasharray}
                   dot={(props) => (
@@ -176,8 +366,9 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                       fill={colorConfig.stroke}
                     />
                   )}
-                  animationDuration={800}
-                  animationBegin={index * 150}
+                  isAnimationActive={!shouldReduceMotion}
+                  animationDuration={shouldReduceMotion ? 0 : 800}
+                  animationBegin={shouldReduceMotion ? 0 : index * 150}
                 />
               );
             })}
