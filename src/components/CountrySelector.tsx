@@ -59,7 +59,7 @@ export function CountrySelector({
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpenState(false);
+              setIsOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -107,6 +107,16 @@ export function CountrySelector({
   }, [activeIndex, isOpen]);
 
   // Flatten all visible options for keyboard navigation — memoized to keep deps stable
+    const groupedCountries = useMemo(() => {
+    const groups: Record<string, Country[]> = {};
+    filteredCountries.forEach((country) => {
+      const cluster = country.cluster || 'other';
+      if (!groups[cluster]) groups[cluster] = [];
+      groups[cluster].push(country);
+    });
+    return groups;
+  }, [filteredCountries]);
+
   const _flatOptions = useMemo(() => {
     const options: { country: Country; cluster: ClusterType; index: number }[] = [];
     Object.entries(groupedCountries).forEach(([cluster, clusterCountries]) => {
