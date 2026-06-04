@@ -47,7 +47,7 @@ function App() {
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
     const radarContainerRef = useRef<HTMLDivElement>(null);
-  const [isExporting, setIsExporting] = useState(false);
+  const [_isExporting, setIsExporting] = useState(false);
 
   // Section refs for scroll navigation
   const sidebarRef = useRef<HTMLElement>(null);
