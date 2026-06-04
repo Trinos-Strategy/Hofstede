@@ -1,5 +1,5 @@
-import { useState, useMemo, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresenc, useReducedMotione } from 'framer-motion';
 import { Globe2 } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
@@ -46,6 +46,8 @@ function App() {
   const [selectedCountries, setSelectedCountries] = useState<Country[]>(initialCountries);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
+    const radarContainerRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Section refs for scroll navigation
   const sidebarRef = useRef<HTMLElement>(null);
