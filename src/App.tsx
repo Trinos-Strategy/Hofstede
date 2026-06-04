@@ -472,9 +472,7 @@ function App() {
           </div>
         </div>
       </footer>
-      </ErrorBoundary>
     </div>
   );
 }
-
 export default App;
