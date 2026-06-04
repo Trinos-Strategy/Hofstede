@@ -39,9 +39,9 @@ const itemVariants = {
 
 function App() {
   const { t } = useLanguage();
-  const shouldReduceMotion = useReducedMotion();
-  const { theme, toggleTheme } = useDarkMode();
-  const { initialCountries, initialContext, syncUrl, popStateTrigger, parseFromUrl } = useUrlState();
+  const _shouldReduceMotion = useReducedMotion();
+  const { theme: _theme, toggleTheme: _toggleTheme } = useDarkMode();
+  const { initialCountries, initialContext: _initialContext, syncUrl, popStateTrigger, parseFromUrl } = useUrlState();
 
   const [selectedCountries, setSelectedCountries] = useState<Country[]>(initialCountries);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
@@ -64,7 +64,7 @@ function App() {
   }, [popStateTrigger]);
 
   // PNG Export handler (dynamic import to avoid bundle bloat)
-  const handleExportChart = useCallback(async () => {
+  const _handleExportChart = useCallback(async () => {
     if (!radarContainerRef.current) return;
     setIsExporting(true);
     try {
