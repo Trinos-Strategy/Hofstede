@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { Lightbulb, MessageSquare, FileText, Award, Users, Handshake, MessageCircle, Scale } from 'lucide-react';
 import type { AdviceContext } from '../types';
 import { useLanguage } from '../i18n';
 import type { TranslationKeys } from '../i18n/translations';
