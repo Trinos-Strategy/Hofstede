@@ -107,7 +107,7 @@ export function CountrySelector({
   }, [activeIndex, isOpen]);
 
   // Flatten all visible options for keyboard navigation — memoized to keep deps stable
-  const flatOptions = useMemo(() => {
+  const _flatOptions = useMemo(() => {
     const options: { country: Country; cluster: ClusterType; index: number }[] = [];
     Object.entries(groupedCountries).forEach(([cluster, clusterCountries]) => {
       clusterCountries.forEach((country) => {
