@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresenc, useReducedMotione } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Globe2 } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
