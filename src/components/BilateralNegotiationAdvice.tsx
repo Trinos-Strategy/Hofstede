@@ -386,7 +386,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           {t('bilateralAdviceFor', { context: t(contextKey) })}
         </h2>
         <p className="text-xs sm:text-sm text-center text-[var(--color-ivory-muted)] mt-3 leading-relaxed">
-          {contextInfo.description}
+          {context ? t(contextTranslationKeys[context]) : ''}
         </p>
 
         {/* 프레임워크 안내 */}
