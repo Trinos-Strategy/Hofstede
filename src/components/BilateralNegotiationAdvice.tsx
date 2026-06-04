@@ -18,7 +18,8 @@ import {
   Heart
 } from 'lucide-react';
 import type { BilateralAdviceResult, AdviceContext } from '../types';
-import { getContextTitle } from '../advice';
+import { useLanguage } from '../i18n';
+import type { TranslationKeys } from '../i18n/translations';
 import {
   getDetailedNegotiationAdvice,
   hasDetailedAdvice,
@@ -42,6 +43,17 @@ const contextColors: Record<AdviceContext, { color: string; emoji: string }> = {
   NEGOTIATION: { color: 'var(--color-brass, #9D7E57)', emoji: '🎯' },
   FEEDBACK: { color: 'var(--color-teal, #6B7B8C)', emoji: '💬' },
   CONFLICT_RESOLUTION: { color: 'var(--color-coral, #722F37)', emoji: '⚖️' },
+};
+
+const contextTranslationKeys: Record<AdviceContext, keyof TranslationKeys> = {
+  MEETING_IDEA: 'contextMeetingIdea',
+  DISAGREE_BOSS: 'contextDisagreeBoss',
+  REPORTING: 'contextReporting',
+  REWARD_RECOGNITION: 'contextRewardRecognition',
+  TEAM_COLLABORATION: 'contextTeamCollaboration',
+  NEGOTIATION: 'contextNegotiation',
+  FEEDBACK: 'contextFeedback',
+  CONFLICT_RESOLUTION: 'contextConflictResolution',
 };
 
 // 전략 카드 컴포넌트
@@ -208,6 +220,8 @@ function DetailedAdviceSection({
   accentColor: string;
   direction: 'AtoB' | 'BtoA';
 }) {
+  const { t } = useLanguage();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -308,11 +322,12 @@ function DetailedAdviceSection({
 }
 
 export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: BilateralNegotiationAdviceProps) {
+  const { t, isKorean } = useLanguage();
   const { countryA, countryB, fromAtoB, fromBtoA, mutualUnderstanding } = advice;
-  const nameA = countryA.nameKo || countryA.name;
-  const nameB = countryB.nameKo || countryB.name;
-  const contextInfo = getContextTitle(context);
+  const nameA = isKorean ? countryA.nameKo || countryA.name : countryA.name;
+  const nameB = isKorean ? countryB.nameKo || countryB.name : countryB.name;
   const colors = contextColors[context];
+  const contextKey = contextTranslationKeys[context];
 
   // 상세 협상 조언 확인
   const detailedAtoBAdvice = getDetailedNegotiationAdvice(countryA.code, countryB.code);
@@ -368,7 +383,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
         >
           <span className="text-xl sm:text-2xl">{colors.emoji}</span>
-          양국 간 {contextInfo.title} 조언
+          {t('bilateralAdviceFor', { context: t(contextKey) })}
         </h2>
         <p className="text-xs sm:text-sm text-center text-[var(--color-ivory-muted)] mt-3 leading-relaxed">
           {contextInfo.description}
@@ -566,7 +581,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
             className="font-semibold text-sm sm:text-base text-[var(--color-brass)]"
             style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
           >
-            {mutualUnderstanding.title}
+            {t('mutualUnderstandingTitle', { context: t(contextKey) })}
           </h3>
         </div>
 
@@ -579,7 +594,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 className="font-semibold text-rose-400 text-xs sm:text-sm"
                 style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
               >
-                주요 문화적 차이
+                {t('keyCulturalDifferences')}
               </h4>
             </div>
             <ul className="space-y-3">
@@ -609,7 +624,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 className="font-semibold text-emerald-400 text-xs sm:text-sm"
                 style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
               >
-                공통 기반
+                {t('commonGround')}
               </h4>
             </div>
             <ul className="space-y-3">
@@ -638,7 +653,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
               style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
             >
               <span className="text-base sm:text-lg">✨</span>
-              성공 전략
+              {t('successStrategy')}
             </h4>
             <p className="text-xs sm:text-sm text-[var(--color-ivory)] leading-relaxed">
               {mutualUnderstanding.bridgingStrategy}
@@ -733,7 +748,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
             className="font-semibold text-xs sm:text-sm text-[var(--color-teal, #6B7B8C)]"
             style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
           >
-            {academicReferences.titleKo}
+            {t('academicReferences')}
           </h4>
         </div>
         <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] opacity-70 leading-relaxed mb-4 italic">

@@ -14,6 +14,8 @@ import { DarkModeToggle } from './components/DarkModeToggle';
 import { HeroSection } from './components/HeroSection';
 import { CountryNatureScene } from './components/CountryNatureScene';
 import { useLanguage } from './i18n';
+import { useUrlState } from './hooks/useUrlState';
+import { useDarkMode } from './hooks/useDarkMode';
 import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
@@ -37,13 +39,51 @@ const itemVariants = {
 
 function App() {
   const { t } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
+  const { theme, toggleTheme } = useDarkMode();
+  const { initialCountries, initialContext, syncUrl, popStateTrigger, parseFromUrl } = useUrlState();
 
-  const [selectedCountries, setSelectedCountries] = useState<Country[]>([]);
+  const [selectedCountries, setSelectedCountries] = useState<Country[]>(initialCountries);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
 
   // Section refs for scroll navigation
   const sidebarRef = useRef<HTMLElement>(null);
+
+  // Sync URL when selections change
+  useEffect(() => {
+    syncUrl(selectedCountries, selectedContext);
+  }, [selectedCountries, selectedContext, syncUrl]);
+
+  // React to browser back/forward
+  useEffect(() => {
+    const { parsedCountries, parsedContext } = parseFromUrl();
+    setSelectedCountries(parsedCountries);
+    setSelectedContext(parsedContext);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [popStateTrigger]);
+
+  // PNG Export handler (dynamic import to avoid bundle bloat)
+  const handleExportChart = useCallback(async () => {
+    if (!radarContainerRef.current) return;
+    setIsExporting(true);
+    try {
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(radarContainerRef.current, {
+        backgroundColor: '#FFFFFF',
+        scale: 2,
+      });
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      const link = document.createElement('a');
+      link.download = `hofstede-chart-${timestamp}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Chart export failed:', err);
+    } finally {
+      setIsExporting(false);
+    }
+  }, []);
 
   // Bilateral advice - only when exactly 2 countries selected
   const bilateralAdvice = useMemo<BilateralAdviceResult | null>(() => {
@@ -432,6 +472,7 @@ function App() {
           </div>
         </div>
       </footer>
+      </ErrorBoundary>
     </div>
   );
 }

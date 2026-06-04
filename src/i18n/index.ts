@@ -34,15 +34,19 @@
  * ```
  */
 
-// Context and hooks
+// Context and provider
 export {
   LanguageProvider,
-  useLanguage,
-  useTranslation,
   LanguageContext,
   type LanguageContextType,
   type LanguageProviderProps,
 } from './LanguageContext';
+
+// Hooks
+export {
+  useLanguage,
+  useTranslation,
+} from './hooks';
 
 // Translations
 export {

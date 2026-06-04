@@ -59,7 +59,7 @@ export function CountrySelector({
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        setIsOpenState(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -105,6 +105,17 @@ export function CountrySelector({
       }
     }
   }, [activeIndex, isOpen]);
+
+  // Flatten all visible options for keyboard navigation — memoized to keep deps stable
+  const flatOptions = useMemo(() => {
+    const options: { country: Country; cluster: ClusterType; index: number }[] = [];
+    Object.entries(groupedCountries).forEach(([cluster, clusterCountries]) => {
+      clusterCountries.forEach((country) => {
+        options.push({ country, cluster: cluster as ClusterType, index: options.length });
+      });
+    });
+    return options;
+  }, [groupedCountries]);
 
   const canAddMore = selectedCountries.length < maxSelections;
 

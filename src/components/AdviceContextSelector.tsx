@@ -1,14 +1,4 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  MessageSquare,
-  Lightbulb,
-  Users,
-  FileText,
-  Award,
-  Handshake,
-  MessageCircle,
-  Scale,
-} from 'lucide-react';
 import type { AdviceContext } from '../types';
 import { useLanguage } from '../i18n';
 import type { TranslationKeys } from '../i18n/translations';
@@ -94,6 +84,17 @@ interface AdviceContextSelectorProps {
   onContextSelect: (context: AdviceContext | null) => void;
 }
 
+const contextTranslationKeys: Record<AdviceContext, { name: keyof TranslationKeys; desc: keyof TranslationKeys }> = {
+  MEETING_IDEA: { name: 'contextMeetingIdea', desc: 'contextMeetingIdeaDesc' },
+  DISAGREE_BOSS: { name: 'contextDisagreeBoss', desc: 'contextDisagreeBossDesc' },
+  REPORTING: { name: 'contextReporting', desc: 'contextReportingDesc' },
+  REWARD_RECOGNITION: { name: 'contextRewardRecognition', desc: 'contextRewardRecognitionDesc' },
+  TEAM_COLLABORATION: { name: 'contextTeamCollaboration', desc: 'contextTeamCollaborationDesc' },
+  NEGOTIATION: { name: 'contextNegotiation', desc: 'contextNegotiationDesc' },
+  FEEDBACK: { name: 'contextFeedback', desc: 'contextFeedbackDesc' },
+  CONFLICT_RESOLUTION: { name: 'contextConflictResolution', desc: 'contextConflictResolutionDesc' },
+};
+
 export function AdviceContextSelector({
   selectedContext,
   onContextSelect,
@@ -122,6 +123,7 @@ export function AdviceContextSelector({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
         {contextOptions.map((option, index) => {
           const isSelected = selectedContext === option.key;
+          const keys = contextTranslationKeys[option.key];
           return (
             <motion.button
               key={option.key}
