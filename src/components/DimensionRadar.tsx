@@ -12,7 +12,6 @@ import type { Country, Dimensions } from '../types';
 import { dimensionInfo } from '../data/countries';
 import { useLanguage } from '../i18n';
 import type { TranslationKeys } from '../i18n/translations';
-import { useWindowSize } from '../hooks/useWindowSize';
 
 interface DimensionRadarProps {
   countries: Country[];
@@ -233,7 +232,7 @@ function CustomTick({
 }
 
 // ─── Radar Vertex Label ───
-function RadarVertexLabel(props: { cx?: string | number; cy?: string | number; value?: number | string | null | boolean }) {
+function _RadarVertexLabel(props: { cx?: string | number; cy?: string | number; value?: number | string | null | boolean }) {
   const cx = typeof props.cx === 'string' ? parseFloat(props.cx) : props.cx ?? 0;
   const cy = typeof props.cy === 'string' ? parseFloat(props.cy) : props.cy ?? 0;
   const value = typeof props.value === 'number' ? props.value : typeof props.value === 'string' ? parseFloat(props.value) : undefined;
@@ -256,7 +255,7 @@ function RadarVertexLabel(props: { cx?: string | number; cy?: string | number; v
 }
 
 // ─── Polar Angle Axis Tick ───
-function PolarTick(props: {
+function _PolarTick(props: {
   x?: string | number;
   y?: string | number;
   payload?: { value?: string };
