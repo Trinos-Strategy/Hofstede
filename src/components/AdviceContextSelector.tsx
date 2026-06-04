@@ -123,7 +123,7 @@ export function AdviceContextSelector({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
         {contextOptions.map((option, index) => {
           const isSelected = selectedContext === option.key;
-          const keys = contextTranslationKeys[option.key];
+          const _keys = contextTranslationKeys[option.key];
           return (
             <motion.button
               key={option.key}
