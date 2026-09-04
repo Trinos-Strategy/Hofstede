@@ -14,53 +14,9 @@ export default defineConfig({
     assetsDir: 'assets',
     cssCodeSplit: true,
     minify: 'terser',
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (!id.includes('node_modules')) return;
-
-          // React 생태계 + React를 참조하는 라이브러리는 반드시 한 청크로
-          // (recharts 내부의 react-smooth, react-resize-detector 등이
-          //  React.forwardRef를 참조하므로 vendor-react와 분리되면 undefined 에러 발생)
-          if (
-            id.includes('node_modules/react/') ||
-            id.includes('node_modules/react-dom/') ||
-            id.includes('node_modules/react/jsx-runtime') ||
-            id.includes('node_modules/react/jsx-dev-runtime') ||
-            id.includes('node_modules/scheduler/') ||
-            id.includes('node_modules/react-is/') ||
-            id.includes('node_modules/prop-types/') ||
-            id.includes('node_modules/react-smooth/') ||
-            id.includes('node_modules/react-resize-detector/')
-          ) {
-            return 'vendor-react';
-          }
-
-          if (
-            id.includes('node_modules/recharts/') ||
-            id.includes('node_modules/d3') ||
-            id.includes('node_modules/classnames/') ||
-            id.includes('node_modules/lodash/')
-          ) {
-            return 'vendor-charts';
-          }
-
-          if (
-            id.includes('node_modules/framer-motion/') ||
-            id.includes('node_modules/motion-dom/') ||
-            id.includes('node_modules/motion-utils/')
-          ) {
-            return 'vendor-motion';
-          }
-
-          if (
-            id.includes('node_modules/lucide-react/') ||
-            id.includes('node_modules/@lucide/')
-          ) {
-            return 'vendor-icons';
-          }
-        },
-      },
-    },
+    // manualChunks 제거: recharts 내부 라이브러리(react-smooth, react-resize-detector 등)가
+    // React.forwardRef를 참조하는데, 수동 청크 분리로 인해 청크 로드 순서 문제가
+    // 발생하여 앱이 백지로 렌더되는 문제를 해결하기 위해,
+    // Rollup이 의존성 그래프 기반으로 자동 분할하도록 맡깁니다.
   },
 })
