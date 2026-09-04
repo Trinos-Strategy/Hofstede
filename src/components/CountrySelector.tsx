@@ -41,6 +41,22 @@ function getCountryFlag(code: string): string {
   return flags[code] || '🏳️';
 }
 
+// Common alternate names so everyday queries ("한국", "미국", "Holland") match.
+const countryAliases: Record<string, string[]> = {
+  KOR: ['한국', '남한', 'korea', 'south korea'],
+  USA: ['미국', 'america', 'united states', 'us', 'usa'],
+  GBR: ['영국', 'britain', 'uk', 'united kingdom', 'england'],
+  CHN: ['중국', 'china', 'prc'],
+  JPN: ['일본', 'japan'],
+  DEU: ['독일', 'germany'],
+  NLD: ['네덜란드', 'holland'],
+  TWN: ['대만', 'taiwan'],
+  HKG: ['홍콩', 'hong kong'],
+  CZE: ['체코', 'czech'],
+  VEN: ['베네수엘라', 'venezuela'],
+  RUS: ['러시아', 'russia'],
+};
+
 export function CountrySelector({
   selectedCountries,
   onCountrySelect,
@@ -69,10 +85,12 @@ export function CountrySelector({
   const filteredCountries = useMemo(() => {
     return countries.filter((country) => {
       const query = searchTerm.toLowerCase();
+      const aliases = countryAliases[country.code] ?? [];
       const matchesSearch =
         country.name.toLowerCase().includes(query) ||
         country.nameKo.includes(searchTerm) ||
-        country.code.toLowerCase().includes(query);
+        country.code.toLowerCase().includes(query) ||
+        aliases.some((a) => a.includes(query));
       const matchesCluster = filterCluster ? country.cluster === filterCluster : true;
       const notSelected = !selectedCountries.find((c) => c.code === country.code);
       return matchesSearch && matchesCluster && notSelected;

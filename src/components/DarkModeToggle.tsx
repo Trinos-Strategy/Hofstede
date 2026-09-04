@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+// Must match the key read by the flash-prevention script in index.html
+// and by useDarkMode().
+const THEME_STORAGE_KEY = 'hofstede-theme';
+
 export function DarkModeToggle() {
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
       return document.documentElement.classList.contains('dark') ||
-        localStorage.getItem('theme') === 'dark' ||
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        localStorage.getItem(THEME_STORAGE_KEY) === 'dark' ||
+        (!localStorage.getItem(THEME_STORAGE_KEY) && window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
     return true; // Default to dark/luxury mode
   });
@@ -16,10 +20,10 @@ export function DarkModeToggle() {
     const root = document.documentElement;
     if (isDark) {
       root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+      localStorage.setItem(THEME_STORAGE_KEY, 'dark');
     } else {
       root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      localStorage.setItem(THEME_STORAGE_KEY, 'light');
     }
   }, [isDark]);
 

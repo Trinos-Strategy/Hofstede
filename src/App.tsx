@@ -1,10 +1,9 @@
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Globe2 } from 'lucide-react';
+import { Globe2, Download, Loader2 } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
 import { CountrySelector } from './components/CountrySelector';
-import { DimensionRadar } from './components/DimensionRadar';
 import { DimensionBar } from './components/DimensionBar';
 import { ComparisonTable } from './components/ComparisonTable';
 import { AdviceContextSelector } from './components/AdviceContextSelector';
@@ -19,6 +18,12 @@ import { useDarkMode } from './hooks/useDarkMode';
 import { generateBilateralContextAdvice } from './advice';
 import { countryToProfile } from './utils/profileConverter';
 import './index.css';
+
+// Recharts is heavy (~40% of the bundle) and only needed once a country is
+// selected, so keep it out of the initial chunk.
+const DimensionRadar = lazy(() =>
+  import('./components/DimensionRadar').then((m) => ({ default: m.DimensionRadar }))
+);
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -37,17 +42,27 @@ const itemVariants = {
   }
 };
 
+// Placeholder while the chart chunk (recharts) streams in on first selection.
+function ChartSkeleton() {
+  return (
+    <div className="h-[350px] sm:h-[500px] flex flex-col items-center justify-center gap-4 rounded-lg bg-white/[0.03] border border-white/5">
+      <Loader2 className="w-6 h-6 text-[var(--color-brass)] animate-spin" strokeWidth={1.5} />
+      <p className="text-xs text-[var(--color-ivory-muted)] tracking-wide">Loading chart…</p>
+    </div>
+  );
+}
+
 function App() {
   const { t } = useLanguage();
-  const _shouldReduceMotion = useReducedMotion();
-  const { theme: _theme, toggleTheme: _toggleTheme } = useDarkMode();
-  const { initialCountries, initialContext: _initialContext, syncUrl, popStateTrigger, parseFromUrl } = useUrlState();
+  useReducedMotion();
+  useDarkMode();
+  const { initialCountries, initialContext, syncUrl, popStateTrigger, parseFromUrl } = useUrlState();
 
   const [selectedCountries, setSelectedCountries] = useState<Country[]>(initialCountries);
   const [filterCluster, setFilterCluster] = useState<ClusterType | null>(null);
-  const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(null);
-    const radarContainerRef = useRef<HTMLDivElement>(null);
-  const [_isExporting, setIsExporting] = useState(false);
+  const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(initialContext);
+  const radarContainerRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Section refs for scroll navigation
   const sidebarRef = useRef<HTMLElement>(null);
@@ -65,14 +80,14 @@ function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [popStateTrigger]);
 
-  // PNG Export handler (dynamic import to avoid bundle bloat)
-  const _handleExportChart = useCallback(async () => {
-    if (!radarContainerRef.current) return;
+  // PNG Export handler (dynamic import keeps html2canvas out of the main bundle)
+  const handleExportChart = useCallback(async () => {
+    if (!radarContainerRef.current || isExporting) return;
     setIsExporting(true);
     try {
       const html2canvas = (await import('html2canvas')).default;
       const canvas = await html2canvas(radarContainerRef.current, {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#0A0E1A',
         scale: 2,
       });
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
@@ -85,7 +100,7 @@ function App() {
     } finally {
       setIsExporting(false);
     }
-  }, []);
+  }, [isExporting]);
 
   // Bilateral advice - only when exactly 2 countries selected
   const bilateralAdvice = useMemo<BilateralAdviceResult | null>(() => {
@@ -142,9 +157,9 @@ function App() {
               >
                 <Globe2 className="w-5 h-5 sm:w-6 sm:h-6 text-white" strokeWidth={1.5} />
               </motion.div>
-              <div>
+              <div className="min-w-0">
                 <h1
-                  className="text-lg sm:text-xl font-bold tracking-wider text-[var(--color-brass)] uppercase"
+                  className="text-base sm:text-lg lg:text-xl font-bold tracking-wide text-[var(--color-brass)] uppercase whitespace-nowrap"
                   style={{ fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   TRINOS | CULTURAL COMPASS
@@ -255,10 +270,26 @@ function App() {
                       <span className="text-[10px] sm:text-xs text-[var(--color-brass)] bg-white/5 px-2.5 py-0.5 rounded-full font-medium border border-white/5">
                         {t('sixDimensionComparison')}
                       </span>
+                      <button
+                        onClick={handleExportChart}
+                        disabled={isExporting}
+                        className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-medium border border-white/10 text-[var(--color-ivory-muted)] hover:text-[var(--color-brass)] hover:border-[var(--color-brass)]/50 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                        title={t('exportPng')}
+                        aria-label={t('exportPng')}
+                      >
+                        {isExporting
+                          ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          : <Download className="w-3.5 h-3.5" />}
+                        PNG
+                      </button>
                     </div>
                     <div className="w-16 h-[1px] bg-gradient-to-r from-[var(--color-brass)] to-transparent mt-1" />
                   </div>
-                  <DimensionRadar countries={selectedCountries} />
+                  <div ref={radarContainerRef}>
+                    <Suspense fallback={<ChartSkeleton />}>
+                      <DimensionRadar countries={selectedCountries} />
+                    </Suspense>
+                  </div>
                 </div>
 
                 {/* Bar charts */}
@@ -309,10 +340,13 @@ function App() {
                 <div className="w-16 h-[1px] bg-gradient-to-r from-[var(--color-brass)] to-transparent mt-1" />
               </div>
               {/* Framework note */}
-              <div className="mb-4 sm:mb-5 px-4 py-2.5 bg-white/5 rounded-lg border border-[var(--color-brass)]/15">
-                <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] leading-relaxed">
-                  <span className="font-semibold text-[var(--color-brass)]">{t('frameworkLabel')}</span>{' '}
-                  {t('frameworkDescription')}
+              <div className="mb-4 sm:mb-5 px-4 py-3 bg-white/5 rounded-lg border border-[var(--color-brass)]/15">
+                <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] leading-relaxed flex items-start gap-2">
+                  <span aria-hidden="true" className="flex-shrink-0">📚</span>
+                  <span>
+                    <span className="font-semibold text-[var(--color-brass)] uppercase tracking-wide">{t('frameworkLabel')}</span>{' '}
+                    {t('frameworkDescription')}
+                  </span>
                 </p>
               </div>
             </motion.div>

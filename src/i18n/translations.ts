@@ -41,6 +41,7 @@ export type TranslationKeys = {
   compareDimensionsDescription: string;
   radarChart: string;
   sixDimensionComparison: string;
+  exportPng: string;
   dimensionBarComparison: string;
   detailedDimensionComparison: string;
 
@@ -345,6 +346,7 @@ export const translations: Record<Language, TranslationKeys> = {
     cultureDimensionComparison: '문화 차원 비교',
     compareDimensionsDescription: '1~3개국 선택 시 Hofstede 차원을 비교합니다',
     radarChart: '레이더 차트',
+    exportPng: '차트를 PNG로 저장',
     sixDimensionComparison: '6차원 비교',
     dimensionBarComparison: '차원별 막대 비교',
     detailedDimensionComparison: '차원 상세 비교',
@@ -482,7 +484,7 @@ export const translations: Record<Language, TranslationKeys> = {
     // Bilateral advice
     bilateralAdvice: '상황별 양국 간 조언',
     bilateralAdviceDescription: '정확히 2개국 선택 시 상호 비교 조언을 제공합니다',
-    frameworkLabel: '📚 프레임워크:',
+    frameworkLabel: '프레임워크:',
     frameworkDescription: '양국 간 조언은 Huib Wursten의 Mental Images 프레임워크에 기반하며, 4개 핵심 차원(PDI, IDV, UAI, MAS)을 사용합니다.',
     analysisFrameworkLabel: '분석 프레임워크:',
     analysisFrameworkDescription: 'Wursten 문화 클러스터(PDI, IDV, UAI, MAS 기반)와 Hofstede 문화 차원 이론(LTO, IVR 포함)을 기반으로 합니다.',
@@ -649,6 +651,7 @@ export const translations: Record<Language, TranslationKeys> = {
     cultureDimensionComparison: 'Cultural Dimension Comparison',
     compareDimensionsDescription: 'Compare Hofstede dimensions when 1-3 countries are selected',
     radarChart: 'Radar Chart',
+    exportPng: 'Export chart as PNG',
     sixDimensionComparison: '6-Dimension Comparison',
     dimensionBarComparison: 'Dimension Bar Comparison',
     detailedDimensionComparison: 'Detailed Dimension Comparison',
@@ -786,7 +789,7 @@ export const translations: Record<Language, TranslationKeys> = {
     // Bilateral advice
     bilateralAdvice: 'Situational Bilateral Advice',
     bilateralAdviceDescription: 'Provides mutual comparison advice when exactly 2 countries are selected',
-    frameworkLabel: '📚 Framework:',
+    frameworkLabel: 'Framework:',
     frameworkDescription: "Bilateral advice is based on Huib Wursten's Mental Images framework, using 4 core dimensions (PDI, IDV, UAI, MAS).",
     analysisFrameworkLabel: 'Analysis Framework:',
     analysisFrameworkDescription: 'Based on Wursten Cultural Clusters (PDI, IDV, UAI, MAS) and Hofstede Cultural Dimension Theory (including LTO, IVR).',

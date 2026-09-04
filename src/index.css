@@ -94,27 +94,31 @@
 }
 
 /* Premium Utilities */
-.glass-card {
-  background: var(--color-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-glass-border);
-  border-radius: var(--radius-medium);
-  box-shadow: var(--shadow-medium);
-}
+/* Component classes live in @layer components so Tailwind utilities
+   (e.g. rounded-lg) can override their properties where used. */
+@layer components {
+  .glass-card {
+    background: var(--color-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-glass-border);
+    border-radius: var(--radius-medium);
+    box-shadow: var(--shadow-medium);
+  }
 
-.glass-subtle {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
+  .glass-subtle {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
 
-.glass-strong {
-  background: rgba(10, 14, 26, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--color-glass-border);
+  .glass-strong {
+    background: rgba(10, 14, 26, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--color-glass-border);
+  }
 }
 
 .text-gradient-gold {
@@ -134,66 +138,82 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: var(--font-body);
-  font-weight: 400;
-  background: var(--ivory-light);
-  color: var(--text-secondary);  /* Darker text for better readability */
-  margin: 0;
-  min-height: 100vh;
-  letter-spacing: 0.01em;
-  line-height: 1.6;  /* Optimal line-height for readability */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* Base element typography lives in @layer base so Tailwind utilities
+   (text-*, font-*, tracking-*) on the same element take precedence —
+   unlayered element rules would beat every utility class. */
+@layer base {
+  body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    background: var(--ivory-light);
+    color: var(--text-secondary);  /* Darker text for better readability */
+    margin: 0;
+    min-height: 100vh;
+    letter-spacing: 0.01em;
+    line-height: 1.6;  /* Optimal line-height for readability */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-/* Typography Hierarchy - Enhanced Readability */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 600;  /* Stronger weight for headings */
-  letter-spacing: 0.02em;
-  color: var(--text-primary);  /* Maximum contrast */
-  line-height: 1.35;
-}
+  /* Typography Hierarchy - Enhanced Readability */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;  /* Stronger weight for headings */
+    letter-spacing: 0.02em;
+    color: var(--text-primary);  /* Maximum contrast */
+    line-height: 1.35;
+  }
 
-h1 {
-  font-size: 3.5rem;
-  font-weight: 500;  /* Slightly lighter for very large text */
-  letter-spacing: 0.04em;
-}
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 500;  /* Slightly lighter for very large text */
+    letter-spacing: 0.04em;
+  }
 
-h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-}
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
 
-h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
 
-/* Paragraph and Body Text */
-p, li, td, th {
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
+  /* Paragraph and Body Text */
+  p, li, td, th {
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
 
-/* Strong/Bold Text */
-strong, b {
-  font-weight: 600;
-  color: var(--text-primary);
-}
+  /* Strong/Bold Text */
+  strong, b {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
 
-/* Secondary/Muted Text - Still readable */
-.text-muted {
-  color: var(--text-muted) !important;
-}
+  /* Secondary/Muted Text - Still readable */
+  .text-muted {
+    color: var(--text-muted) !important;
+  }
 
-/* Labels and Small Text */
-small, .text-sm, .text-xs {
-  color: var(--text-muted);
-  font-weight: 450;
+  /* Labels and Small Text */
+  small, .text-sm, .text-xs {
+    color: var(--text-muted);
+    font-weight: 450;
+  }
+
+  /* Link Styles */
+  a {
+    color: var(--gold-dark);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  a:hover {
+    color: var(--gold);
+  }
 }
 
 /* Custom Scrollbar */
@@ -434,6 +454,24 @@ input:focus, select:focus, textarea:focus {
 /* Chart Styles */
 .recharts-sector {
   transition: all 0.4s ease;
+}
+
+/* Radar axis badge — CSS-only entrance so recharts re-renders
+   (dimension toggles, language switch) can never leave it frozen
+   at scale(0) the way a JS-driven animation could. */
+@keyframes radarBadgeIn {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.radar-badge {
+  animation: radarBadgeIn 0.45s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radar-badge {
+    animation: none;
+  }
 }
 
 .recharts-legend-item {

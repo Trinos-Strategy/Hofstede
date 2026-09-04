@@ -2,10 +2,12 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-// https://vite.dev/config/
+// Relative base so the build works at any host path: the apex custom domain
+// (hofstede.trinos.group) and the GitHub Pages project URL
+// (trinos-strategy.github.io/Hofstede/) alike.
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/',
+  base: './',
   optimizeDeps: {
     include: ['react', 'react-dom', 'recharts', 'framer-motion'],
   },

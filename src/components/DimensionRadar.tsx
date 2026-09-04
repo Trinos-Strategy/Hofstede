@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   RadarChart,
@@ -155,6 +154,7 @@ interface CustomTickProps {
   cx?: string | number;
   cy?: string | number;
   index?: number;
+  payload?: { value?: string | number };
   textAnchor?: 'inherit' | 'end' | 'middle' | 'start';
   countries: Country[];
   shouldReduceMotion: boolean;
@@ -166,11 +166,15 @@ function CustomTick({
   cx = 0,
   cy = 0,
   index = 0,
+  payload,
   textAnchor = 'middle',
   countries,
   shouldReduceMotion,
 }: CustomTickProps) {
-  const dim = dimensionInfo[index];
+  // Resolve the dimension from the tick value (the dimension key) so that
+  // filtering the radar data never shifts labels onto the wrong spoke.
+  const dim =
+    dimensionInfo.find((d) => d.key === payload?.value) ?? dimensionInfo[index];
   if (!dim) return null;
 
   const scoresStr = countries
@@ -214,19 +218,14 @@ function CustomTick({
         className="hidden sm:block overflow-visible pointer-events-none"
       >
         <div className="w-full h-full flex items-center justify-center">
-          <motion.div
-            initial={shouldReduceMotion ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{
-              type: 'spring',
-              stiffness: 260,
-              damping: 20,
-              delay: shouldReduceMotion ? 0 : index * 0.1,
-            }}
-            className="bg-gradient-to-r from-[#DFC495] via-[#C5A059] to-[#B8956A] text-[#2D1F10] border border-[#9C7A3C]/40 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-md whitespace-nowrap"
+          {/* Plain CSS animation — framer-motion can freeze at scale(0) when
+              recharts re-renders ticks without remounting them. */}
+          <div
+            className="radar-badge bg-gradient-to-r from-[#DFC495] via-[#C5A059] to-[#B8956A] text-[#2D1F10] border border-[#9C7A3C]/40 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-md whitespace-nowrap"
+            style={{ animationDelay: `${index * 0.1}s` }}
           >
             {labelText}
-          </motion.div>
+          </div>
         </div>
       </foreignObject>
     </g>
@@ -301,11 +300,13 @@ interface CustomTooltipProps {
 }
 
 function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
-  const { t, isKorean } = useLanguage();
+  const { t } = useLanguage();
 
   if (!active || !payload || payload.length === 0 || !label) return null;
 
-  const dimEntry = dimensionInfo.find((d) => (isKorean ? d.nameKo : d.name) === label);
+  const dimEntry = dimensionInfo.find(
+    (d) => d.key === label || d.name === label || d.nameKo === label
+  );
   const dimKey = dimEntry?.key;
   const fullName = dimKey ? t(dimensionTranslationKeys[dimKey].full) : label;
   const description = dimKey ? t(dimensionTranslationKeys[dimKey].desc) : '';
@@ -441,10 +442,55 @@ function CountryProfileCard({
   );
 }
 
+// ─── Dimension Explanation Lists ───
+const EXTENDED_DIMENSION_KEYS = ['LTO', 'IVR'];
+const coreDimensions = dimensionInfo.filter((d) => !EXTENDED_DIMENSION_KEYS.includes(d.key));
+const extendedDimensions = dimensionInfo.filter((d) => EXTENDED_DIMENSION_KEYS.includes(d.key));
+
 // ─── Main Component ───
 export function DimensionRadar({ countries }: DimensionRadarProps) {
   const { t, isKorean } = useLanguage();
   const shouldReduceMotion = !!useReducedMotion();
+
+  // Extended dimensions (LTO / IVR) start enabled; pills toggle them on the radar.
+  const [activeDimensions, setActiveDimensions] = useState<Set<string>>(
+    () => new Set(['LTO', 'IVR'])
+  );
+  // Country code → visible? Absent means visible (default).
+  const [visibilityMap, setVisibilityMap] = useState<Record<string, boolean>>({});
+
+  const toggleDimension = useCallback((key: string) => {
+    setActiveDimensions((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      return next;
+    });
+  }, []);
+
+  const toggleCountryVisibility = useCallback((code: string) => {
+    setVisibilityMap((prev) => ({ ...prev, [code]: prev[code] === false }));
+  }, []);
+
+  // Radar rows: one per active dimension, one column per selected country.
+  // The `dimension` field holds the dimension key so axis ticks and tooltips
+  // resolve consistently regardless of language or filtering.
+  const data = useMemo(
+    () =>
+      dimensionInfo
+        .filter((d) => !EXTENDED_DIMENSION_KEYS.includes(d.key) || activeDimensions.has(d.key))
+        .map((dim) => ({
+          dimension: dim.key,
+          fullMark: 100,
+          ...Object.fromEntries(
+            countries.map((c) => [c.code, c.dimensions[dim.key]])
+          ),
+        })),
+    [countries, activeDimensions]
+  );
 
   if (countries.length === 0) {
     return (
@@ -598,7 +644,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
       {/* Dimension Toggle Pills */}
       <div className="flex flex-wrap justify-center gap-2">
         {dimensionInfo
-          .filter((d) => ['LTO', 'IVR'].includes(d.key))
+          .filter((dim) => EXTENDED_DIMENSION_KEYS.includes(dim.key))
           .map((dim) => {
             const isActive = activeDimensions.has(dim.key);
             return (
