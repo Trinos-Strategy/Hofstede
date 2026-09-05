@@ -917,6 +917,15 @@ a:hover {
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+
+  /* Cluster accents brightened for dark surfaces — the light-theme hexes
+     (#8B6914 etc.) are unreadable on midnight glass. */
+  --contest-color: #D9B84A;
+  --network-color: #9FB397;
+  --family-color: #D9C25A;
+  --pyramid-color: #C4A57E;
+  --solar-color: #DE9A76;
+  --machine-color: #9AB0CB;
 }
 
 /* Light-theme legacy mapping (only effective without .dark) */
