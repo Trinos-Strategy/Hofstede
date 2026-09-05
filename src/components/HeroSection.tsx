@@ -45,10 +45,8 @@ export function HeroSection() {
             mobile and any fade delays the largest paint. */}
         <motion.h1
           initial={false}
-          className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-wide leading-[1.15] uppercase text-balance text-[var(--color-ivory)]"
+          className="hero-title-gold-stroke text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-wide leading-[1.15] uppercase text-balance"
           style={{
-            color: 'var(--color-ivory)',
-            textShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
             fontFamily: "'Cormorant Garamond', 'Pretendard', serif",
             letterSpacing: '0.04em'
           }}
