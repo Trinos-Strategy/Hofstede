@@ -1060,3 +1060,20 @@ a:hover {
   animation-duration: 0.28s;
   animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
+
+/* Cluster banner tile scrim — plain CSS because Tailwind v4 failed to
+   compile the arbitrary-value gradient class, leaving titles on raw art. */
+.banner-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 14, 26, 0.82) 0%,
+    rgba(10, 14, 26, 0.45) 30%,
+    rgba(10, 14, 26, 0.18) 55%,
+    rgba(10, 14, 26, 0.90) 100%
+  );
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}

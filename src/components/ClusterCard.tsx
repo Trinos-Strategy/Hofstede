@@ -78,15 +78,12 @@ export function ClusterCard({
       />
 
       {/* Dim/blur overlay: deep bottom vertical gradient + subtle blur */}
-      <div
-        className="absolute inset-0 backdrop-blur-[2px] pointer-events-none bg-[linear-gradient(to_bottom,rgba(10,14,26,0.78),rgba(10,14,26,0.15)_45%,rgba(10,14,26,0.88))]"
-        aria-hidden="true"
-      />
+      <div className="banner-scrim" aria-hidden="true" />
 
       {/* Top text */}
       <div className="absolute top-0 left-0 right-0 p-3 sm:p-4 z-10 pointer-events-none">
         <h3
-          className="text-base sm:text-lg font-bold text-[var(--color-ivory)] drop-shadow"
+          className="text-base sm:text-lg font-bold text-[var(--color-ivory)] [text-shadow:0_1px_3px_rgba(0,0,0,0.9),0_0_12px_rgba(10,14,26,0.8)]"
           style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.04em' }}
         >
           {t(translationKeys.name)}
