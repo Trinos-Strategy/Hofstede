@@ -239,6 +239,7 @@ export type TranslationKeys = {
   profileLowIVR: string;
 
   // Bilateral negotiation advice
+  adviceExpandHint: string;
   bilateralAdviceFor: string;
   mutualUnderstandingTitle: string;
   dosRecommended: string;
@@ -555,6 +556,7 @@ export const translations: Record<Language, TranslationKeys> = {
     profileLowIVR: '절제적, 규율 중시',
 
     // Bilateral negotiation advice
+    adviceExpandHint: '섹션을 눌러 펼쳐보세요',
     bilateralAdviceFor: '양국 간 {context} 조언',
     mutualUnderstandingTitle: '{context} - 상호 이해 핵심 포인트',
     dosRecommended: "Do's (권장 사항)",
@@ -870,6 +872,7 @@ export const translations: Record<Language, TranslationKeys> = {
     profileLowIVR: 'Restrained, disciplined',
 
     // Bilateral negotiation advice
+    adviceExpandHint: 'Tap a section to expand',
     bilateralAdviceFor: 'Bilateral {context} Advice',
     mutualUnderstandingTitle: '{context} - Key Mutual Understanding Points',
     dosRecommended: "Do's (Recommended)",

@@ -10,8 +10,20 @@ export function HeroSection() {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
-      className="w-full py-6 sm:py-12 max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
+      className="relative overflow-hidden w-full py-6 sm:py-12 max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
     >
+      {/* Mobile background art overlay */}
+      <div className="lg:hidden absolute inset-0 -z-10" aria-hidden="true">
+        <img
+          src="/art/hero-aurora.webp"
+          alt=""
+          className="w-full h-full object-cover opacity-25"
+          aria-hidden="true"
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-midnight)]/60 to-[var(--color-midnight)]" />
+      </div>
+
       {/* Left Column (col-span-7) */}
       <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
         {/* Eyebrow Badge */}
@@ -127,7 +139,7 @@ export function HeroSection() {
           hero image's first paint and regresses LCP. Float loop only. */}
       <motion.div
         initial={false}
-        className="lg:col-span-5 relative flex items-center justify-center mt-6 lg:mt-0"
+        className="hidden lg:flex lg:col-span-5 relative items-center justify-center mt-6 lg:mt-0"
       >
         {/* Frame behind blur glow decoration */}
         <div

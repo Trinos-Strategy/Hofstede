@@ -337,6 +337,12 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
   // 탭 상태 (상세 조언이 있을 경우)
   const [activeTab, setActiveTab] = useState<'AtoB' | 'BtoA'>('AtoB');
 
+  // 아코디언 상태 (첫 번째 블록 기본 열림)
+  const [openSectionIndex, setOpenSectionIndex] = useState<number | null>(0);
+  const toggleSection = (index: number) => {
+    setOpenSectionIndex((prev) => (prev === index ? null : index));
+  };
+
   return (
     <div className="space-y-6">
       {/* 헤더 */}
@@ -398,9 +404,48 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
         </div>
       </motion.div>
 
-      {/* 상세 협상 조언이 있는 경우 */}
-      {hasDetailed && context === 'NEGOTIATION' && (detailedAtoBAdvice || detailedBtoAAdvice) ? (
-        <>
+      {/* 아코디언 안내 */}
+      <p className="text-xs text-[var(--color-ivory-muted)] mb-3">{t('adviceExpandHint')}</p>
+
+      {/* 블록 0: 양국 간 조언 / 상세 협상 조언 */}
+      <div className="glass-card rounded-lg overflow-hidden">
+        <button
+          type="button"
+          onClick={() => toggleSection(0)}
+          className="w-full py-3.5 px-4 flex items-center justify-between cursor-pointer hover:bg-[var(--surface-1)] rounded-lg text-left transition-colors"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0"
+              style={{ backgroundColor: colors.color }}
+            >
+              <span className="text-sm">{colors.emoji}</span>
+            </div>
+            <div className="min-w-0">
+              <h3
+                className="font-semibold text-sm sm:text-base text-[var(--color-brass)] truncate"
+                style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
+              >
+                {t('bilateralAdviceFor', { context: t(contextKey) })}
+              </h3>
+              <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] truncate">
+                {hasDetailed && context === 'NEGOTIATION' && (detailedAtoBAdvice || detailedBtoAAdvice)
+                  ? (isKorean ? '상세 협상 조언 및 전략' : 'Detailed negotiation advice & strategies')
+                  : (isKorean ? `${nameA} ↔ ${nameB} 상호 조언` : `${nameA} ↔ ${nameB} mutual advice`)}
+              </p>
+            </div>
+          </div>
+          <ChevronDown
+            className={`w-5 h-5 text-[var(--color-ivory-muted)] transition-transform duration-200 flex-shrink-0 ${
+              openSectionIndex === 0 ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {openSectionIndex === 0 && (
+          <div className="p-4 sm:p-5 border-t border-[var(--surface-border)] space-y-6">
+            {hasDetailed && context === 'NEGOTIATION' && (detailedAtoBAdvice || detailedBtoAAdvice) ? (
+              <>
           {/* 방향 탭 */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -562,30 +607,45 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           </motion.div>
         </div>
       )}
-
-      {/* 상호 이해 섹션 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-        className="glass-card rounded-lg overflow-hidden"
-      >
-        <div className="px-5 py-4 flex items-center gap-4 border-b border-[var(--surface-border)] bg-[var(--surface-1)]">
-          <div
-            className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm"
-            style={{ backgroundColor: 'var(--color-brass-light, #C9A227)' }}
-          >
-            <span className="text-base sm:text-lg">💡</span>
           </div>
-          <h3
-            className="font-semibold text-sm sm:text-base text-[var(--color-brass)]"
-            style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
-          >
-            {t('mutualUnderstandingTitle', { context: t(contextKey) })}
-          </h3>
-        </div>
+        )}
+      </div>
 
-        <div className="p-5 space-y-5">
+      {/* 블록 1: 상호 이해 섹션 */}
+      <div className="glass-card rounded-lg overflow-hidden">
+        <button
+          type="button"
+          onClick={() => toggleSection(1)}
+          className="w-full py-3.5 px-4 flex items-center justify-between cursor-pointer hover:bg-[var(--surface-1)] rounded-lg text-left transition-colors"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0"
+              style={{ backgroundColor: 'var(--color-brass-light, #C9A227)' }}
+            >
+              <span className="text-sm">💡</span>
+            </div>
+            <div className="min-w-0">
+              <h3
+                className="font-semibold text-sm sm:text-base text-[var(--color-brass)] truncate"
+                style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
+              >
+                {t('mutualUnderstandingTitle', { context: t(contextKey) })}
+              </h3>
+              <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] truncate">
+                {isKorean ? '문화적 차이점, 공통 기반, 가교 전략' : 'Key differences, common ground, bridging strategy'}
+              </p>
+            </div>
+          </div>
+          <ChevronDown
+            className={`w-5 h-5 text-[var(--color-ivory-muted)] transition-transform duration-200 flex-shrink-0 ${
+              openSectionIndex === 1 ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {openSectionIndex === 1 && (
+          <div className="p-5 space-y-5 border-t border-[var(--surface-border)]">
           {/* 주요 차이점 */}
           <div className="p-5 rounded-lg bg-rose-500/5 border border-rose-500/10">
             <div className="flex items-center gap-3 mb-4">
@@ -660,108 +720,147 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
             </p>
           </div>
         </div>
-      </motion.div>
+        )}
+      </div>
 
-      {/* 문화 차원 비교 표 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-        className="glass-card rounded-lg p-5"
-      >
-        <h4
-          className="font-semibold text-[var(--color-brass)] mb-5 flex items-center gap-3 text-sm sm:text-base"
-          style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
+      {/* 블록 2: 문화 차원 비교 표 */}
+      <div className="glass-card rounded-lg overflow-hidden">
+        <button
+          type="button"
+          onClick={() => toggleSection(2)}
+          className="w-full py-3.5 px-4 flex items-center justify-between cursor-pointer hover:bg-[var(--surface-1)] rounded-lg text-left transition-colors"
         >
-          <div className="w-1 h-5 rounded-full bg-[var(--color-brass)]" />
-          문화 차원 비교
-        </h4>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs sm:text-sm">
-            <thead>
-              <tr className="border-b border-[var(--surface-border)]">
-                <th className="text-left py-3 px-4 font-semibold text-[var(--color-ivory-muted)] tracking-wide">차원</th>
-                <th className="text-center py-3 px-4 font-semibold text-[var(--color-brass)]">{nameA}</th>
-                <th className="text-center py-3 px-4 font-semibold text-[var(--color-ivory-muted)] opacity-50">차이</th>
-                <th className="text-center py-3 px-4 font-semibold text-[var(--color-sage, #7D8471)]">{nameB}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                { key: 'PDI', label: '권력 거리 (PDI)' },
-                { key: 'IDV', label: '개인주의 (IDV)' },
-                { key: 'UAI', label: '불확실성 회피 (UAI)' },
-                { key: 'MAS', label: '성취 중시 (MAS)' },
-              ].map((dim, idx) => {
-                const valueA = countryA.dimensions[dim.key as keyof typeof countryA.dimensions];
-                const valueB = countryB.dimensions[dim.key as keyof typeof countryB.dimensions];
-                if (valueA === undefined || valueB === undefined) return null;
-                const diff = Math.abs((valueA as number) - (valueB as number));
-                const isHighDiff = diff >= 30;
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0 bg-[var(--surface-2)] text-[var(--color-brass)]">
+              <TrendingUp className="w-4 h-4" />
+            </div>
+            <div className="min-w-0">
+              <h3
+                className="font-semibold text-sm sm:text-base text-[var(--color-brass)] truncate"
+                style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
+              >
+                {t('culturalDimensionComparison')}
+              </h3>
+              <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] truncate">
+                {isKorean ? '4대 핵심 차원(PDI, IDV, UAI, MAS) 격차 비교' : 'Core 4 dimensions (PDI, IDV, UAI, MAS) gap comparison'}
+              </p>
+            </div>
+          </div>
+          <ChevronDown
+            className={`w-5 h-5 text-[var(--color-ivory-muted)] transition-transform duration-200 flex-shrink-0 ${
+              openSectionIndex === 2 ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
 
-                return (
-                  <motion.tr
-                    key={dim.key}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      delay: 0.5 + idx * 0.05,
-                      duration: 0.4,
-                      ease: [0.25, 0.1, 0.25, 1]
-                    }}
-                    className="border-b border-[var(--surface-border)] hover:bg-[var(--surface-1)] transition-colors duration-300"
-                  >
-                    <td className="py-3.5 px-4 text-[var(--color-ivory)] font-medium">{dim.label}</td>
-                    <td className="py-3.5 px-4 text-center">
-                      <span className="px-3 py-1.5 rounded-md bg-[var(--surface-1)] text-[var(--color-brass)] font-semibold border border-[var(--surface-border)]">
-                        {valueA}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 text-center">
-                      <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${isHighDiff ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' : 'bg-[var(--surface-1)] text-[var(--color-ivory-muted)] opacity-60'}`}>
-                        {diff}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-4 text-center">
-                      <span className="px-3 py-1.5 rounded-md bg-[var(--surface-1)] text-[var(--color-sage, #7D8471)] font-semibold border border-[var(--surface-border)]">
-                        {valueB}
-                      </span>
-                    </td>
-                  </motion.tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </motion.div>
+        {openSectionIndex === 2 && (
+          <div className="p-5 border-t border-[var(--surface-border)]">
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-[var(--surface-border)]">
+                    <th className="text-left py-3 px-4 font-semibold text-[var(--color-ivory-muted)] tracking-wide">차원</th>
+                    <th className="text-center py-3 px-4 font-semibold text-[var(--color-brass)]">{nameA}</th>
+                    <th className="text-center py-3 px-4 font-semibold text-[var(--color-ivory-muted)] opacity-50">차이</th>
+                    <th className="text-center py-3 px-4 font-semibold text-[var(--color-sage, #7D8471)]">{nameB}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { key: 'PDI', label: '권력 거리 (PDI)' },
+                    { key: 'IDV', label: '개인주의 (IDV)' },
+                    { key: 'UAI', label: '불확실성 회피 (UAI)' },
+                    { key: 'MAS', label: '성취 중시 (MAS)' },
+                  ].map((dim, idx) => {
+                    const valueA = countryA.dimensions[dim.key as keyof typeof countryA.dimensions];
+                    const valueB = countryB.dimensions[dim.key as keyof typeof countryB.dimensions];
+                    if (valueA === undefined || valueB === undefined) return null;
+                    const diff = Math.abs((valueA as number) - (valueB as number));
+                    const isHighDiff = diff >= 30;
 
-      {/* 학술 참고문헌 */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-        className="glass-card rounded-lg p-5"
-      >
-        <div className="flex items-center gap-3 mb-4">
-          <BookOpen className="w-5 h-5 text-[var(--color-teal, #6B7B8C)]" strokeWidth={1.5} />
-          <h4
-            className="font-semibold text-xs sm:text-sm text-[var(--color-teal, #6B7B8C)]"
-            style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
-          >
-            {t('academicReferences')}
-          </h4>
-        </div>
-        <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] opacity-70 leading-relaxed mb-4 italic">
-          {academicReferences.shortDescription}
-        </p>
-        <div className="space-y-2">
-          {academicReferences.sources.map((source, idx) => (
-            <p key={idx} className="text-[9px] sm:text-[10px] text-[var(--color-ivory-muted)] opacity-50 leading-relaxed">
-              • {source}
+                    return (
+                      <motion.tr
+                        key={dim.key}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          delay: 0.1 + idx * 0.05,
+                          duration: 0.4,
+                          ease: [0.25, 0.1, 0.25, 1]
+                        }}
+                        className="border-b border-[var(--surface-border)] hover:bg-[var(--surface-1)] transition-colors duration-300"
+                      >
+                        <td className="py-3.5 px-4 text-[var(--color-ivory)] font-medium">{dim.label}</td>
+                        <td className="py-3.5 px-4 text-center">
+                          <span className="px-3 py-1.5 rounded-md bg-[var(--surface-1)] text-[var(--color-brass)] font-semibold border border-[var(--surface-border)]">
+                            {valueA}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-center">
+                          <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${isHighDiff ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' : 'bg-[var(--surface-1)] text-[var(--color-ivory-muted)] opacity-60'}`}>
+                            {diff}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4 text-center">
+                          <span className="px-3 py-1.5 rounded-md bg-[var(--surface-1)] text-[var(--color-sage, #7D8471)] font-semibold border border-[var(--surface-border)]">
+                            {valueB}
+                          </span>
+                        </td>
+                      </motion.tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 블록 3: 학술 참고문헌 */}
+      <div className="glass-card rounded-lg overflow-hidden">
+        <button
+          type="button"
+          onClick={() => toggleSection(3)}
+          className="w-full py-3.5 px-4 flex items-center justify-between cursor-pointer hover:bg-[var(--surface-1)] rounded-lg text-left transition-colors"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0 bg-[var(--surface-2)] text-[var(--color-teal, #6B7B8C)]">
+              <BookOpen className="w-4 h-4" strokeWidth={1.5} />
+            </div>
+            <div className="min-w-0">
+              <h3
+                className="font-semibold text-sm sm:text-base text-[var(--color-brass)] truncate"
+                style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
+              >
+                {t('academicReferences')}
+              </h3>
+              <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] truncate">
+                {academicReferences.shortDescription}
+              </p>
+            </div>
+          </div>
+          <ChevronDown
+            className={`w-5 h-5 text-[var(--color-ivory-muted)] transition-transform duration-200 flex-shrink-0 ${
+              openSectionIndex === 3 ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {openSectionIndex === 3 && (
+          <div className="p-5 border-t border-[var(--surface-border)]">
+            <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] opacity-70 leading-relaxed mb-4 italic">
+              {academicReferences.shortDescription}
             </p>
-          ))}
-        </div>
-      </motion.div>
+            <div className="space-y-2">
+              {academicReferences.sources.map((source, idx) => (
+                <p key={idx} className="text-[9px] sm:text-[10px] text-[var(--color-ivory-muted)] opacity-50 leading-relaxed">
+                  • {source}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

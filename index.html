@@ -2,7 +2,9 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Compare cultural dimensions across 42 countries using Hofstede's framework. Visualize Power Distance, Individualism, Masculinity, Uncertainty Avoidance, Long-Term Orientation, and Indulgence." />
     <meta property="og:title" content="Hofstede Cultural Compass" />
@@ -14,6 +16,20 @@
     <meta name="twitter:image" content="https://hofstede.trinos.group/art/og-image.jpg" />
     <meta name="theme-color" content="#0f172a" />
     <title>Hofstede Cultural Compass</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Hofstede Cultural Compass",
+      "url": "https://hofstede.trinos.group/",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "description": "Interactive bilingual (Korean/English) comparison of cultural dimensions across 42 countries based on Geert Hofstede's framework and Huib Wursten's Mental Images clusters.",
+      "inLanguage": ["ko", "en"],
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "creator": { "@type": "Organization", "name": "Trinos Research Lab" }
+    }
+    </script>
     <link rel="preload" as="image" href="./art/hero-aurora.webp" fetchpriority="high">
     <!-- Dark mode flash prevention — must run before any paint -->
     <script>
