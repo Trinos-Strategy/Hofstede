@@ -45,9 +45,9 @@ function Section({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative z-10 py-14 sm:py-20 border-t border-[var(--surface-border)] scroll-mt-20"
+      className="relative z-10 py-8 sm:py-14 border-t border-[var(--surface-border)] scroll-mt-20"
     >
-      <div className="flex items-start gap-4 sm:gap-6 mb-8 sm:mb-12">
+      <div className="flex items-start gap-4 sm:gap-6 mb-5 sm:mb-8">
         <span
           className="text-[var(--color-brass)] tracking-[0.35em] text-sm pt-2"
           style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
@@ -206,7 +206,7 @@ function App() {
       </motion.header>
 
       {/* Main content */}
-      <main className="max-w-[1140px] mx-auto px-4 sm:px-6 py-6 sm:py-12 relative z-10">
+      <main className="max-w-[1140px] mx-auto px-4 sm:px-6 py-4 sm:py-10 relative z-10">
         <HeroSection />
 
         {/* ─── 01 · Cultural clusters — full-width bento (old sidebar removed) ─── */}
@@ -229,7 +229,7 @@ function App() {
           desc={t('maxCount')}
         >
             {/* Country selector */}
-            <motion.div id="country-selector" className="glass-card rounded-lg p-4 sm:p-8">
+            <motion.div id="country-selector" className="glass-card rounded-lg p-4 sm:p-6">
               <CountrySelector
                 selectedCountries={selectedCountries}
                 onCountrySelect={handleCountrySelect}
@@ -239,9 +239,9 @@ function App() {
             </motion.div>
 
             {selectedCountries.length > 0 && (
-              <div className="space-y-5 sm:space-y-8 scroll-mt-24" id="dimension-comparison">
+              <div className="space-y-4 sm:space-y-6 scroll-mt-24" id="dimension-comparison">
                 {/* Radar chart - full width with dimension explanations */}
-                <div className="glass-card rounded-lg p-4 sm:p-8">
+                <div className="glass-card rounded-lg p-4 sm:p-6">
                   <div className="flex flex-col gap-2 mb-4 sm:mb-6">
                     <div className="flex items-center gap-3">
                       <div className="accent-bar" />
@@ -298,7 +298,7 @@ function App() {
                 </div>
 
                 {/* Bar charts */}
-                <div className="glass-card rounded-lg p-4 sm:p-8">
+                <div className="glass-card rounded-lg p-4 sm:p-6">
                   <div className="flex flex-col gap-2 mb-4 sm:mb-6">
                     <div className="flex items-center gap-3">
                       <div className="accent-bar" />
@@ -441,9 +441,9 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-12 sm:mt-20 border-t border-[var(--surface-border)] bg-[var(--surface-1)] relative z-10">
+      <footer className="mt-8 sm:mt-12 border-t border-[var(--surface-border)] bg-[var(--surface-1)] relative z-10">
         <div className="max-w-[1140px] mx-auto px-4 sm:px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 sm:py-8">
             {/* Left: Trinos Research Lab */}
             <span
               className="text-sm text-gradient-gold font-medium tracking-wide"

@@ -100,7 +100,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
       onDoubleClick={handleDoubleClick}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className={`
-        cursor-pointer rounded-xl p-6 aspect-auto relative overflow-hidden glass-card card-gradient-border glow-gold
+        cursor-pointer rounded-xl p-3 sm:p-5 aspect-auto relative overflow-hidden glass-card card-gradient-border glow-gold
         transition-all duration-500 flex flex-col justify-between
         ${isSelected ? 'ring-1 ring-[var(--color-brass)] bg-[var(--color-brass)]/10 shadow-md' : 'bg-white/[0.03]'}
       `}
@@ -134,7 +134,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
             </motion.div>
             <div className="flex-1 min-w-0">
               <h3
-                className="font-bold text-xl tracking-wide truncate"
+                className="font-bold text-base sm:text-xl tracking-wide truncate"
                 style={{
                   color: style.color,
                   fontFamily: "'Cormorant Garamond', serif",
@@ -159,23 +159,23 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
             )}
           </div>
 
-          <p className="text-xs leading-relaxed text-[var(--color-ivory-muted)] mb-4 line-clamp-2">
+          <p className="text-xs leading-relaxed text-[var(--color-ivory-muted)] mb-3 sm:mb-4 line-clamp-2 lg:line-clamp-none">
             {t(translationKeys.desc)}
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2 mt-4 pt-2">
+        <div className="flex flex-wrap gap-1 sm:gap-2 mt-2.5 sm:mt-4 pt-1 sm:pt-2">
           {countriesInCluster.slice(0, 3).map((country) => (
             <span
               key={country.code}
-              className="text-xs px-3 py-1.5 rounded-full border border-[var(--surface-border)] bg-[var(--surface-1)] text-[var(--color-ivory)] font-medium shadow-sm transition-colors hover:border-[var(--color-brass)]/40"
+              className="text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full border border-[var(--surface-border)] bg-[var(--surface-1)] text-[var(--color-ivory)] font-medium shadow-sm transition-colors hover:border-[var(--color-brass)]/40"
             >
               {isKorean ? country.nameKo : country.name}
             </span>
           ))}
           {countriesInCluster.length > 3 && (
             <span
-              className="text-xs px-3 py-1.5 rounded-full font-medium border shadow-sm animate-pulse"
+              className="text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full font-medium border shadow-sm animate-pulse"
               style={{
                 backgroundColor: `${style.iconColor}10`,
                 color: style.color,

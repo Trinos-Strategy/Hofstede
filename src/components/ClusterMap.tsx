@@ -58,7 +58,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
+        className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4"
       >
         {clusterOrder.map((cluster) => (
           <motion.div key={cluster} variants={itemVariants}>
@@ -73,7 +73,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
       </motion.div>
 
       {/* Double-click guidance hint caption */}
-      <p className="text-[11px] text-[var(--color-ivory-muted)]/70 text-center mt-6 font-medium">
+      <p className="text-[11px] text-[var(--color-ivory-muted)]/70 text-center mt-4 font-medium">
         {t('clickFilterDoubleClickDetails')}
       </p>
 

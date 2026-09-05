@@ -10,7 +10,7 @@ export function HeroSection() {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
-      className="w-full py-8 sm:py-16 lg:py-20 max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
+      className="w-full py-6 sm:py-12 max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
     >
       {/* Left Column (col-span-7) */}
       <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -46,7 +46,7 @@ export function HeroSection() {
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ delay: 0.35, duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-          className="w-24 h-[1px] bg-gradient-to-r from-[var(--color-brass)] to-transparent my-5 sm:my-6"
+          className="w-24 h-[1px] bg-gradient-to-r from-[var(--color-brass)] to-transparent my-4"
         />
 
         {/* Subtitle */}
@@ -68,7 +68,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-8"
+          className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-6"
         >
           <button
             type="button"
@@ -91,7 +91,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="mt-10 sm:mt-12 flex items-center justify-center lg:justify-start gap-6 sm:gap-10"
+          className="mt-8 flex items-center justify-center lg:justify-start gap-6 sm:gap-10"
         >
           <div className="flex flex-col items-center lg:items-start">
             <span
@@ -156,7 +156,7 @@ export function HeroSection() {
       </motion.div>
 
       {/* Scroll cue */}
-      <div className="lg:col-span-12 mt-16 flex flex-col items-center gap-2 text-[var(--color-ivory-muted)]/60">
+      <div className="lg:col-span-12 mt-10 flex flex-col items-center gap-2 text-[var(--color-ivory-muted)]/60">
         <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
         <div className="h-10 w-px bg-gradient-to-b from-[var(--color-brass)]/60 to-transparent animate-pulse" />
       </div>
