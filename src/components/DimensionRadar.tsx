@@ -185,7 +185,7 @@ function CustomDot({
       {/* 기존 마커(원/사각/삼각형) */}
       {renderMarker()}
 
-      {/* 값 라벨: 마커 위쪽에 <text> value 표시 (font-size 14, font-weight 700, fill=국가색, textAnchor=middle, y 오프셋 -18 - (countryIndex * 17)), paintOrder stroke #0A0E1A strokeWidth 3로 외곽선 */}
+      {/* 값 라벨: 마커 위쪽에 <text> value 표시 (font-size 14, font-weight 700, fill=국가색, textAnchor=middle, y 오프셋 -18 - (countryIndex * 17)), paintOrder stroke var(--chip-outline) strokeWidth 3로 외곽선 */}
       <text
         x={x}
         y={y + labelYOffset}
@@ -195,10 +195,10 @@ function CustomDot({
           fontSize: '14px',
           fontWeight: 700,
           fill: countryColor,
+          stroke: 'var(--chip-outline)',
+          strokeWidth: 3,
           paintOrder: 'stroke',
         }}
-        stroke="#0A0E1A"
-        strokeWidth={3}
       >
         {value}
       </text>
@@ -256,10 +256,10 @@ function CustomTick({
           fontSize: '16px',
           fontWeight: 800,
           fill: dim.color,
+          stroke: 'var(--chip-outline)',
+          strokeWidth: 3,
           paintOrder: 'stroke',
         }}
-        stroke="#0A0E1A"
-        strokeWidth={3}
       >
         {dim.key}
       </text>
@@ -274,10 +274,10 @@ function CustomTick({
           fontSize: '12px',
           fontWeight: 500,
           fill: '#9AA3B2',
+          stroke: 'var(--chip-outline)',
+          strokeWidth: 3,
           paintOrder: 'stroke',
         }}
-        stroke="#0A0E1A"
-        strokeWidth={3}
       >
         {isKorean ? dim.nameKo : dim.name}
       </text>
@@ -299,7 +299,7 @@ function _RadarVertexLabel(props: { cx?: string | number; cy?: string | number; 
       style={{
         fontSize: '9px',
         fontWeight: 600,
-        fill: '#444444',
+        fill: 'var(--color-ivory-muted)',
         pointerEvents: 'none',
       }}
     >
@@ -330,7 +330,7 @@ function _PolarTick(props: {
       style={{
         fontSize: props.isMobile ? 9 : 10,
         fontWeight: 500,
-        fill: '#444444',
+        fill: 'var(--color-ivory-muted)',
       }}
     >
       {label}
@@ -366,21 +366,21 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 
   return (
     <div
-      className="rounded-lg border border-white/10 bg-[#12172a]/95 backdrop-blur-md shadow-2xl"
+      className="rounded-lg border border-[var(--surface-border)] bg-[var(--panel-glass)] backdrop-blur-md shadow-2xl"
       style={{
         padding: '12px 16px',
         minWidth: '200px',
         maxWidth: '320px',
       }}
     >
-      <div className="mb-2 pb-2 border-b border-white/10">
+      <div className="mb-2 pb-2 border-b border-[var(--surface-border)]">
         <p
-          className="text-xs font-semibold text-[#F5F0E8]"
+          className="text-xs font-semibold text-[var(--color-ivory)]"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           {fullName}
         </p>
-        <p className="text-[10px] text-[#A8B0C0] leading-relaxed mt-0.5">{description}</p>
+        <p className="text-[10px] text-[var(--color-ivory-muted)] leading-relaxed mt-0.5">{description}</p>
       </div>
       <div className="space-y-1.5">
         {payload.map((entry) => (
@@ -390,9 +390,9 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
                 className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                 style={{ backgroundColor: entry.color }}
               />
-              <span className="text-xs text-[#A8B0C0]">{entry.name}</span>
+              <span className="text-xs text-[var(--color-ivory-muted)]">{entry.name}</span>
             </div>
-            <span className="text-xs font-semibold text-[#F5F0E8]">{entry.value}</span>
+            <span className="text-xs font-semibold text-[var(--color-ivory)]">{entry.value}</span>
           </div>
         ))}
       </div>
@@ -462,7 +462,7 @@ function CountryProfileCard({
       <div className="flex items-center gap-2 mb-3">
         <span className="text-lg">{getFlagEmoji(country.code)}</span>
         <h4
-          className="font-medium text-sm text-[#1A1A1A]"
+          className="font-medium text-sm text-[var(--color-ivory)]"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           {isKorean ? country.nameKo : country.name}
@@ -471,21 +471,21 @@ function CountryProfileCard({
 
       <div className="space-y-2">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-[#666666]">{t('highestDimension')}</span>
-          <span className="font-medium text-[#1A1A1A]">
+          <span className="text-[var(--color-ivory-muted)]">{t('highestDimension')}</span>
+          <span className="font-medium text-[var(--color-ivory)]">
             {t(highestLabel as keyof TranslationKeys)} ({profile.highest[1]})
           </span>
         </div>
         <div className="flex items-center justify-between text-xs">
-          <span className="text-[#666666]">{t('lowestDimension')}</span>
-          <span className="font-medium text-[#1A1A1A]">
+          <span className="text-[var(--color-ivory-muted)]">{t('lowestDimension')}</span>
+          <span className="font-medium text-[var(--color-ivory)]">
             {t(lowestLabel as keyof TranslationKeys)} ({profile.lowest[1]})
           </span>
         </div>
       </div>
 
       {profile.phrase && (
-        <div className="mt-3 pt-3 border-t border-black/5">
+        <div className="mt-3 pt-3 border-t border-[var(--surface-border)]">
           <p className="text-[11px] text-[#9D7E57] font-medium leading-relaxed">
             {profile.phrase}
           </p>
@@ -547,7 +547,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
 
   if (countries.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-[500px] border border-dashed border-black/10 rounded-lg">
+      <div className="flex flex-col items-center justify-center h-[500px] border border-dashed border-[var(--surface-border)] rounded-lg">
         <motion.div
           initial={shouldReduceMotion ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -555,7 +555,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
         >
           <span className="text-3xl sm:text-4xl mb-3 block text-center">📈</span>
         </motion.div>
-        <p className="text-[#444444] text-xs sm:text-sm">{t('selectCountryToShowRadar')}</p>
+        <p className="text-[var(--color-ivory-muted)] text-xs sm:text-sm">{t('selectCountryToShowRadar')}</p>
       </div>
     );
   }
@@ -706,7 +706,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                   ${
                     isActive
                       ? 'bg-[#8B5CF6] text-white border-[#8B5CF6] shadow-sm'
-                      : 'bg-white text-[#666666] border-black/10 hover:border-[#8B5CF6]/40'
+                      : 'bg-[var(--surface-1)] text-[var(--color-ivory-muted)] border-[var(--surface-border)] hover:border-[#8B5CF6]/40'
                   }
                 `}
               >
@@ -717,7 +717,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
       </div>
 
       {/* Interactive Legend */}
-      <div className="flex flex-wrap justify-center gap-3 sm:gap-6 py-2.5 sm:py-3 px-3 sm:px-4 bg-white/5 rounded-xl border border-white/10">
+      <div className="flex flex-wrap justify-center gap-3 sm:gap-6 py-2.5 sm:py-3 px-3 sm:px-4 bg-[var(--surface-1)] rounded-xl border border-[var(--surface-border)]">
         {countries.map((country, index) => {
           const colorConfig = chartColors[index % chartColors.length];
           const isVisible = visibilityMap[country.code] !== false;
@@ -792,17 +792,17 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                     duration: 0.5,
                     ease: [0.25, 0.1, 0.25, 1],
                   }}
-                  className="p-3 sm:p-4 rounded-lg bg-[#F5F4F0] border border-black/5 hover:border-[#B8956A]/30 transition-all duration-500 border-l-2"
+                  className="p-3 sm:p-4 rounded-lg bg-[var(--panel-muted)] border border-[var(--surface-border)] hover:border-[#B8956A]/30 transition-all duration-500 border-l-2"
                   style={{ borderLeftColor: dim.color }}
                 >
                   <h4
-                    className="font-medium text-xs text-[#1A1A1A] mb-1.5 flex items-center gap-2"
+                    className="font-medium text-xs text-[var(--color-ivory)] mb-1.5 flex items-center gap-2"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     <span className="w-2 h-2 rounded-full" style={{ backgroundColor: dim.color }} />
                     {isKorean ? dim.nameKo : dim.name} ({dim.key})
                   </h4>
-                  <p className="text-[10px] text-[#444444] leading-relaxed">
+                  <p className="text-[10px] text-[var(--color-ivory-muted)] leading-relaxed">
                     {t(dimensionTranslationKeys[dim.key].desc)}
                   </p>
                 </motion.div>
@@ -834,17 +834,17 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                     duration: 0.5,
                     ease: [0.25, 0.1, 0.25, 1],
                   }}
-                  className="p-3 sm:p-4 rounded-lg bg-[#F5F4F0] border border-black/5 hover:border-[#8B5CF6]/30 transition-all duration-500 border-l-2"
+                  className="p-3 sm:p-4 rounded-lg bg-[var(--panel-muted)] border border-[var(--surface-border)] hover:border-[#8B5CF6]/30 transition-all duration-500 border-l-2"
                   style={{ borderLeftColor: dim.color }}
                 >
                   <h4
-                    className="font-medium text-xs text-[#1A1A1A] mb-1.5 flex items-center gap-2"
+                    className="font-medium text-xs text-[var(--color-ivory)] mb-1.5 flex items-center gap-2"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     <span className="w-2 h-2 rounded-full" style={{ backgroundColor: dim.color }} />
                     {isKorean ? dim.nameKo : dim.name} ({dim.key})
                   </h4>
-                  <p className="text-[10px] text-[#444444] leading-relaxed">
+                  <p className="text-[10px] text-[var(--color-ivory-muted)] leading-relaxed">
                     {t(dimensionTranslationKeys[dim.key].desc)}
                   </p>
                 </motion.div>
