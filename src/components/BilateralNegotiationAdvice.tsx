@@ -69,7 +69,7 @@ function StrategyCard({ strategy, index, accentColor }: { strategy: KeyStrategy;
     >
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-white/5 transition-colors duration-300 min-h-[56px] cursor-pointer"
+        className="w-full flex items-center justify-between p-4 sm:p-5 hover:bg-[var(--surface-1)] transition-colors duration-300 min-h-[56px] cursor-pointer"
       >
         <div className="flex items-center gap-3 sm:gap-4">
           <span className="text-xl sm:text-2xl">{strategy.icon}</span>
@@ -101,7 +101,7 @@ function StrategyCard({ strategy, index, accentColor }: { strategy: KeyStrategy;
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="overflow-hidden"
           >
-            <div className="px-4 sm:px-5 pb-4 sm:pb-5 border-t border-white/5">
+            <div className="px-4 sm:px-5 pb-4 sm:pb-5 border-t border-[var(--surface-border)]">
               <p className="text-xs sm:text-sm text-[var(--color-ivory)] leading-relaxed mt-3 sm:mt-4 mb-3 sm:mb-4 pl-9 sm:pl-12">
                 {strategy.description}
               </p>
@@ -138,7 +138,7 @@ function DosDontsSection({ dos, donts }: { dos: string[]; donts: string[] }) {
         transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         className="glass-card rounded-lg overflow-hidden border-l-4 border-l-emerald-500/50"
       >
-        <div className="px-5 py-4 flex items-center gap-3 border-b border-white/5 bg-emerald-500/5">
+        <div className="px-5 py-4 flex items-center gap-3 border-b border-[var(--surface-border)] bg-emerald-500/5">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-600/20">
             <Check className="w-4 h-4 text-emerald-400" strokeWidth={2} />
           </div>
@@ -176,7 +176,7 @@ function DosDontsSection({ dos, donts }: { dos: string[]; donts: string[] }) {
         transition={{ delay: 0.4, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         className="glass-card rounded-lg overflow-hidden border-l-4 border-l-rose-500/50"
       >
-        <div className="px-5 py-4 flex items-center gap-3 border-b border-white/5 bg-rose-500/5">
+        <div className="px-5 py-4 flex items-center gap-3 border-b border-[var(--surface-border)] bg-rose-500/5">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-rose-600/20">
             <X className="w-4 h-4 text-rose-400" strokeWidth={2} />
           </div>
@@ -259,7 +259,7 @@ function DetailedAdviceSection({
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/10">
+                <tr className="border-b border-[var(--surface-border)]">
                   <th className="text-left py-2 px-3 text-[10px] sm:text-xs font-semibold text-[var(--color-ivory-muted)]">차원</th>
                   <th className="text-left py-2 px-3 text-[10px] sm:text-xs font-semibold" style={{ color: accentColor }}>
                     {advice.fromCountryCode === 'USA' ? '미국' : '한국'}
@@ -271,7 +271,7 @@ function DetailedAdviceSection({
               </thead>
               <tbody>
                 {advice.culturalDifferences.map((diff, idx) => (
-                  <tr key={idx} className="border-b border-white/5">
+                  <tr key={idx} className="border-b border-[var(--surface-border)]">
                     <td className="py-2.5 px-3 text-[10px] sm:text-xs font-medium text-[var(--color-ivory)]">{diff.dimension}</td>
                     <td className="py-2.5 px-3 text-[10px] sm:text-xs text-[var(--color-ivory-muted)]">{diff.countryA}</td>
                     <td className="py-2.5 px-3 text-[10px] sm:text-xs text-[var(--color-ivory-muted)]">{diff.countryB}</td>
@@ -350,7 +350,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           <motion.div
             whileHover={{ scale: 1.03 }}
             transition={{ duration: 0.5 }}
-            className="px-4 py-2.5 bg-white/5 rounded-lg border border-white/10"
+            className="px-4 py-2.5 bg-[var(--surface-1)] rounded-lg border border-[var(--surface-border)]"
           >
             <span
               className="font-semibold tracking-wide text-sm sm:text-base text-[var(--color-brass)]"
@@ -368,7 +368,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           <motion.div
             whileHover={{ scale: 1.03 }}
             transition={{ duration: 0.5 }}
-            className="px-4 py-2.5 bg-white/5 rounded-lg border border-white/10"
+            className="px-4 py-2.5 bg-[var(--surface-1)] rounded-lg border border-[var(--surface-border)]"
           >
             <span
               className="font-semibold tracking-wide text-sm sm:text-base text-[var(--color-sage, #7D8471)]"
@@ -390,7 +390,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
         </p>
 
         {/* 프레임워크 안내 */}
-        <div className="mt-5 p-4 rounded-lg bg-white/5 border border-white/5">
+        <div className="mt-5 p-4 rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)]">
           <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] leading-relaxed text-center opacity-80">
             <span className="font-semibold text-[var(--color-brass)]">분석 프레임워크:</span>{' '}
             Wursten 문화 클러스터(PDI, IDV, UAI, MAS 기반)와 Hofstede 문화 차원 이론(LTO, IVR 포함)을 기반으로 합니다.
@@ -414,7 +414,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 className={`flex-1 py-3.5 px-6 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 min-h-[48px] flex items-center justify-center gap-2 cursor-pointer border ${
                   activeTab === 'AtoB'
                     ? 'bg-[var(--color-brass)] border-[var(--color-brass)] text-white shadow-md'
-                    : 'bg-white/5 border-white/10 text-[var(--color-ivory-muted)] hover:bg-white/10'
+                    : 'bg-[var(--surface-1)] border-[var(--surface-border)] text-[var(--color-ivory-muted)] hover:bg-[var(--surface-2)]'
                 }`}
               >
                 <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
@@ -427,7 +427,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 className={`flex-1 py-3.5 px-6 rounded-lg font-semibold text-xs sm:text-sm transition-all duration-300 min-h-[48px] flex items-center justify-center gap-2 cursor-pointer border ${
                   activeTab === 'BtoA'
                     ? 'bg-[var(--color-sage, #7D8471)] border-[var(--color-sage, #7D8471)] text-white shadow-md'
-                    : 'bg-white/5 border-white/10 text-[var(--color-ivory-muted)] hover:bg-white/10'
+                    : 'bg-[var(--surface-1)] border-[var(--surface-border)] text-[var(--color-ivory-muted)] hover:bg-[var(--surface-2)]'
                 }`}
               >
                 <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
@@ -472,7 +472,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
             transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className="glass-card rounded-lg overflow-hidden"
           >
-            <div className="px-5 py-4 flex items-center gap-4 border-b border-white/5 bg-white/5">
+            <div className="px-5 py-4 flex items-center gap-4 border-b border-[var(--surface-border)] bg-[var(--surface-1)]">
               <div
                 className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: 'var(--color-brass, #B8956A)' }}
@@ -498,9 +498,9 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                       duration: 0.4,
                       ease: [0.25, 0.1, 0.25, 1]
                     }}
-                    className="flex items-start gap-4 text-xs sm:text-sm text-[var(--color-ivory-muted)] leading-relaxed p-3.5 rounded-lg bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-300"
+                    className="flex items-start gap-4 text-xs sm:text-sm text-[var(--color-ivory-muted)] leading-relaxed p-3.5 rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)] hover:border-[var(--surface-border)] transition-all duration-300"
                   >
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-[var(--color-brass)] flex-shrink-0 text-xs font-bold gap-1 shadow-sm">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--surface-2)] text-[var(--color-brass)] flex-shrink-0 text-xs font-bold gap-1 shadow-sm">
                       {idx + 1}
                     </span>
                     <span className="mt-1 text-[var(--color-brass)] flex-shrink-0">
@@ -520,7 +520,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
             transition={{ delay: 0.2, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className="glass-card rounded-lg overflow-hidden"
           >
-            <div className="px-5 py-4 flex items-center gap-4 border-b border-white/5 bg-white/5">
+            <div className="px-5 py-4 flex items-center gap-4 border-b border-[var(--surface-border)] bg-[var(--surface-1)]">
               <div
                 className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: 'var(--color-sage, #7D8471)' }}
@@ -546,9 +546,9 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                       duration: 0.4,
                       ease: [0.25, 0.1, 0.25, 1]
                     }}
-                    className="flex items-start gap-4 text-xs sm:text-sm text-[var(--color-ivory-muted)] leading-relaxed p-3.5 rounded-lg bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-300"
+                    className="flex items-start gap-4 text-xs sm:text-sm text-[var(--color-ivory-muted)] leading-relaxed p-3.5 rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)] hover:border-[var(--surface-border)] transition-all duration-300"
                   >
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-[var(--color-brass)] flex-shrink-0 text-xs font-bold gap-1 shadow-sm">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--surface-2)] text-[var(--color-brass)] flex-shrink-0 text-xs font-bold gap-1 shadow-sm">
                       {idx + 1}
                     </span>
                     <span className="mt-1 text-[var(--color-brass)] flex-shrink-0">
@@ -570,7 +570,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
         transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
         className="glass-card rounded-lg overflow-hidden"
       >
-        <div className="px-5 py-4 flex items-center gap-4 border-b border-white/5 bg-white/5">
+        <div className="px-5 py-4 flex items-center gap-4 border-b border-[var(--surface-border)] bg-[var(--surface-1)]">
           <div
             className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm"
             style={{ backgroundColor: 'var(--color-brass-light, #C9A227)' }}
@@ -647,7 +647,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
           </div>
 
           {/* 가교 전략 (Bridging Strategy) */}
-          <div className="p-5 rounded-lg bg-white/5 border border-white/5">
+          <div className="p-5 rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)]">
             <h4
               className="font-semibold text-[var(--color-brass)] mb-3 flex items-center gap-3 text-xs sm:text-sm"
               style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
@@ -679,7 +679,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
         <div className="overflow-x-auto">
           <table className="w-full text-xs sm:text-sm">
             <thead>
-              <tr className="border-b border-white/10">
+              <tr className="border-b border-[var(--surface-border)]">
                 <th className="text-left py-3 px-4 font-semibold text-[var(--color-ivory-muted)] tracking-wide">차원</th>
                 <th className="text-center py-3 px-4 font-semibold text-[var(--color-brass)]">{nameA}</th>
                 <th className="text-center py-3 px-4 font-semibold text-[var(--color-ivory-muted)] opacity-50">차이</th>
@@ -709,21 +709,21 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                       duration: 0.4,
                       ease: [0.25, 0.1, 0.25, 1]
                     }}
-                    className="border-b border-white/5 hover:bg-white/5 transition-colors duration-300"
+                    className="border-b border-[var(--surface-border)] hover:bg-[var(--surface-1)] transition-colors duration-300"
                   >
                     <td className="py-3.5 px-4 text-[var(--color-ivory)] font-medium">{dim.label}</td>
                     <td className="py-3.5 px-4 text-center">
-                      <span className="px-3 py-1.5 rounded-md bg-white/5 text-[var(--color-brass)] font-semibold border border-white/5">
+                      <span className="px-3 py-1.5 rounded-md bg-[var(--surface-1)] text-[var(--color-brass)] font-semibold border border-[var(--surface-border)]">
                         {valueA}
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-center">
-                      <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${isHighDiff ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' : 'bg-white/5 text-[var(--color-ivory-muted)] opacity-60'}`}>
+                      <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${isHighDiff ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' : 'bg-[var(--surface-1)] text-[var(--color-ivory-muted)] opacity-60'}`}>
                         {diff}
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-center">
-                      <span className="px-3 py-1.5 rounded-md bg-white/5 text-[var(--color-sage, #7D8471)] font-semibold border border-white/5">
+                      <span className="px-3 py-1.5 rounded-md bg-[var(--surface-1)] text-[var(--color-sage, #7D8471)] font-semibold border border-[var(--surface-border)]">
                         {valueB}
                       </span>
                     </td>

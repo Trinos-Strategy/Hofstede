@@ -68,7 +68,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
             {t('detailedDimensionComparison')}
           </h3>
         </div>
-        <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-white/10 rounded-lg">
+        <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-[var(--surface-border)] rounded-lg">
           <Table className="w-6 h-6 sm:w-8 sm:h-8 text-[var(--color-ivory-muted)]/40 mb-3" strokeWidth={1.5} />
           <p className="text-[var(--color-ivory-muted)] text-xs sm:text-sm">{t('selectCountryToShowTable')}</p>
         </div>
@@ -94,7 +94,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
       </div>
 
       {/* Mobile scroll hint */}
-      <div className="sm:hidden flex items-center justify-center gap-2 mb-3 py-2 px-3 bg-white/5 rounded-lg border border-white/5">
+      <div className="sm:hidden flex items-center justify-center gap-2 mb-3 py-2 px-3 bg-[var(--surface-1)] rounded-lg border border-[var(--surface-border)]">
         <ChevronLeft className="w-4 h-4 text-[var(--color-brass)]" strokeWidth={1.5} />
         <span className="text-[10px] text-[var(--color-ivory-muted)] font-medium">{t('scrollHorizontal')}</span>
         <ChevronRight className="w-4 h-4 text-[var(--color-brass)]" strokeWidth={1.5} />
@@ -103,7 +103,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
       <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 scrollbar-thin">
         <table className="w-full modern-table min-w-[600px] sm:min-w-0">
           <thead>
-            <tr className="border-b border-white/10">
+            <tr className="border-b border-[var(--surface-border)]">
               <th className="text-left py-3 sm:py-4 px-3 sm:px-5 text-xs sm:text-sm font-medium text-[var(--color-ivory-muted)] tracking-wide">
                 {t('country')}
               </th>
@@ -113,7 +113,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
               {/* Core Dimensions Header */}
               <th
                 colSpan={4}
-                className="text-center py-2 px-2 text-[10px] sm:text-xs font-semibold tracking-wide border-l border-white/10"
+                className="text-center py-2 px-2 text-[10px] sm:text-xs font-semibold tracking-wide border-l border-[var(--surface-border)]"
                 style={{ color: 'var(--color-brass)', backgroundColor: 'rgba(184, 149, 106, 0.05)' }}
               >
                 {t('coreDimensions')}
@@ -121,20 +121,20 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
               {/* Extended Dimensions Header */}
               <th
                 colSpan={2}
-                className="text-center py-2 px-2 text-[10px] sm:text-xs font-semibold tracking-wide border-l border-white/10"
+                className="text-center py-2 px-2 text-[10px] sm:text-xs font-semibold tracking-wide border-l border-[var(--surface-border)]"
                 style={{ color: 'var(--color-coral)', backgroundColor: 'rgba(196, 136, 107, 0.05)' }}
               >
                 {t('extendedDimensions')}
               </th>
             </tr>
-            <tr className="border-b border-white/10">
+            <tr className="border-b border-[var(--surface-border)]">
               <th className="py-2"></th>
               <th className="py-2"></th>
               {/* Core dimension columns */}
               {coreDimensions.map((dim, idx) => (
                 <th
                   key={dim.key}
-                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold ${idx === 0 ? 'border-l border-white/10' : ''}`}
+                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold ${idx === 0 ? 'border-l border-[var(--surface-border)]' : ''}`}
                   style={{ color: dim.color }}
                 >
                   <div>{t(dimensionTranslationKeys[dim.key].name)}</div>
@@ -145,7 +145,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
               {extendedDimensions.map((dim, idx) => (
                 <th
                   key={dim.key}
-                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold ${idx === 0 ? 'border-l border-white/10' : ''}`}
+                  className={`text-center py-2 sm:py-3 px-2 sm:px-4 text-xs sm:text-sm font-semibold ${idx === 0 ? 'border-l border-[var(--surface-border)]' : ''}`}
                   style={{ color: dim.color }}
                 >
                   <div>{t(dimensionTranslationKeys[dim.key].name)}</div>
@@ -168,7 +168,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     duration: 0.5,
                     ease: [0.25, 0.1, 0.25, 1]
                   }}
-                  className="border-b border-white/5 hover:bg-white/5 transition-colors duration-300"
+                  className="border-b border-[var(--surface-border)] hover:bg-[var(--surface-1)] transition-colors duration-300"
                   style={{ borderLeftWidth: '3px', borderLeftColor: countryColor.bg }}
                 >
                   <td className="py-3 sm:py-4 px-3 sm:px-5">
@@ -200,7 +200,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     const value = country.dimensions[dim.key];
                     const colors = getDimensionColorClass(value);
                     return (
-                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-white/10' : ''}`}>
+                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-[var(--surface-border)]' : ''}`}>
                         <div className="flex flex-col items-center gap-1.5">
                           {/* Value and Level */}
                           <div className="text-center">
@@ -218,7 +218,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                             </span>
                           </div>
                           {/* Mini Progress Bar */}
-                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
+                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-[var(--surface-2)] rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${value}%` }}
@@ -236,7 +236,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                     const value = country.dimensions[dim.key];
                     const colors = getDimensionColorClass(value);
                     return (
-                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-white/10' : ''}`}>
+                      <td key={dim.key} className={`py-3 sm:py-4 px-2 sm:px-4 ${dimIdx === 0 ? 'border-l border-[var(--surface-border)]' : ''}`}>
                         <div className="flex flex-col items-center gap-1.5">
                           {/* Value and Level */}
                           <div className="text-center">
@@ -254,7 +254,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                             </span>
                           </div>
                           {/* Mini Progress Bar */}
-                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-white/10 rounded-full overflow-hidden">
+                          <div className="w-full max-w-[80px] h-1.5 sm:h-2 bg-[var(--surface-2)] rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${value}%` }}
@@ -293,7 +293,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   duration: 0.5,
                   ease: [0.25, 0.1, 0.25, 1]
                 }}
-                className="p-4 sm:p-5 rounded-lg bg-white/5 border border-white/5 hover:border-[var(--color-brass)]/30 transition-all duration-500 border-l-2"
+                className="p-4 sm:p-5 rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)] hover:border-[var(--color-brass)]/30 transition-all duration-500 border-l-2"
                 style={{
                   borderLeftColor: dim.color,
                 }}
@@ -315,7 +315,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-dashed border-white/10" />
+        <div className="border-t border-dashed border-[var(--surface-border)]" />
 
         {/* Extended Dimensions */}
         <div>
@@ -334,7 +334,7 @@ export function ComparisonTable({ countries }: ComparisonTableProps) {
                   duration: 0.5,
                   ease: [0.25, 0.1, 0.25, 1]
                 }}
-                className="p-4 sm:p-5 rounded-lg bg-white/5 border border-white/5 hover:border-purple-500/30 transition-all duration-500 border-l-2"
+                className="p-4 sm:p-5 rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)] hover:border-purple-500/30 transition-all duration-500 border-l-2"
                 style={{
                   borderLeftColor: dim.color,
                 }}

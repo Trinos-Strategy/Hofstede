@@ -145,7 +145,7 @@ export function AdviceContextSelector({
                 transition-all duration-300 text-center min-h-[80px] sm:min-h-0 cursor-pointer
                 ${isSelected
                   ? 'bg-[var(--color-brass)]/10 border border-[var(--color-brass)] glow-gold shadow-lg'
-                  : 'bg-white/5 border border-white/10 hover:border-[var(--color-brass)]/50 hover:-translate-y-0.5'
+                  : 'bg-[var(--surface-1)] border border-[var(--surface-border)] hover:border-[var(--color-brass)]/50 hover:-translate-y-0.5'
                 }
               `}
               title={t(option.descKey)}
@@ -191,7 +191,7 @@ export function AdviceContextSelector({
             className="mt-6 overflow-hidden"
           >
             <div
-              className="p-5 rounded-lg border-l-2 bg-white/5 border-l-[var(--color-brass)]"
+              className="p-5 rounded-lg border-l-2 bg-[var(--surface-1)] border-l-[var(--color-brass)]"
             >
               <p className="text-sm text-[var(--color-ivory-muted)] leading-relaxed">
                 {t(contextOptions.find((o) => o.key === selectedContext)!.descKey)}

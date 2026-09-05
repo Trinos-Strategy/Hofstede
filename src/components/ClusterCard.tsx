@@ -120,7 +120,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
             <motion.div
               whileHover={{ scale: 1.15, rotate: 8 }}
               transition={{ duration: 0.3 }}
-              className="w-10 h-10 rounded-lg overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0"
+              className="w-10 h-10 rounded-lg overflow-hidden bg-[var(--surface-1)] border border-[var(--surface-border)] flex items-center justify-center flex-shrink-0"
             >
               <img
                 src={clusterArt[cluster]}
@@ -151,7 +151,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={handleInfoButtonClick}
-                className="p-2 rounded-lg border border-white/10 hover:border-[var(--color-brass)] hover:bg-white/5 transition-all duration-300 cursor-pointer flex-shrink-0"
+                className="p-2 rounded-lg border border-[var(--surface-border)] hover:border-[var(--color-brass)] hover:bg-[var(--surface-1)] transition-all duration-300 cursor-pointer flex-shrink-0"
                 title={isKorean ? '상세 정보 보기' : 'View details'}
               >
                 <Info className="w-4 h-4 text-[var(--color-ivory-muted)]" strokeWidth={1.5} />
@@ -168,7 +168,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
           {countriesInCluster.slice(0, 3).map((country) => (
             <span
               key={country.code}
-              className="text-xs px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-[var(--color-ivory)] font-medium shadow-sm transition-colors hover:border-[var(--color-brass)]/40"
+              className="text-xs px-3 py-1.5 rounded-full border border-[var(--surface-border)] bg-[var(--surface-1)] text-[var(--color-ivory)] font-medium shadow-sm transition-colors hover:border-[var(--color-brass)]/40"
             >
               {isKorean ? country.nameKo : country.name}
             </span>
