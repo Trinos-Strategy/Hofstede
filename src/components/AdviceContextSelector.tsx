@@ -141,11 +141,11 @@ export function AdviceContextSelector({
                 onContextSelect(isSelected ? null : option.key)
               }
               className={`
-                relative flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-lg
-                transition-all duration-500 text-center min-h-[80px] sm:min-h-0 cursor-pointer
+                relative flex flex-col items-center gap-2 sm:gap-3 p-3 sm:p-5 rounded-xl
+                transition-all duration-300 text-center min-h-[80px] sm:min-h-0 cursor-pointer
                 ${isSelected
-                  ? 'bg-white/10 shadow-lg border-b-2 border-[var(--color-brass)]'
-                  : 'bg-white/5 border border-white/5 hover:bg-white/10 hover:shadow-sm'
+                  ? 'bg-[var(--color-brass)]/10 border border-[var(--color-brass)] glow-gold shadow-lg'
+                  : 'bg-white/5 border border-white/10 hover:border-[var(--color-brass)]/50 hover:-translate-y-0.5'
                 }
               `}
               title={t(option.descKey)}
@@ -167,13 +167,12 @@ export function AdviceContextSelector({
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute -top-1 -right-1"
+                  transition={{ duration: 0.3 }}
+                  className="absolute top-2 right-2"
                 >
-                  <div
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ backgroundColor: option.color }}
-                  />
+                  <span className="text-xs font-bold text-[var(--color-brass)] leading-none select-none">
+                    ✓
+                  </span>
                 </motion.div>
               )}
             </motion.button>

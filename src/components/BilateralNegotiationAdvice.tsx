@@ -296,7 +296,7 @@ function DetailedAdviceSection({
               핵심 전략
             </h4>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-5">
             {advice.keyStrategies.map((strategy, idx) => (
               <StrategyCard key={idx} strategy={strategy} index={idx} accentColor={accentColor} />
             ))}
@@ -487,7 +487,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
               </h3>
             </div>
             <div className="p-5">
-              <ul className="space-y-4">
+              <ul className="space-y-5">
                 {fromAtoB.bullets.map((bullet, idx) => (
                   <motion.li
                     key={idx}
@@ -535,7 +535,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
               </h3>
             </div>
             <div className="p-5">
-              <ul className="space-y-4">
+              <ul className="space-y-5">
                 {fromBtoA.bullets.map((bullet, idx) => (
                   <motion.li
                     key={idx}
@@ -597,7 +597,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 {t('keyCulturalDifferences')}
               </h4>
             </div>
-            <ul className="space-y-3">
+            <ul className="space-y-5">
               {mutualUnderstanding.keyDifferences.map((diff, idx) => (
                 <motion.li
                   key={idx}
@@ -627,7 +627,7 @@ export function BilateralNegotiationAdvice({ advice, context = 'NEGOTIATION' }: 
                 {t('commonGround')}
               </h4>
             </div>
-            <ul className="space-y-3">
+            <ul className="space-y-5">
               {mutualUnderstanding.commonGround.map((common, idx) => (
                 <motion.li
                   key={idx}
