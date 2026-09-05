@@ -81,19 +81,19 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-6"
+          className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-6 w-full sm:w-auto"
         >
           <button
             type="button"
             onClick={() => document.getElementById('country-selector')?.scrollIntoView({ behavior: 'smooth' })}
-            className="btn-luxury btn-gold !h-12 !px-7 text-sm cursor-pointer"
+            className="btn-luxury btn-gold !h-12 !px-7 text-sm cursor-pointer w-full sm:w-auto flex items-center justify-center"
             style={{ height: '48px', padding: '0 28px' }}
           >
             {t('heroCtaPrimary')}
           </button>
           <a
             href="#bilateral-advice"
-            className="rounded-full border border-[var(--surface-border)] px-7 h-12 flex items-center text-sm text-[var(--color-ivory-muted)] hover:border-[var(--color-brass)]/60 hover:text-[var(--color-brass)] transition-colors"
+            className="rounded-full border border-[var(--surface-border)] px-7 h-12 flex items-center justify-center text-sm text-[var(--color-ivory-muted)] hover:border-[var(--color-brass)]/60 hover:text-[var(--color-brass)] transition-colors w-full sm:w-auto"
           >
             {t('heroCtaSecondary')}
           </a>

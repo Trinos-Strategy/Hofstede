@@ -14,6 +14,7 @@ import { HeroSection } from './components/HeroSection';
 import { CountryNatureScene } from './components/CountryNatureScene';
 import { FloatingNav } from './components/FloatingNav';
 import { VersusPanel } from './components/VersusPanel';
+import { ScrollProgress } from './components/ScrollProgress';
 import { useLanguage } from './i18n';
 import { useUrlState } from './hooks/useUrlState';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -47,9 +48,9 @@ function Section({
       transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
       className="relative z-10 py-8 sm:py-14 border-t border-[var(--surface-border)] scroll-mt-20"
     >
-      <div className="flex items-start gap-4 sm:gap-6 mb-5 sm:mb-8">
+      <div className="flex items-start gap-3 sm:gap-6 mb-5 sm:mb-8">
         <span
-          className="text-[var(--color-brass)] tracking-[0.35em] text-sm pt-2"
+          className="text-[var(--color-brass)] tracking-[0.35em] text-xs sm:text-sm pt-1.5"
           style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
         >
           {index}
@@ -163,6 +164,7 @@ function App() {
 
   return (
     <div className="bg-aurora min-h-screen relative overflow-hidden">
+      <ScrollProgress />
       {/* Ambient background overlay for selected country nature biome */}
       {selectedCountries.length > 0 && (
         <CountryNatureScene
