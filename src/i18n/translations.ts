@@ -49,6 +49,9 @@ export type TranslationKeys = {
   radarChart: string;
   sixDimensionComparison: string;
   exportPng: string;
+  vsBiggestGap: string;
+  vsBarsLabel: string;
+  vsRadarLabel: string;
   dimensionBarComparison: string;
   detailedDimensionComparison: string;
 
@@ -362,6 +365,9 @@ export const translations: Record<Language, TranslationKeys> = {
     radarChart: '레이더 차트',
     exportPng: '차트를 PNG로 저장',
     sixDimensionComparison: '6차원 비교',
+    vsBiggestGap: '가장 큰 차이',
+    vsBarsLabel: '막대 비교',
+    vsRadarLabel: '레이더',
     dimensionBarComparison: '차원별 막대 비교',
     detailedDimensionComparison: '차원 상세 비교',
 
@@ -674,6 +680,9 @@ export const translations: Record<Language, TranslationKeys> = {
     radarChart: 'Radar Chart',
     exportPng: 'Export chart as PNG',
     sixDimensionComparison: '6-Dimension Comparison',
+    vsBiggestGap: 'Biggest gap',
+    vsBarsLabel: 'Bar compare',
+    vsRadarLabel: 'Radar',
     dimensionBarComparison: 'Dimension Bar Comparison',
     detailedDimensionComparison: 'Detailed Dimension Comparison',
 

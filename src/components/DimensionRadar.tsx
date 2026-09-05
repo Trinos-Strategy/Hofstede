@@ -167,7 +167,7 @@ function CustomDot({
     return <g className="pointer-events-none">{renderMarker()}</g>;
   }
 
-  const labelYOffset = -14 - countryIndex * 13;
+  const labelYOffset = -18 - countryIndex * 17;
 
   return (
     <g className="pointer-events-none select-none">
@@ -185,14 +185,14 @@ function CustomDot({
       {/* 기존 마커(원/사각/삼각형) */}
       {renderMarker()}
 
-      {/* 값 라벨: 마커 위쪽에 <text> value 표시 (font-size 10, font-weight 700, fill=국가색, textAnchor=middle, y 오프셋 -14 - (countryIndex * 13)), paintOrder stroke #0A0E1A strokeWidth 3로 외곽선 */}
+      {/* 값 라벨: 마커 위쪽에 <text> value 표시 (font-size 14, font-weight 700, fill=국가색, textAnchor=middle, y 오프셋 -18 - (countryIndex * 17)), paintOrder stroke #0A0E1A strokeWidth 3로 외곽선 */}
       <text
         x={x}
         y={y + labelYOffset}
         textAnchor="middle"
         dominantBaseline="central"
         style={{
-          fontSize: '10px',
+          fontSize: '14px',
           fontWeight: 700,
           fill: countryColor,
           paintOrder: 'stroke',
@@ -249,12 +249,12 @@ function CustomTick({
       {/* Dimension Key (e.g. PDI) */}
       <text
         x={labelX}
-        y={labelY - 5}
+        y={labelY - 7}
         textAnchor="middle"
         dominantBaseline="central"
         style={{
-          fontSize: '12px',
-          fontWeight: 700,
+          fontSize: '16px',
+          fontWeight: 800,
           fill: dim.color,
           paintOrder: 'stroke',
         }}
@@ -267,11 +267,11 @@ function CustomTick({
       {/* Dimension Localized Name */}
       <text
         x={labelX}
-        y={labelY + 9}
+        y={labelY + 11}
         textAnchor="middle"
         dominantBaseline="central"
         style={{
-          fontSize: '9px',
+          fontSize: '12px',
           fontWeight: 500,
           fill: '#9AA3B2',
           paintOrder: 'stroke',
@@ -639,7 +639,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
             <PolarRadiusAxis
               angle={90}
               domain={[0, 100]}
-              tick={{ fill: '#8A93A6', fontSize: 9 }}
+              tick={{ fill: '#8A93A6', fontSize: 11 }}
               tickCount={5}
               axisLine={false}
             />
@@ -741,13 +741,13 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
               title={isVisible ? 'Click to hide' : 'Click to show'}
             >
               <span
-                className="text-xs sm:text-sm font-medium tracking-wide"
+                className="text-sm sm:text-base font-medium tracking-wide"
                 style={{ color: colorConfig.stroke }}
               >
                 {markerSymbol} {lineStyle}
               </span>
               <span
-                className="text-xs sm:text-sm font-medium"
+                className="text-sm sm:text-base font-medium"
                 style={{ color: colorConfig.stroke }}
               >
                 {isKorean ? country.nameKo : country.name}

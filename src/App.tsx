@@ -13,6 +13,7 @@ import { DarkModeToggle } from './components/DarkModeToggle';
 import { HeroSection } from './components/HeroSection';
 import { CountryNatureScene } from './components/CountryNatureScene';
 import { FloatingNav } from './components/FloatingNav';
+import { VersusPanel } from './components/VersusPanel';
 import { useLanguage } from './i18n';
 import { useUrlState } from './hooks/useUrlState';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -93,6 +94,9 @@ function App() {
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(initialContext);
   const radarContainerRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
+  // 2 countries → intuitive versus bars by default; radar stays as a toggle.
+  const [compareView, setCompareView] = useState<'bars' | 'radar'>('bars');
+  const isPair = selectedCountries.length === 2;
 
   // Sync URL when selections change
   useEffect(() => {
@@ -250,6 +254,23 @@ function App() {
                       <span className="text-[10px] sm:text-xs text-[var(--color-brass)] bg-white/5 px-2.5 py-0.5 rounded-full font-medium border border-white/5">
                         {t('sixDimensionComparison')}
                       </span>
+                      {isPair && (
+                        <div className="ml-auto flex items-center rounded-full border border-white/10 p-0.5">
+                          {(['bars', 'radar'] as const).map((v) => (
+                            <button
+                              key={v}
+                              onClick={() => setCompareView(v)}
+                              className={`px-3 py-1 rounded-full text-[11px] font-medium transition-all duration-300 cursor-pointer ${
+                                compareView === v
+                                  ? 'bg-[var(--color-brass)] text-[#0A0E1A]'
+                                  : 'text-[var(--color-ivory-muted)] hover:text-[var(--color-brass)]'
+                              }`}
+                            >
+                              {v === 'bars' ? t('vsBarsLabel') : t('vsRadarLabel')}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                       <button
                         onClick={handleExportChart}
                         disabled={isExporting}
@@ -266,9 +287,13 @@ function App() {
                     <div className="w-16 h-[1px] bg-gradient-to-r from-[var(--color-brass)] to-transparent mt-1" />
                   </div>
                   <div ref={radarContainerRef}>
-                    <Suspense fallback={<ChartSkeleton />}>
-                      <DimensionRadar countries={selectedCountries} />
-                    </Suspense>
+                    {isPair && compareView === 'bars' ? (
+                      <VersusPanel countries={selectedCountries} />
+                    ) : (
+                      <Suspense fallback={<ChartSkeleton />}>
+                        <DimensionRadar countries={selectedCountries} />
+                      </Suspense>
+                    )}
                   </div>
                 </div>
 
