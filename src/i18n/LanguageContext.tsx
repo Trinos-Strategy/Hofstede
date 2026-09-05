@@ -8,6 +8,7 @@
  */
 
 import { createContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { flushSync } from 'react-dom';
 import { translations, type Language, type TranslationKeys, interpolate } from './translations';
 
 // Storage key for localStorage
@@ -122,10 +123,21 @@ export function LanguageProvider({ children, defaultLanguage }: LanguageProvider
     setLanguageState(lang);
   }, []);
 
-  // Toggle between ko and en - use functional update to avoid stale closures
+  // Toggle between ko and en. Swapping every string at once reflows the whole
+  // page and reads as a jarring "shake"; when the browser supports the View
+  // Transitions API, cross-fade the swap instead (flushSync is required so the
+  // DOM updates inside the transition callback).
   const toggleLanguage = useCallback(() => {
-    setLanguageState((prev) => (prev === 'ko' ? 'en' : 'ko'));
-  }, []);
+    const next: Language = language === 'ko' ? 'en' : 'ko';
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => void };
+    if (typeof doc.startViewTransition === 'function') {
+      doc.startViewTransition(() => {
+        flushSync(() => setLanguageState(next));
+      });
+    } else {
+      setLanguageState(next);
+    }
+  }, [language]);
 
   // Translation function with variable interpolation support
   const t = useCallback(

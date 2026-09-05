@@ -14,7 +14,7 @@
   --color-brass: #8F7209;
   --color-brass-light: #B8960C;
   --color-ivory: #1B2436;
-  --color-ivory-muted: #4E5A70;
+  --color-ivory-muted: #45506A;
   --color-sage: #4A7350;
   --color-teal: #2D7D9A;
   --color-coral: #C05F3C;
@@ -881,7 +881,7 @@ a:hover {
   --color-brass: #B8960C;
   --color-brass-light: #D4AF37;
   --color-ivory: #F5F0E8;
-  --color-ivory-muted: #C8C0B0;
+  --color-ivory-muted: #CBD2DE;
   --color-sage: #6B8E6B;
   --color-teal: #2D7D9A;
   --color-coral: #E07B54;
@@ -1049,3 +1049,14 @@ a:hover {
   text-wrap: balance;
 }
 
+
+/* ============================================
+   Language Switch View Transition
+   Cross-fades the whole-page text swap so switching
+   한국어/EN doesn't read as a full-page shake.
+   ============================================ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
+  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
