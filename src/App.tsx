@@ -177,27 +177,33 @@ function App() {
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         className="sticky top-0 z-40 glass-strong shadow-lg"
       >
-        <div className="max-w-[1140px] mx-auto px-4 sm:px-6 py-4 sm:py-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 sm:gap-5">
+        <div className="max-w-[1140px] mx-auto px-4 sm:px-6 py-3 sm:py-5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2.5 sm:gap-5 min-w-0">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"
+                className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"
                 style={{ background: 'linear-gradient(135deg, var(--color-brass-light), var(--color-brass))' }}
               >
-                <Globe2 className="w-5 h-5 sm:w-6 sm:h-6 text-white" strokeWidth={1.5} />
+                <Globe2 className="w-4 h-4 sm:w-6 sm:h-6 text-white" strokeWidth={1.5} />
               </motion.div>
               <div className="min-w-0">
                 <h1
-                  className="text-base sm:text-lg lg:text-xl font-bold tracking-wide text-[var(--color-brass)] uppercase whitespace-nowrap"
+                  className="hidden sm:block text-base lg:text-xl font-bold tracking-wide text-[var(--color-brass)] uppercase whitespace-nowrap"
                   style={{ fontFamily: "'Cormorant Garamond', serif" }}
                 >
                   TRINOS | CULTURAL COMPASS
                 </h1>
+                <h1
+                  className="sm:hidden text-[15px] font-bold tracking-wide text-[var(--color-brass)] uppercase truncate"
+                  style={{ fontFamily: "'Cormorant Garamond', serif" }}
+                >
+                  CULTURAL COMPASS
+                </h1>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               <LanguageSwitcher />
               <DarkModeToggle />
             </div>
