@@ -417,59 +417,44 @@ function App() {
 
       {/* Footer */}
       <footer className="mt-12 sm:mt-20 border-t border-white/5 bg-white/5 relative z-10">
-        <div className="max-w-[1140px] mx-auto px-4 sm:px-6 py-10 sm:py-16">
-          <div className="flex flex-col items-center gap-6 sm:gap-8">
-            {/* Logo and Contact */}
-            <div className="flex flex-col items-center gap-3 sm:gap-4">
-              <h3
-                className="text-xl sm:text-2xl font-bold tracking-wide"
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  letterSpacing: '0.06em',
-                  background: 'linear-gradient(135deg, var(--color-brass-light), var(--color-brass))',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
-                }}
-              >
-                Trinos Research Lab
-              </h3>
+        <div className="max-w-[1140px] mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-8">
+            {/* Left: Trinos Research Lab */}
+            <span
+              className="text-sm text-gradient-gold font-medium tracking-wide"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            >
+              Trinos Research Lab
+            </span>
+
+            {/* Center: Data source credit */}
+            <p className="text-xs text-[var(--color-ivory-muted)] text-center">
+              {t('dataSource')}{' '}
               <a
-                href="https://mediator.trinos.group/"
+                href="https://www.theculturefactor.com/country-comparison-tool"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-luxury btn-gold text-sm"
-                style={{ height: '48px', padding: '0 28px' }}
+                className="link-underline text-[var(--color-brass)] hover:text-[var(--color-brass-light)]"
               >
-                {t('contact')}
+                The Culture Factor
               </a>
-            </div>
-
-            {/* Divider */}
-            <div className="divider-gold" />
-
-            {/* Credits */}
-            <div className="text-center space-y-3">
-              <p className="text-sm text-[var(--color-ivory-muted)]">
-                {t('basedOn')}
-              </p>
-              <p className="text-sm text-[var(--color-ivory-muted)]">
-                {t('dataSource')}{' '}
-                <a
-                  href="https://www.theculturefactor.com/country-comparison-tool"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-underline text-[var(--color-brass)] hover:text-[var(--color-brass-light)]"
-                >
-                  The Culture Factor
-                </a>
-              </p>
-            </div>
-
-            {/* Copyright */}
-            <p className="text-xs text-[var(--color-ivory-muted)] opacity-60 tracking-wide">
-              {t('copyright')}
             </p>
+
+            {/* Right: Contact link */}
+            <a
+              href="https://mediator.trinos.group/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs border border-white/10 rounded-full px-4 py-2 hover:border-[var(--color-brass)]/60 text-[var(--color-ivory-muted)] hover:text-white transition-colors"
+            >
+              {t('contact')}
+            </a>
           </div>
+
+          {/* Copyright */}
+          <p className="text-[11px] text-[var(--color-ivory-muted)] opacity-60 text-center pb-6">
+            {t('copyright')}
+          </p>
         </div>
       </footer>
 

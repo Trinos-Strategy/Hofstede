@@ -154,6 +154,12 @@ export function HeroSection() {
           />
         </motion.div>
       </motion.div>
+
+      {/* Scroll cue */}
+      <div className="lg:col-span-12 mt-16 flex flex-col items-center gap-2 text-[var(--color-ivory-muted)]/60">
+        <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+        <div className="h-10 w-px bg-gradient-to-b from-[var(--color-brass)]/60 to-transparent animate-pulse" />
+      </div>
     </motion.section>
   );
 }
