@@ -199,7 +199,7 @@ export function CountrySelector({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.85, y: -8 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold shadow-sm border border-white/10"
+              className="country-pill flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold shadow-md border border-white/10"
               style={{
                 backgroundColor: countryColors[index % countryColors.length].bg,
                 color: countryColors[index % countryColors.length].text,
@@ -214,7 +214,7 @@ export function CountrySelector({
                   onCountryRemove(country.code);
                   inputRef.current?.focus();
                 }}
-                className="p-0.5 rounded-full hover:bg-white/20 transition-colors duration-200 cursor-pointer flex items-center justify-center ml-1"
+                className="remove-btn p-0.5 rounded-full hover:bg-white/20 transition-colors duration-200 cursor-pointer flex items-center justify-center ml-1"
                 aria-label={`Remove ${country.name}`}
               >
                 <X className="w-3.5 h-3.5" strokeWidth={2} />
@@ -237,7 +237,7 @@ export function CountrySelector({
       {/* Input Field with Search Icon */}
       <div className="relative w-full">
         <div className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center pointer-events-none">
-          <Search className="w-4 h-4 text-[var(--color-ivory-muted, #C8C0B0)]" strokeWidth={1.5} />
+          <Search className="w-4 h-4 text-[var(--color-ivory-muted)]" strokeWidth={1.5} />
         </div>
         <input
           ref={inputRef}
@@ -256,10 +256,13 @@ export function CountrySelector({
               : t('maxSelectionComplete')
           }
           className={`
-            w-full pl-11 pr-4 py-3.5 text-sm rounded-lg transition-all duration-300 border
+            w-full pl-11 pr-4 h-12 text-sm rounded-lg bg-white/5 border border-white/10
+            placeholder-[var(--color-ivory-muted)]/60
+            focus:border-[var(--color-brass)]/60 focus:ring-0 focus:outline-none
+            transition-all duration-300
             ${canAddMore
-              ? 'bg-white/5 border-white/10 text-[var(--color-ivory, #F5F0E8)] placeholder-[var(--color-ivory-muted, #C8C0B0)]/50 focus:border-[var(--color-brass)] focus:bg-white/10 focus:ring-0'
-              : 'bg-white/5 border-white/5 text-[var(--color-ivory-muted, #C8C0B0)]/40 cursor-not-allowed opacity-50'
+              ? 'text-[var(--color-ivory, #F5F0E8)]'
+              : 'text-[var(--color-ivory-muted, #C8C0B0)]/40 cursor-not-allowed opacity-50'
             }
           `}
         />
@@ -273,7 +276,7 @@ export function CountrySelector({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className="absolute z-50 w-full mt-2 rounded-lg overflow-hidden glass-card max-h-[300px] overflow-y-auto"
+            className="absolute z-50 w-full mt-2 rounded-xl border border-white/10 bg-[#12172a]/95 backdrop-blur-xl shadow-2xl max-h-[300px] overflow-y-auto"
             ref={optionsListRef}
           >
             {filteredCountries.map((country, index) => {
@@ -287,8 +290,9 @@ export function CountrySelector({
                   className={`
                     w-full px-5 py-3 text-left text-sm flex items-center justify-between
                     transition-all duration-200 border-b border-white/5 cursor-pointer min-h-[48px]
+                    hover:bg-white/5
                     ${isActive
-                      ? 'bg-white/10 border-l-4 border-l-[var(--color-brass)] pl-4'
+                      ? 'bg-white/10 border-l-2 border-l-[var(--color-brass)] pl-4'
                       : 'bg-transparent'
                     }
                   `}

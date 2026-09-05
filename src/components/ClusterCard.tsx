@@ -91,16 +91,13 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
       onDoubleClick={handleDoubleClick}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className={`
-        cursor-pointer rounded-xl p-5 relative overflow-hidden glass-card
-        transition-all duration-500 border
-        ${isSelected
-          ? 'shadow-md border-l-4'
-          : 'border-white/10 hover:border-[var(--color-brass)]/40 hover:shadow-[0_0_15px_rgba(184,150,12,0.1)]'
-        }
+        cursor-pointer rounded-xl p-5 relative overflow-hidden glass-card card-gradient-border glow-gold
+        transition-all duration-500
+        ${isSelected ? 'shadow-md border-l-4' : ''}
       `}
       style={{
         background: isSelected ? style.lightBg : 'rgba(255, 255, 255, 0.03)',
-        borderLeftColor: isSelected ? style.iconColor : 'rgba(255, 255, 255, 0.1)',
+        borderLeftColor: isSelected ? style.iconColor : undefined,
         boxShadow: isSelected ? `0 0 20px ${style.iconColor}15` : undefined,
       }}
     >
@@ -115,10 +112,10 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
           <motion.div
             whileHover={{ scale: 1.15, rotate: 8 }}
             transition={{ duration: 0.3 }}
-            className="flex items-center justify-center"
+            className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0"
           >
             <span
-              className="text-4xl filter drop-shadow-md"
+              className="text-2xl filter drop-shadow-md"
               style={{
                 filter: `drop-shadow(0 2px 4px ${style.iconColor}40)`,
               }}
@@ -153,7 +150,7 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
           )}
         </div>
 
-        <p className="text-sm text-[var(--color-ivory-muted)] opacity-95 mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-xs leading-relaxed text-[var(--color-ivory-muted)] mb-4 line-clamp-2">
           {t(translationKeys.desc)}
         </p>
 
@@ -161,14 +158,14 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
           {countriesInCluster.slice(0, 3).map((country) => (
             <span
               key={country.code}
-              className="text-xs px-3 py-1.5 rounded-lg bg-white/5 text-[var(--color-ivory)] font-medium border border-white/5 shadow-sm"
+              className="text-xs px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-[var(--color-ivory)] font-medium shadow-sm transition-colors hover:border-[var(--color-brass)]/40"
             >
               {isKorean ? country.nameKo : country.name}
             </span>
           ))}
           {countriesInCluster.length > 3 && (
             <span
-              className="text-xs px-3 py-1.5 rounded-lg font-medium border shadow-sm animate-pulse"
+              className="text-xs px-3 py-1.5 rounded-full font-medium border shadow-sm animate-pulse"
               style={{
                 backgroundColor: `${style.iconColor}10`,
                 color: style.color,
