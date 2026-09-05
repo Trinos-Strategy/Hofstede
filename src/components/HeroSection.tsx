@@ -45,8 +45,10 @@ export function HeroSection() {
             mobile and any fade delays the largest paint. */}
         <motion.h1
           initial={false}
-          className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-wide leading-[1.15] uppercase text-gradient-gold text-balance"
+          className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-wide leading-[1.15] uppercase text-balance text-[var(--color-ivory)]"
           style={{
+            color: 'var(--color-ivory)',
+            textShadow: '0 2px 8px rgba(0, 0, 0, 0.6)',
             fontFamily: "'Cormorant Garamond', 'Pretendard', serif",
             letterSpacing: '0.04em'
           }}
@@ -104,27 +106,30 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.65, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-          className="mt-8 flex items-center justify-center lg:justify-start gap-6 sm:gap-10"
+          className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-10"
         >
-          <div className="flex flex-col items-center lg:items-start">
+          <div className="flex flex-col items-center lg:items-start whitespace-nowrap">
             <span
-              className="numeric text-2xl sm:text-3xl text-gradient-gold"
+              className="numeric text-2xl sm:text-3xl text-gradient-gold whitespace-nowrap"
+              style={{ whiteSpace: 'nowrap' }}
             >
               {t('heroStatCountries')}
             </span>
           </div>
           <div className="w-px h-8 bg-[var(--surface-2)]" />
-          <div className="flex flex-col items-center lg:items-start">
+          <div className="flex flex-col items-center lg:items-start whitespace-nowrap">
             <span
-              className="numeric text-2xl sm:text-3xl text-gradient-gold"
+              className="numeric text-2xl sm:text-3xl text-gradient-gold whitespace-nowrap"
+              style={{ whiteSpace: 'nowrap' }}
             >
               {t('heroStatDimensions')}
             </span>
           </div>
           <div className="w-px h-8 bg-[var(--surface-2)]" />
-          <div className="flex flex-col items-center lg:items-start">
+          <div className="flex flex-col items-center lg:items-start whitespace-nowrap">
             <span
-              className="numeric text-2xl sm:text-3xl text-gradient-gold"
+              className="numeric text-2xl sm:text-3xl text-gradient-gold whitespace-nowrap"
+              style={{ whiteSpace: 'nowrap' }}
             >
               {t('heroStatClusters')}
             </span>

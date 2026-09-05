@@ -335,8 +335,8 @@ export const translations: Record<Language, TranslationKeys> = {
     heroCtaPrimary: '국가 비교 시작',
     heroCtaSecondary: 'Hofstede 차원 알아보기',
     heroStatCountries: '42개국',
-    heroStatDimensions: '6대 차원',
-    heroStatClusters: '6개 클러스터',
+    heroStatDimensions: '6 차원',
+    heroStatClusters: '6 클러스터',
     heroArtAlt: '황금빛 세계지도 아트',
     info: '정보',
 
