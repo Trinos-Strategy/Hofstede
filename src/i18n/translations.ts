@@ -13,6 +13,12 @@ export type TranslationKeys = {
   appSubtitle: string;
   heroTitle: string;
   heroSubtitle: string;
+  heroBadge: string;
+  heroCtaPrimary: string;
+  heroCtaSecondary: string;
+  heroStatCountries: string;
+  heroStatDimensions: string;
+  heroStatClusters: string;
   info: string;
 
   // Info panel
@@ -319,6 +325,12 @@ export const translations: Record<Language, TranslationKeys> = {
     appSubtitle: '글로벌 비즈니스를 위한 문화 지능',
     heroTitle: '문화 지성',
     heroSubtitle: '데이터 기반 인사이트로 탐색하는 문화적 복잡성',
+    heroBadge: '데이터 기반 문화 인텔리전스',
+    heroCtaPrimary: '국가 비교 시작',
+    heroCtaSecondary: 'Hofstede 차원 알아보기',
+    heroStatCountries: '42개국',
+    heroStatDimensions: '6대 차원',
+    heroStatClusters: '6개 클러스터',
     info: '정보',
 
     // Info panel
@@ -624,6 +636,12 @@ export const translations: Record<Language, TranslationKeys> = {
     appSubtitle: 'Cultural Intelligence for Global Business',
     heroTitle: 'Cultural Intelligence',
     heroSubtitle: 'Navigating cultural complexity with data-driven insights',
+    heroBadge: 'Data-driven cultural intelligence',
+    heroCtaPrimary: 'Start comparing',
+    heroCtaSecondary: 'Explore the dimensions',
+    heroStatCountries: '42 countries',
+    heroStatDimensions: '6 dimensions',
+    heroStatClusters: '6 clusters',
     info: 'Information',
 
     // Info panel
