@@ -8,7 +8,7 @@ export function HeroSection() {
   return (
     <motion.section
       initial={false}
-      className="relative overflow-hidden w-full py-6 sm:py-12 max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
+      className="relative overflow-hidden w-full pt-6 pb-3 sm:py-12 max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
     >
       {/* Mobile background art overlay */}
       <div className="lg:hidden absolute inset-0 -z-10" aria-hidden="true">
