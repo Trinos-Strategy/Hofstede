@@ -12,6 +12,7 @@ import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { DarkModeToggle } from './components/DarkModeToggle';
 import { HeroSection } from './components/HeroSection';
 import { CountryNatureScene } from './components/CountryNatureScene';
+import { FloatingNav } from './components/FloatingNav';
 import { useLanguage } from './i18n';
 import { useUrlState } from './hooks/useUrlState';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -471,6 +472,9 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Floating section nav — appears after scrolling past the hero */}
+      <FloatingNav />
     </div>
   );
 }

@@ -100,14 +100,12 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
       onDoubleClick={handleDoubleClick}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className={`
-        cursor-pointer rounded-xl p-5 relative overflow-hidden glass-card card-gradient-border glow-gold
-        transition-all duration-500
-        ${isSelected ? 'shadow-md border-l-4' : ''}
+        cursor-pointer rounded-xl p-6 aspect-auto relative overflow-hidden glass-card card-gradient-border glow-gold
+        transition-all duration-500 flex flex-col justify-between
+        ${isSelected ? 'ring-1 ring-[var(--color-brass)] bg-[var(--color-brass)]/10 shadow-md' : 'bg-white/[0.03]'}
       `}
       style={{
-        background: isSelected ? style.lightBg : 'rgba(255, 255, 255, 0.03)',
-        borderLeftColor: isSelected ? style.iconColor : undefined,
-        boxShadow: isSelected ? `0 0 20px ${style.iconColor}15` : undefined,
+        boxShadow: isSelected ? '0 0 20px rgba(212, 175, 55, 0.15)' : undefined,
       }}
     >
       {/* Subtle gradient overlay on hover */}
@@ -116,55 +114,57 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
         style={{ background: style.lightBg }}
       />
 
-      <div className="relative z-10">
-        <div className="flex items-center gap-4 mb-4">
-          <motion.div
-            whileHover={{ scale: 1.15, rotate: 8 }}
-            transition={{ duration: 0.3 }}
-            className="w-12 h-12 rounded-xl overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0"
-          >
-            <img
-              src={clusterArt[cluster]}
-              alt=""
-              width={96}
-              height={96}
-              loading="lazy"
-              decoding="async"
-              className="w-full h-full object-cover rounded-xl"
-            />
-          </motion.div>
-          <div className="flex-1">
-            <h3
-              className="font-bold text-base tracking-wide"
-              style={{
-                color: style.color,
-                fontFamily: "'Cormorant Garamond', serif",
-                letterSpacing: '0.06em'
-              }}
+      <div className="relative z-10 flex flex-col justify-between flex-1">
+        <div>
+          <div className="flex items-center gap-4 mb-4">
+            <motion.div
+              whileHover={{ scale: 1.15, rotate: 8 }}
+              transition={{ duration: 0.3 }}
+              className="w-10 h-10 rounded-lg overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0"
             >
-              {t(translationKeys.name)}
-            </h3>
-            <p className="text-xs text-[var(--color-ivory-muted)] opacity-60 tracking-wide font-medium">{isKorean ? info.name : info.nameKo}</p>
+              <img
+                src={clusterArt[cluster]}
+                alt=""
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover rounded-lg"
+              />
+            </motion.div>
+            <div className="flex-1 min-w-0">
+              <h3
+                className="font-bold text-xl tracking-wide truncate"
+                style={{
+                  color: style.color,
+                  fontFamily: "'Cormorant Garamond', serif",
+                  letterSpacing: '0.06em'
+                }}
+              >
+                {t(translationKeys.name)}
+              </h3>
+              <p className="text-xs text-[var(--color-ivory-muted)] opacity-60 tracking-wide font-medium">{isKorean ? info.name : info.nameKo}</p>
+            </div>
+            {/* Info button */}
+            {onInfoClick && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleInfoButtonClick}
+                className="p-2 rounded-lg border border-white/10 hover:border-[var(--color-brass)] hover:bg-white/5 transition-all duration-300 cursor-pointer flex-shrink-0"
+                title={isKorean ? '상세 정보 보기' : 'View details'}
+              >
+                <Info className="w-4 h-4 text-[var(--color-ivory-muted)]" strokeWidth={1.5} />
+              </motion.button>
+            )}
           </div>
-          {/* Info button */}
-          {onInfoClick && (
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={handleInfoButtonClick}
-              className="p-2 rounded-lg border border-white/10 hover:border-[var(--color-brass)] hover:bg-white/5 transition-all duration-300 cursor-pointer"
-              title={isKorean ? '상세 정보 보기' : 'View details'}
-            >
-              <Info className="w-4 h-4 text-[var(--color-ivory-muted)]" strokeWidth={1.5} />
-            </motion.button>
-          )}
+
+          <p className="text-xs leading-relaxed text-[var(--color-ivory-muted)] mb-4 line-clamp-2">
+            {t(translationKeys.desc)}
+          </p>
         </div>
 
-        <p className="text-xs leading-relaxed text-[var(--color-ivory-muted)] mb-4 line-clamp-2">
-          {t(translationKeys.desc)}
-        </p>
-
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-4 pt-2">
           {countriesInCluster.slice(0, 3).map((country) => (
             <span
               key={country.code}
