@@ -21,7 +21,7 @@
 
   --font-heading: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --spacing-4: 4px;
   --spacing-8: 8px;
