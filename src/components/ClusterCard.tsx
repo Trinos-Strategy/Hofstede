@@ -81,30 +81,27 @@ export function ClusterCard({
       <div className="banner-scrim" aria-hidden="true" />
 
       {/* Top text */}
-      <div className="absolute top-0 left-0 right-0 p-3 sm:p-4 z-10 pointer-events-none">
-        <h3
-          className="text-base sm:text-lg font-bold text-[var(--color-ivory)] [text-shadow:0_1px_3px_rgba(0,0,0,0.9),0_0_12px_rgba(10,14,26,0.8)]"
-          style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.04em' }}
-        >
+      <div className="absolute top-0 left-0 right-0 p-4 sm:p-5 z-10 pointer-events-none">
+        <h3 className="cluster-banner-title">
           {t(translationKeys.name)}
         </h3>
-        <p className="text-[10px] tracking-widest uppercase text-[var(--color-brass-light)] font-medium mt-0.5">
+        <p className="cluster-banner-subtitle">
           {isKorean ? info.name : info.nameKo}
         </p>
       </div>
 
       {/* Bottom country pills */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 z-10 flex flex-wrap gap-1 pointer-events-none">
+      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-10 flex flex-wrap gap-1.5 pointer-events-none">
         {countriesInCluster.slice(0, 4).map((country) => (
           <span
             key={country.code}
-            className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-[var(--color-ivory)] border border-white/10 font-medium"
+            className="cluster-country-pill"
           >
             {isKorean ? country.nameKo : country.name}
           </span>
         ))}
         {countriesInCluster.length > 4 && (
-          <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-[var(--color-brass-light)] border border-white/10 font-medium">
+          <span className="cluster-country-pill-more">
             +{countriesInCluster.length - 4}
           </span>
         )}
