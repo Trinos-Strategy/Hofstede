@@ -19,6 +19,7 @@ export type TranslationKeys = {
   heroStatCountries: string;
   heroStatDimensions: string;
   heroStatClusters: string;
+  heroArtAlt: string;
   info: string;
 
   // Info panel
@@ -331,6 +332,7 @@ export const translations: Record<Language, TranslationKeys> = {
     heroStatCountries: '42개국',
     heroStatDimensions: '6대 차원',
     heroStatClusters: '6개 클러스터',
+    heroArtAlt: '황금빛 세계지도 아트',
     info: '정보',
 
     // Info panel
@@ -642,6 +644,7 @@ export const translations: Record<Language, TranslationKeys> = {
     heroStatCountries: '42 countries',
     heroStatDimensions: '6 dimensions',
     heroStatClusters: '6 clusters',
+    heroArtAlt: 'Golden world map art',
     info: 'Information',
 
     // Info panel

@@ -12,6 +12,15 @@ interface ClusterCardProps {
   onInfoClick?: (cluster: ClusterType) => void;
 }
 
+const clusterArt: Record<string, string> = {
+  contest: '/art/cluster-contest.webp',
+  network: '/art/cluster-network.webp',
+  family: '/art/cluster-family.webp',
+  pyramid: '/art/cluster-pyramid.webp',
+  solarSystem: '/art/cluster-solar.webp',
+  machine: '/art/cluster-machine.webp'
+};
+
 // Cluster styles mapping to WCAG AA theme colors
 const clusterStyles: Record<ClusterType, {
   color: string;
@@ -112,16 +121,17 @@ export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: Clust
           <motion.div
             whileHover={{ scale: 1.15, rotate: 8 }}
             transition={{ duration: 0.3 }}
-            className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0"
+            className="w-12 h-12 rounded-xl overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0"
           >
-            <span
-              className="text-2xl filter drop-shadow-md"
-              style={{
-                filter: `drop-shadow(0 2px 4px ${style.iconColor}40)`,
-              }}
-            >
-              {info.icon}
-            </span>
+            <img
+              src={clusterArt[cluster]}
+              alt=""
+              width={96}
+              height={96}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover rounded-xl"
+            />
           </motion.div>
           <div className="flex-1">
             <h3
