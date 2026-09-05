@@ -155,9 +155,7 @@ interface CustomTickProps {
   cy?: string | number;
   index?: number;
   payload?: { value?: string | number };
-  textAnchor?: 'inherit' | 'end' | 'middle' | 'start';
-  countries: Country[];
-  shouldReduceMotion: boolean;
+  isKorean: boolean;
 }
 
 function CustomTick({
@@ -167,20 +165,13 @@ function CustomTick({
   cy = 0,
   index = 0,
   payload,
-  textAnchor = 'middle',
-  countries,
-  shouldReduceMotion,
+  isKorean,
 }: CustomTickProps) {
   // Resolve the dimension from the tick value (the dimension key) so that
   // filtering the radar data never shifts labels onto the wrong spoke.
   const dim =
     dimensionInfo.find((d) => d.key === payload?.value) ?? dimensionInfo[index];
   if (!dim) return null;
-
-  const scoresStr = countries
-    .map((country) => `${country.code}: ${country.dimensions[dim.key]}`)
-    .join(' / ');
-  const labelText = `${dim.key} (${scoresStr})`;
 
   const numericX = typeof x === 'string' ? parseFloat(x) : x;
   const numericY = typeof y === 'string' ? parseFloat(y) : y;
@@ -193,41 +184,46 @@ function CustomTick({
   const offsetDist = 18;
   const ux = distance > 0 ? dx / distance : 0;
   const uy = distance > 0 ? dy / distance : 0;
-  const badgeX = numericX + ux * offsetDist;
-  const badgeY = numericY + uy * offsetDist;
+  const labelX = numericX + ux * offsetDist;
+  const labelY = numericY + uy * offsetDist;
 
   return (
-    <g className="select-none">
-      {/* Mobile-only fallback */}
+    <g className="select-none pointer-events-none">
+      {/* Dimension Key (e.g. PDI) */}
       <text
-        x={x}
-        y={y}
-        textAnchor={textAnchor}
-        className="sm:hidden text-[9px] font-bold fill-[#444444]"
-        dy={4}
+        x={labelX}
+        y={labelY - 5}
+        textAnchor="middle"
+        dominantBaseline="central"
+        style={{
+          fontSize: '12px',
+          fontWeight: 700,
+          fill: dim.color,
+          paintOrder: 'stroke',
+        }}
+        stroke="#0A0E1A"
+        strokeWidth={3}
       >
         {dim.key}
       </text>
 
-      {/* Desktop-only brass-gold badge pill */}
-      <foreignObject
-        x={badgeX - 120}
-        y={badgeY - 18}
-        width={240}
-        height={36}
-        className="hidden sm:block overflow-visible pointer-events-none"
+      {/* Dimension Localized Name */}
+      <text
+        x={labelX}
+        y={labelY + 9}
+        textAnchor="middle"
+        dominantBaseline="central"
+        style={{
+          fontSize: '9px',
+          fontWeight: 500,
+          fill: '#9AA3B2',
+          paintOrder: 'stroke',
+        }}
+        stroke="#0A0E1A"
+        strokeWidth={3}
       >
-        <div className="w-full h-full flex items-center justify-center">
-          {/* Plain CSS animation — framer-motion can freeze at scale(0) when
-              recharts re-renders ticks without remounting them. */}
-          <div
-            className="radar-badge bg-gradient-to-r from-[#DFC495] via-[#C5A059] to-[#B8956A] text-[#2D1F10] border border-[#9C7A3C]/40 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-md whitespace-nowrap"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            {labelText}
-          </div>
-        </div>
-      </foreignObject>
+        {isKorean ? dim.nameKo : dim.name}
+      </text>
     </g>
   );
 }
@@ -313,21 +309,21 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 
   return (
     <div
-      className="rounded-lg border border-black/5 bg-white shadow-lg"
+      className="rounded-lg border border-white/10 bg-[#12172a]/95 backdrop-blur-md shadow-2xl"
       style={{
         padding: '12px 16px',
         minWidth: '200px',
         maxWidth: '320px',
       }}
     >
-      <div className="mb-2 pb-2 border-b border-black/5">
+      <div className="mb-2 pb-2 border-b border-white/10">
         <p
-          className="text-xs font-semibold text-[#1A1A1A]"
+          className="text-xs font-semibold text-[#F5F0E8]"
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           {fullName}
         </p>
-        <p className="text-[10px] text-[#666666] leading-relaxed mt-0.5">{description}</p>
+        <p className="text-[10px] text-[#A8B0C0] leading-relaxed mt-0.5">{description}</p>
       </div>
       <div className="space-y-1.5">
         {payload.map((entry) => (
@@ -337,9 +333,9 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
                 className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                 style={{ backgroundColor: entry.color }}
               />
-              <span className="text-xs text-[#444444]">{entry.name}</span>
+              <span className="text-xs text-[#A8B0C0]">{entry.name}</span>
             </div>
-            <span className="text-xs font-semibold text-[#1A1A1A]">{entry.value}</span>
+            <span className="text-xs font-semibold text-[#F5F0E8]">{entry.value}</span>
           </div>
         ))}
       </div>
@@ -511,22 +507,16 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
     <div className="space-y-6">
       <style dangerouslySetInnerHTML={{ __html: `
         .custom-radar-grid .recharts-polar-grid-concentric > * {
-          stroke: #8E8D8A;
-        }
-        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(2) {
-          stroke-opacity: 0.4;
-        }
-        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(3) {
-          stroke-opacity: 0.25;
-        }
-        .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(4) {
-          stroke-opacity: 0.15;
+          stroke: rgba(142, 141, 138, 0.35);
         }
         .custom-radar-grid .recharts-polar-grid-concentric > *:nth-child(5),
         .custom-radar-grid .recharts-polar-grid-concentric > *:last-child {
           stroke: #B8956A !important;
           stroke-opacity: 0.5 !important;
           stroke-width: 1.5px;
+        }
+        .custom-radar-grid .recharts-polar-grid-angle line {
+          stroke: rgba(142, 141, 138, 0.35);
         }
       `}} />
 
@@ -579,21 +569,20 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
               })}
             </defs>
 
-            <PolarGrid gridType="circle" stroke="rgba(0, 0, 0, 0.08)" />
+            <PolarGrid gridType="polygon" stroke="rgba(142, 141, 138, 0.35)" />
             <PolarAngleAxis
               dataKey="dimension"
               tick={(props) => (
                 <CustomTick
                   {...props}
-                  countries={countries}
-                  shouldReduceMotion={shouldReduceMotion}
+                  isKorean={isKorean}
                 />
               )}
             />
             <PolarRadiusAxis
               angle={90}
               domain={[0, 100]}
-              tick={{ fill: '#666666', fontSize: 9 }}
+              tick={{ fill: '#8A93A6', fontSize: 9 }}
               tickCount={5}
               axisLine={false}
             />
@@ -668,7 +657,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
       </div>
 
       {/* Interactive Legend */}
-      <div className="flex flex-wrap justify-center gap-3 sm:gap-6 py-2.5 sm:py-3 px-3 sm:px-4 bg-[#F5F4F0] rounded-lg border border-black/5">
+      <div className="flex flex-wrap justify-center gap-3 sm:gap-6 py-2.5 sm:py-3 px-3 sm:px-4 bg-white/5 rounded-xl border border-white/10">
         {countries.map((country, index) => {
           const colorConfig = chartColors[index % chartColors.length];
           const isVisible = visibilityMap[country.code] !== false;
