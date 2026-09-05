@@ -1087,24 +1087,86 @@ a:hover {
   -webkit-backdrop-filter: blur(2px);
 }
 
+/* Cluster banner card layout (4:5 compact on mobile, 16:10 on desktop) */
+.cluster-banner-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid var(--surface-border);
+  cursor: pointer;
+  aspect-ratio: 4 / 5;
+  max-height: 212px;
+  transition: border-color 0.3s;
+}
+
+@media (min-width: 640px) {
+  .cluster-banner-card {
+    aspect-ratio: 16 / 10;
+    max-height: none;
+  }
+}
+
+/* Cluster 4px top accent color bar */
+.cluster-card-color-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  width: 100%;
+  z-index: 20;
+}
+
+.cluster-bar-contest { background-color: var(--contest-color); }
+.cluster-bar-network { background-color: var(--network-color); }
+.cluster-bar-family { background-color: var(--family-color); }
+.cluster-bar-pyramid { background-color: var(--pyramid-color); }
+.cluster-bar-solarSystem { background-color: var(--solar-color); }
+.cluster-bar-machine { background-color: var(--machine-color); }
+
+/* Solid dark plate attached to the top */
+.cluster-title-plate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: rgba(10, 14, 26, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 10px 12px 8px 12px; /* pt-2.5 px-3 pb-2 */
+  z-index: 10;
+  pointer-events: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (min-width: 640px) {
+  .cluster-title-plate {
+    padding: 14px 16px 12px 16px;
+  }
+}
+
 /* Cluster banner tile typography and pills */
 .cluster-banner-title {
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.25;
   font-weight: 700;
   color: #f5f0e8;
   font-family: 'Cormorant Garamond', 'Pretendard', serif;
-  letter-spacing: 0.04em;
-  word-break: keep-all;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
   text-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.95),
-    0 4px 12px rgba(0, 0, 0, 0.90),
-    0 0 24px rgba(10, 14, 26, 0.95);
+    0 1px 3px rgba(0, 0, 0, 0.95),
+    0 2px 8px rgba(0, 0, 0, 0.85);
 }
 
 @media (min-width: 640px) {
   .cluster-banner-title {
-    font-size: 28px;
+    font-size: 26px;
+    letter-spacing: 0.04em;
     line-height: 1.2;
   }
 }
@@ -1112,17 +1174,23 @@ a:hover {
 .cluster-banner-subtitle {
   font-size: 11px;
   line-height: 1.2;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #d4af37;
   font-weight: 600;
-  margin-top: 4px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 @media (min-width: 640px) {
   .cluster-banner-subtitle {
     font-size: 13px;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
   }
 }
 

@@ -65,7 +65,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
+        className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4"
       >
         {clusterOrder.map((cluster) => (
           <motion.div key={cluster} variants={itemVariants}>

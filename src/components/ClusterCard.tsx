@@ -29,6 +29,15 @@ const clusterTranslationKeys: Record<ClusterType, { name: keyof TranslationKeys;
   machine: { name: 'clusterMachine', desc: 'descMachine' },
 };
 
+const clusterColorMap: Record<ClusterType, string> = {
+  contest: 'var(--contest-color)',
+  network: 'var(--network-color)',
+  family: 'var(--family-color)',
+  pyramid: 'var(--pyramid-color)',
+  solarSystem: 'var(--solar-color)',
+  machine: 'var(--machine-color)',
+};
+
 export function ClusterCard({
   cluster,
   isSelected,
@@ -63,11 +72,18 @@ export function ClusterCard({
       onDoubleClick={handleOpenModal}
       onKeyDown={handleKeyDown}
       className={`
-        group relative aspect-[16/10] overflow-hidden rounded-xl border border-[var(--surface-border)]
-        cursor-pointer hover:border-[var(--color-brass)]/50 transition-colors duration-300
+        group cluster-banner-card
+        hover:border-[var(--color-brass)]/50
         ${isSelected ? 'ring-1 ring-[var(--color-brass)]' : ''}
       `}
     >
+      {/* 4px top accent color bar */}
+      <div
+        className={`cluster-card-color-bar cluster-bar-${cluster}`}
+        style={{ backgroundColor: clusterColorMap[cluster] }}
+        aria-hidden="true"
+      />
+
       {/* Background image */}
       <img
         src={artSrc}
@@ -80,8 +96,8 @@ export function ClusterCard({
       {/* Dim/blur overlay: deep bottom vertical gradient + subtle blur */}
       <div className="banner-scrim" aria-hidden="true" />
 
-      {/* Top text */}
-      <div className="absolute top-0 left-0 right-0 p-4 sm:p-5 z-10 pointer-events-none">
+      {/* Solid dark plate attached to the top */}
+      <div className="cluster-title-plate">
         <h3 className="cluster-banner-title">
           {t(translationKeys.name)}
         </h3>
@@ -90,8 +106,8 @@ export function ClusterCard({
         </p>
       </div>
 
-      {/* Bottom country pills */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-10 flex flex-wrap gap-1.5 pointer-events-none">
+      {/* Bottom country pills — hidden on mobile, visible on desktop */}
+      <div className="hidden sm:flex absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-10 flex-wrap gap-1.5 pointer-events-none">
         {countriesInCluster.slice(0, 4).map((country) => (
           <span
             key={country.code}
