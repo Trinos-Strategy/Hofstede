@@ -66,20 +66,20 @@
   --radius-pill: 999px;
 
   /* Legacy Mapping for Seamless Backward Compatibility */
-  --ivory-light: var(--color-midnight);
-  --ivory: var(--color-night-blue);
-  --ivory-dark: var(--color-midnight);
-  --cream: var(--color-night-blue);
+  --ivory-light: #eef1f7;
+  --ivory: #ffffff;
+  --ivory-dark: #dbe1ec;
+  --cream: #ffffff;
 
-  --text-primary: var(--color-ivory);
-  --text-secondary: var(--color-ivory-muted);
-  --text-muted: var(--color-ivory-muted);
-  --text-subtle: var(--color-ivory-muted);
+  --text-primary: #1b2436;
+  --text-secondary: #3a4356;
+  --text-muted: #4e5a70;
+  --text-subtle: #7c8699;
 
-  --charcoal-deep: var(--color-midnight);
-  --charcoal: var(--color-night-blue);
-  --charcoal-light: var(--color-glass-border);
-  --charcoal-muted: var(--color-ivory-muted);
+  --charcoal-deep: #101828;
+  --charcoal: #1b2436;
+  --charcoal-light: #3a4356;
+  --charcoal-muted: #525e74;
 
   --gold: var(--color-brass);
   --gold-light: var(--color-brass-light);
@@ -103,9 +103,10 @@
   --transition-medium: var(--duration-normal);
   --transition-fast: var(--duration-fast);
 
-  --shadow-card: var(--shadow-medium);
-  --shadow-hover: var(--shadow-dramatic);
-  --shadow-elevated: var(--shadow-dramatic);
+  --shadow-subtle: 0 1px 3px rgba(15,23,42,0.10);
+  --shadow-card: 0 4px 16px rgba(15,23,42,0.10);
+  --shadow-hover: 0 8px 24px rgba(15,23,42,0.16);
+  --shadow-elevated: 0 12px 32px rgba(15,23,42,0.20);
 }
 
 /* Premium Utilities */
@@ -929,28 +930,6 @@ a:hover {
   --machine-color: #9AB0CB;
 }
 
-/* Light-theme legacy mapping (only effective without .dark) */
-:root {
-  --ivory-light: #eef1f7;
-  --ivory: #ffffff;
-  --ivory-dark: #dbe1ec;
-  --cream: #ffffff;
-
-  --text-primary: #1b2436;
-  --text-secondary: #3a4356;
-  --text-muted: #4e5a70;
-  --text-subtle: #7c8699;
-
-  --charcoal-deep: #101828;
-  --charcoal: #1b2436;
-  --charcoal-light: #3a4356;
-  --charcoal-muted: #525e74;
-
-  --shadow-subtle: 0 1px 3px rgba(15,23,42,0.10);
-  --shadow-card: 0 4px 16px rgba(15,23,42,0.10);
-  --shadow-hover: 0 8px 24px rgba(15,23,42,0.16);
-  --shadow-elevated: 0 12px 32px rgba(15,23,42,0.20);
-}
 
 .dark body {
   background: var(--ivory-light);
@@ -1226,9 +1205,11 @@ a:hover {
   font-weight: 500;
 }
 
-.hero-title-gold-stroke {
-  color: var(--color-ivory);
-  -webkit-text-stroke: 2px var(--color-brass-light);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+.section-gold-underline {
+  width: 40px;
+  height: 3px;
+  border-radius: 9999px;
+  background-color: var(--color-brass);
+  margin-top: 8px;
 }
 

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useLanguage } from '../i18n';
 
 export function LanguageSwitcher() {
@@ -7,7 +8,7 @@ export function LanguageSwitcher() {
     <div
       role="radiogroup"
       aria-label="Language"
-      className="flex rounded-full border border-[var(--surface-border)] bg-[var(--surface-1)] backdrop-blur-md p-1 gap-1"
+      className="inline-flex h-8 items-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-1)] p-0.5"
     >
       <button
         type="button"
@@ -16,13 +17,21 @@ export function LanguageSwitcher() {
         onClick={() => {
           if (!isKorean) setLanguage('ko');
         }}
-        className={`min-w-[56px] h-9 rounded-full text-sm font-semibold transition-colors duration-200 cursor-pointer flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]/60 ${
+        className={`relative isolate px-3 h-7 rounded-full text-xs font-medium transition-colors duration-200 cursor-pointer flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]/60 ${
           isKorean
-            ? 'bg-[var(--color-brass)] text-white shadow-sm'
+            ? 'bg-[var(--color-brass)]/15 text-[var(--color-brass-light)]'
             : 'text-[var(--color-ivory-muted)] hover:text-[var(--color-ivory)]'
         }`}
       >
-        한국어
+        {isKorean && (
+          <motion.span
+            layoutId="lang-pill"
+            className="absolute inset-0 rounded-full bg-[var(--surface-2)] -z-10"
+            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+            aria-hidden="true"
+          />
+        )}
+        <span className="relative z-10">한국어</span>
       </button>
 
       <button
@@ -32,16 +41,25 @@ export function LanguageSwitcher() {
         onClick={() => {
           if (isKorean) setLanguage('en');
         }}
-        className={`min-w-[56px] h-9 rounded-full text-sm font-semibold transition-colors duration-200 cursor-pointer flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]/60 ${
+        className={`relative isolate px-3 h-7 rounded-full text-xs font-medium transition-colors duration-200 cursor-pointer flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brass)]/60 ${
           !isKorean
-            ? 'bg-[var(--color-brass)] text-white shadow-sm'
+            ? 'bg-[var(--color-brass)]/15 text-[var(--color-brass-light)]'
             : 'text-[var(--color-ivory-muted)] hover:text-[var(--color-ivory)]'
         }`}
       >
-        EN
+        {!isKorean && (
+          <motion.span
+            layoutId="lang-pill"
+            className="absolute inset-0 rounded-full bg-[var(--surface-2)] -z-10"
+            transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+            aria-hidden="true"
+          />
+        )}
+        <span className="relative z-10">EN</span>
       </button>
     </div>
   );
 }
 
 export default LanguageSwitcher;
+

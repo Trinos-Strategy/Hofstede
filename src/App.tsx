@@ -57,11 +57,17 @@ function Section({
         </span>
         <div>
           <h2
-            className="text-3xl sm:text-5xl font-semibold text-balance"
-            style={{ fontFamily: "'Cormorant Garamond', 'Pretendard', serif", letterSpacing: '0.02em' }}
+            className="text-3xl sm:text-5xl font-bold text-balance text-[var(--color-ivory)]"
+            style={{
+              color: 'var(--color-ivory)',
+              fontWeight: 700,
+              fontFamily: "'Cormorant Garamond', 'Pretendard', serif",
+              letterSpacing: '0.02em'
+            }}
           >
             {title}
           </h2>
+          <div className="section-gold-underline" />
           {desc && (
             <p className="mt-3 text-sm sm:text-base text-[var(--color-ivory-muted)] max-w-2xl">
               {desc}
