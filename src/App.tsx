@@ -50,15 +50,15 @@ function Section({
     >
       <div className="flex items-start gap-3 sm:gap-6 mb-3 sm:mb-8">
         <span
-          className="text-[var(--color-brass)] tracking-[0.35em] text-xs sm:text-sm pt-1.5"
-          style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
+          className="numeric text-[var(--color-brass)] tracking-[0.35em] text-xs sm:text-sm pt-1.5"
+          style={{ fontFamily: "var(--font-numeric)" }}
         >
           {index}
         </span>
         <div>
           <h2
             className="text-3xl sm:text-5xl font-semibold text-balance"
-            style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.02em' }}
+            style={{ fontFamily: "'Cormorant Garamond', 'Pretendard', serif", letterSpacing: '0.02em' }}
           >
             {title}
           </h2>

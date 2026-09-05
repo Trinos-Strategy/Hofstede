@@ -45,9 +45,9 @@ export function HeroSection() {
             mobile and any fade delays the largest paint. */}
         <motion.h1
           initial={false}
-          className="text-4xl sm:text-6xl lg:text-7xl font-light tracking-wide leading-[1.15] uppercase text-gradient-gold text-balance"
+          className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-wide leading-[1.15] uppercase text-gradient-gold text-balance"
           style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Cormorant Garamond', 'Pretendard', serif",
             letterSpacing: '0.04em'
           }}
         >
@@ -108,8 +108,7 @@ export function HeroSection() {
         >
           <div className="flex flex-col items-center lg:items-start">
             <span
-              className="text-2xl sm:text-3xl font-semibold text-gradient-gold"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              className="numeric text-2xl sm:text-3xl text-gradient-gold"
             >
               {t('heroStatCountries')}
             </span>
@@ -117,8 +116,7 @@ export function HeroSection() {
           <div className="w-px h-8 bg-[var(--surface-2)]" />
           <div className="flex flex-col items-center lg:items-start">
             <span
-              className="text-2xl sm:text-3xl font-semibold text-gradient-gold"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              className="numeric text-2xl sm:text-3xl text-gradient-gold"
             >
               {t('heroStatDimensions')}
             </span>
@@ -126,8 +124,7 @@ export function HeroSection() {
           <div className="w-px h-8 bg-[var(--surface-2)]" />
           <div className="flex flex-col items-center lg:items-start">
             <span
-              className="text-2xl sm:text-3xl font-semibold text-gradient-gold"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+              className="numeric text-2xl sm:text-3xl text-gradient-gold"
             >
               {t('heroStatClusters')}
             </span>

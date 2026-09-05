@@ -192,8 +192,10 @@ function CustomDot({
         textAnchor="middle"
         dominantBaseline="central"
         style={{
+          fontFamily: 'var(--font-numeric)',
           fontSize: '14px',
           fontWeight: 700,
+          fontVariantNumeric: 'tabular-nums',
           fill: countryColor,
           stroke: 'var(--chip-outline)',
           strokeWidth: 3,
@@ -376,7 +378,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
       <div className="mb-2 pb-2 border-b border-[var(--surface-border)]">
         <p
           className="text-xs font-semibold text-[var(--color-ivory)]"
-          style={{ fontFamily: "'Playfair Display', serif" }}
+          style={{ fontFamily: "'Cormorant Garamond', 'Pretendard', serif" }}
         >
           {fullName}
         </p>
@@ -392,7 +394,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
               />
               <span className="text-xs text-[var(--color-ivory-muted)]">{entry.name}</span>
             </div>
-            <span className="text-xs font-semibold text-[var(--color-ivory)]">{entry.value}</span>
+            <span className="numeric text-xs font-bold text-[var(--color-ivory)]">{entry.value}</span>
           </div>
         ))}
       </div>
@@ -463,7 +465,7 @@ function CountryProfileCard({
         <span className="text-lg">{getFlagEmoji(country.code)}</span>
         <h4
           className="font-medium text-sm text-[var(--color-ivory)]"
-          style={{ fontFamily: "'Playfair Display', serif" }}
+          style={{ fontFamily: "'Cormorant Garamond', 'Pretendard', serif" }}
         >
           {isKorean ? country.nameKo : country.name}
         </h4>
@@ -473,13 +475,13 @@ function CountryProfileCard({
         <div className="flex items-center justify-between text-xs">
           <span className="text-[var(--color-ivory-muted)]">{t('highestDimension')}</span>
           <span className="font-medium text-[var(--color-ivory)]">
-            {t(highestLabel as keyof TranslationKeys)} ({profile.highest[1]})
+            {t(highestLabel as keyof TranslationKeys)} (<span className="numeric font-bold">{profile.highest[1]}</span>)
           </span>
         </div>
         <div className="flex items-center justify-between text-xs">
           <span className="text-[var(--color-ivory-muted)]">{t('lowestDimension')}</span>
           <span className="font-medium text-[var(--color-ivory)]">
-            {t(lowestLabel as keyof TranslationKeys)} ({profile.lowest[1]})
+            {t(lowestLabel as keyof TranslationKeys)} (<span className="numeric font-bold">{profile.lowest[1]}</span>)
           </span>
         </div>
       </div>
@@ -797,7 +799,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                 >
                   <h4
                     className="font-medium text-xs text-[var(--color-ivory)] mb-1.5 flex items-center gap-2"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    style={{ fontFamily: "'Cormorant Garamond', 'Pretendard', serif" }}
                   >
                     <span className="w-2 h-2 rounded-full" style={{ backgroundColor: dim.color }} />
                     {isKorean ? dim.nameKo : dim.name} ({dim.key})
@@ -839,7 +841,7 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                 >
                   <h4
                     className="font-medium text-xs text-[var(--color-ivory)] mb-1.5 flex items-center gap-2"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    style={{ fontFamily: "'Cormorant Garamond', 'Pretendard', serif" }}
                   >
                     <span className="w-2 h-2 rounded-full" style={{ backgroundColor: dim.color }} />
                     {isKorean ? dim.nameKo : dim.name} ({dim.key})

@@ -33,8 +33,9 @@
   --hairline: rgba(15,23,42,0.10);
   --shadow-tint: 15,23,42;
 
-  --font-heading: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Cormorant Garamond', 'Pretendard', Georgia, serif;
+  --font-body: 'Pretendard', 'Noto Sans KR', 'Inter', system-ui, sans-serif;
+  --font-numeric: 'Pretendard', 'Inter', sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --spacing-4: 4px;
@@ -1056,6 +1057,12 @@ a:hover {
 
 .text-balance {
   text-wrap: balance;
+}
+
+.numeric {
+  font-family: var(--font-numeric);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 

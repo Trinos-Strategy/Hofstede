@@ -74,12 +74,14 @@ export function VersusPanel({ countries }: VersusPanelProps) {
           </h4>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-2xl font-bold" style={{ color: COLOR_A }}>
-            {nameA} {biggestGapRow.valA}
+          <span className="text-2xl font-bold flex items-center gap-1.5" style={{ color: COLOR_A }}>
+            <span>{nameA}</span>
+            <span className="numeric">{biggestGapRow.valA}</span>
           </span>
           <span className="text-sm font-medium text-[var(--color-ivory-muted)]">vs</span>
-          <span className="text-2xl font-bold" style={{ color: COLOR_B }}>
-            {nameB} {biggestGapRow.valB}
+          <span className="text-2xl font-bold flex items-center gap-1.5" style={{ color: COLOR_B }}>
+            <span>{nameB}</span>
+            <span className="numeric">{biggestGapRow.valB}</span>
           </span>
         </div>
       </div>
@@ -129,7 +131,7 @@ export function VersusPanel({ countries }: VersusPanelProps) {
                     ▲
                   </span>
                 )}
-                <span className="text-2xl font-bold" style={{ color: COLOR_A }}>
+                <span className="numeric text-2xl font-bold" style={{ color: COLOR_A }}>
                   {valA}
                 </span>
               </div>
@@ -164,7 +166,7 @@ export function VersusPanel({ countries }: VersusPanelProps) {
 
               {/* Country B value */}
               <div className="w-14 text-left flex items-center justify-start gap-1 flex-shrink-0">
-                <span className="text-2xl font-bold" style={{ color: COLOR_B }}>
+                <span className="numeric text-2xl font-bold" style={{ color: COLOR_B }}>
                   {valB}
                 </span>
                 {isHigherB && (
