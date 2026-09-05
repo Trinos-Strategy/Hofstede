@@ -102,16 +102,16 @@ export function LanguageProvider({ children, defaultLanguage }: LanguageProvider
     getInitialLanguage(defaultLanguage)
   );
 
-  // Sync with localStorage on mount (handle SSR)
+  // Sync with localStorage once on mount. This must NOT depend on `language`:
+  // re-running it on every change would read the stale stored value and revert
+  // the language the user just picked (the "toggle swallows clicks" bug).
   useEffect(() => {
     const stored = getInitialLanguage(defaultLanguage);
     if (stored !== language) {
-      const handle = requestAnimationFrame(() => {
-        setLanguageState(stored);
-      });
-      return () => cancelAnimationFrame(handle);
+      setLanguageState(stored);
     }
-  }, [defaultLanguage, language]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Persist to localStorage when language changes
   useEffect(() => {
