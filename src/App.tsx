@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect, useCallback, lazy, Suspense } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Globe2, Download, Loader2 } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import type { Country, ClusterType, AdviceContext, BilateralAdviceResult } from './types';
 import { ClusterMap } from './components/ClusterMap';
 import { CountrySelector } from './components/CountrySelector';
@@ -185,10 +185,15 @@ function App() {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.6 }}
-                className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, var(--color-brass-light), var(--color-brass))' }}
+                className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg overflow-hidden flex-shrink-0 border border-[var(--color-brass)]/30"
               >
-                <Globe2 className="w-4 h-4 sm:w-6 sm:h-6 text-white" strokeWidth={1.5} />
+                <img
+                  src="/art/logo-compass.webp"
+                  alt="Trinos Cultural Compass"
+                  width={256}
+                  height={256}
+                  className="w-full h-full object-cover"
+                />
               </motion.div>
               <div className="min-w-0">
                 <h1

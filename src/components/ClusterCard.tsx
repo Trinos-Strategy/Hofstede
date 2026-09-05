@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-import { Info } from 'lucide-react';
 import type { ClusterType } from '../types';
 import { clusterInfo, getCountriesByCluster } from '../data/countries';
 import { useLanguage } from '../i18n';
@@ -8,55 +6,18 @@ import type { TranslationKeys } from '../i18n/translations';
 interface ClusterCardProps {
   cluster: ClusterType;
   isSelected: boolean;
-  onClick: (cluster: ClusterType) => void;
+  onClick?: (cluster: ClusterType) => void;
   onInfoClick?: (cluster: ClusterType) => void;
+  bannerArt?: string;
 }
 
-const clusterArt: Record<string, string> = {
-  contest: '/art/cluster-contest.webp',
-  network: '/art/cluster-network.webp',
-  family: '/art/cluster-family.webp',
-  pyramid: '/art/cluster-pyramid.webp',
-  solarSystem: '/art/cluster-solar.webp',
-  machine: '/art/cluster-machine.webp'
-};
-
-// Cluster styles mapping to WCAG AA theme colors
-const clusterStyles: Record<ClusterType, {
-  color: string;
-  iconColor: string;
-  lightBg: string;
-}> = {
-  contest: {
-    color: 'var(--contest-color, #8B6914)',
-    iconColor: 'var(--contest-color, #8B6914)',
-    lightBg: 'linear-gradient(135deg, rgba(139, 105, 20, 0.08), rgba(139, 105, 20, 0.03))',
-  },
-  network: {
-    color: 'var(--network-color, #5A6350)',
-    iconColor: 'var(--network-color, #5A6350)',
-    lightBg: 'linear-gradient(135deg, rgba(90, 99, 80, 0.08), rgba(90, 99, 80, 0.03))',
-  },
-  family: {
-    color: 'var(--family-color, #9D7E00)',
-    iconColor: 'var(--family-color, #9D7E00)',
-    lightBg: 'linear-gradient(135deg, rgba(157, 126, 0, 0.08), rgba(157, 126, 0, 0.03))',
-  },
-  pyramid: {
-    color: 'var(--pyramid-color, #6B5A42)',
-    iconColor: 'var(--pyramid-color, #6B5A42)',
-    lightBg: 'linear-gradient(135deg, rgba(107, 90, 66, 0.08), rgba(107, 90, 66, 0.03))',
-  },
-  solarSystem: {
-    color: 'var(--solar-color, #A0654A)',
-    iconColor: 'var(--solar-color, #A0654A)',
-    lightBg: 'linear-gradient(135deg, rgba(160, 101, 74, 0.08), rgba(160, 101, 74, 0.03))',
-  },
-  machine: {
-    color: 'var(--machine-color, #4A5A6B)',
-    iconColor: 'var(--machine-color, #4A5A6B)',
-    lightBg: 'linear-gradient(135deg, rgba(74, 90, 107, 0.08), rgba(74, 90, 107, 0.03))',
-  },
+const defaultBannerArt: Record<ClusterType, string> = {
+  contest: '/art/banner-contest.webp',
+  network: '/art/banner-network.webp',
+  family: '/art/banner-family.webp',
+  pyramid: '/art/banner-pyramid.webp',
+  solarSystem: '/art/banner-solar.webp',
+  machine: '/art/banner-machine.webp',
 };
 
 const clusterTranslationKeys: Record<ClusterType, { name: keyof TranslationKeys; desc: keyof TranslationKeys }> = {
@@ -68,145 +29,89 @@ const clusterTranslationKeys: Record<ClusterType, { name: keyof TranslationKeys;
   machine: { name: 'clusterMachine', desc: 'descMachine' },
 };
 
-export function ClusterCard({ cluster, isSelected, onClick, onInfoClick }: ClusterCardProps) {
+export function ClusterCard({
+  cluster,
+  isSelected,
+  onClick: _onClick,
+  onInfoClick,
+  bannerArt,
+}: ClusterCardProps) {
   const { t, isKorean } = useLanguage();
   const info = clusterInfo[cluster];
   const countriesInCluster = getCountriesByCluster(cluster);
-  const style = clusterStyles[cluster];
   const translationKeys = clusterTranslationKeys[cluster];
+  const artSrc = bannerArt || defaultBannerArt[cluster];
 
-  const handleClick = () => {
-    onClick(cluster);
-  };
-
-  const handleDoubleClick = () => {
+  const handleOpenModal = () => {
     if (onInfoClick) {
       onInfoClick(cluster);
     }
   };
 
-  const handleInfoButtonClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (onInfoClick) {
-      onInfoClick(cluster);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleOpenModal();
     }
   };
 
   return (
-    <motion.div
-      whileHover={{ y: -4, scale: 1.01 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={handleClick}
-      onDoubleClick={handleDoubleClick}
-      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={handleOpenModal}
+      onDoubleClick={handleOpenModal}
+      onKeyDown={handleKeyDown}
       className={`
-        cursor-pointer rounded-xl p-3 sm:p-5 aspect-auto relative overflow-hidden glass-card card-gradient-border glow-gold
-        transition-all duration-500 flex flex-col justify-between
-        ${isSelected ? 'ring-1 ring-[var(--color-brass)] bg-[var(--color-brass)]/10 shadow-md' : 'bg-white/[0.03]'}
+        group relative aspect-[16/10] overflow-hidden rounded-xl border border-[var(--surface-border)]
+        cursor-pointer hover:border-[var(--color-brass)]/50 transition-colors duration-300
+        ${isSelected ? 'ring-1 ring-[var(--color-brass)]' : ''}
       `}
-      style={{
-        boxShadow: isSelected ? '0 0 20px rgba(212, 175, 55, 0.15)' : undefined,
-      }}
     >
-      {/* Subtle gradient overlay on hover */}
-      <div
-        className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ background: style.lightBg }}
+      {/* Background image */}
+      <img
+        src={artSrc}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 pointer-events-none"
       />
 
-      <div className="relative z-10 flex flex-col justify-between flex-1">
-        <div>
-          <div className="flex items-center gap-4 mb-4">
-            <motion.div
-              whileHover={{ scale: 1.15, rotate: 8 }}
-              transition={{ duration: 0.3 }}
-              className="w-10 h-10 rounded-lg overflow-hidden bg-[var(--surface-1)] border border-[var(--surface-border)] flex items-center justify-center flex-shrink-0"
-            >
-              <img
-                src={clusterArt[cluster]}
-                alt=""
-                width={96}
-                height={96}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover rounded-lg"
-              />
-            </motion.div>
-            <div className="flex-1 min-w-0">
-              <h3
-                className="font-bold text-base sm:text-xl tracking-wide truncate"
-                style={{
-                  color: style.color,
-                  fontFamily: "'Cormorant Garamond', serif",
-                  letterSpacing: '0.06em'
-                }}
-              >
-                {t(translationKeys.name)}
-              </h3>
-              <p className="text-xs text-[var(--color-ivory-muted)] opacity-60 tracking-wide font-medium">{isKorean ? info.name : info.nameKo}</p>
-            </div>
-            {/* Info button */}
-            {onInfoClick && (
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={handleInfoButtonClick}
-                className="p-2 rounded-lg border border-[var(--surface-border)] hover:border-[var(--color-brass)] hover:bg-[var(--surface-1)] transition-all duration-300 cursor-pointer flex-shrink-0"
-                title={isKorean ? '상세 정보 보기' : 'View details'}
-              >
-                <Info className="w-4 h-4 text-[var(--color-ivory-muted)]" strokeWidth={1.5} />
-              </motion.button>
-            )}
-          </div>
+      {/* Dim/blur overlay: deep bottom vertical gradient + subtle blur */}
+      <div
+        className="absolute inset-0 backdrop-blur-[2px] pointer-events-none bg-[linear-gradient(to_bottom,rgba(10,14,26,0.78),rgba(10,14,26,0.15)_45%,rgba(10,14,26,0.88))]"
+        aria-hidden="true"
+      />
 
-          <p className="text-xs leading-relaxed text-[var(--color-ivory-muted)] mb-3 sm:mb-4 line-clamp-2 lg:line-clamp-none">
-            {t(translationKeys.desc)}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-1 sm:gap-2 mt-2.5 sm:mt-4 pt-1 sm:pt-2">
-          {countriesInCluster.slice(0, 3).map((country) => (
-            <span
-              key={country.code}
-              className="text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full border border-[var(--surface-border)] bg-[var(--surface-1)] text-[var(--color-ivory)] font-medium shadow-sm transition-colors hover:border-[var(--color-brass)]/40"
-            >
-              {isKorean ? country.nameKo : country.name}
-            </span>
-          ))}
-          {countriesInCluster.length > 3 && (
-            <span
-              className="text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full font-medium border shadow-sm animate-pulse"
-              style={{
-                backgroundColor: `${style.iconColor}10`,
-                color: style.color,
-                borderColor: `${style.iconColor}20`,
-              }}
-            >
-              +{countriesInCluster.length - 3}
-            </span>
-          )}
-        </div>
+      {/* Top text */}
+      <div className="absolute top-0 left-0 right-0 p-3 sm:p-4 z-10 pointer-events-none">
+        <h3
+          className="text-base sm:text-lg font-bold text-[var(--color-ivory)] drop-shadow"
+          style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.04em' }}
+        >
+          {t(translationKeys.name)}
+        </h3>
+        <p className="text-[10px] tracking-widest uppercase text-[var(--color-brass-light)] font-medium mt-0.5">
+          {isKorean ? info.name : info.nameKo}
+        </p>
       </div>
 
-      {/* Selected indicator - animated pulse */}
-      {isSelected && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="absolute top-4 right-4"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-3 h-3 rounded-full"
-            style={{
-              backgroundColor: style.iconColor,
-              boxShadow: `0 0 8px ${style.iconColor}60`,
-            }}
-          />
-        </motion.div>
-      )}
-    </motion.div>
+      {/* Bottom country pills */}
+      <div className="absolute bottom-0 left-0 right-0 p-3 z-10 flex flex-wrap gap-1 pointer-events-none">
+        {countriesInCluster.slice(0, 4).map((country) => (
+          <span
+            key={country.code}
+            className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-[var(--color-ivory)] border border-white/10 font-medium"
+          >
+            {isKorean ? country.nameKo : country.name}
+          </span>
+        ))}
+        {countriesInCluster.length > 4 && (
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-[var(--color-brass-light)] border border-white/10 font-medium">
+            +{countriesInCluster.length - 4}
+          </span>
+        )}
+      </div>
+    </div>
   );
 }

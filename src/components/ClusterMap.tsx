@@ -4,12 +4,20 @@ import type { ClusterType } from '../types';
 import { clusterOrder } from '../data/countries';
 import { ClusterCard } from './ClusterCard';
 import { ClusterDetailModal } from './ClusterDetailModal';
-import { useLanguage } from '../i18n';
 
 interface ClusterMapProps {
   selectedCluster: ClusterType | null;
   onClusterSelect: (cluster: ClusterType | null) => void;
 }
+
+const bannerArtMap: Record<ClusterType, string> = {
+  contest: '/art/banner-contest.webp',
+  network: '/art/banner-network.webp',
+  family: '/art/banner-family.webp',
+  pyramid: '/art/banner-pyramid.webp',
+  solarSystem: '/art/banner-solar.webp',
+  machine: '/art/banner-machine.webp',
+};
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -32,7 +40,6 @@ const itemVariants = {
 };
 
 export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps) {
-  const { t } = useLanguage();
   const [modalCluster, setModalCluster] = useState<ClusterType | null>(null);
 
   const handleClusterClick = (cluster: ClusterType) => {
@@ -58,7 +65,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
       >
         {clusterOrder.map((cluster) => (
           <motion.div key={cluster} variants={itemVariants}>
@@ -67,15 +74,11 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
               isSelected={selectedCluster === cluster}
               onClick={handleClusterClick}
               onInfoClick={handleClusterInfo}
+              bannerArt={bannerArtMap[cluster]}
             />
           </motion.div>
         ))}
       </motion.div>
-
-      {/* Double-click guidance hint caption */}
-      <p className="text-[11px] text-[var(--color-ivory-muted)]/70 text-center mt-4 font-medium">
-        {t('clickFilterDoubleClickDetails')}
-      </p>
 
       {/* Cluster Detail Modal */}
       <ClusterDetailModal
