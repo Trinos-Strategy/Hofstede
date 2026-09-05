@@ -19,7 +19,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          className="inline-flex items-center gap-2 rounded-full border border-[var(--color-brass)]/30 bg-white/5 px-4 py-1.5 mb-5"
+          className="inline-flex items-center gap-2 rounded-full border border-[var(--color-brass)]/30 bg-[var(--surface-1)] px-4 py-1.5 mb-5"
         >
           <span className="w-2 h-2 rounded-full bg-[var(--color-brass)] flex-shrink-0" />
           <span className="text-xs tracking-widest uppercase text-[var(--color-brass)] font-medium">
@@ -80,7 +80,7 @@ export function HeroSection() {
           </button>
           <a
             href="#bilateral-advice"
-            className="rounded-full border border-white/15 px-7 h-12 flex items-center text-sm text-[var(--color-ivory-muted)] hover:border-[var(--color-brass)]/60 hover:text-[var(--color-brass)] transition-colors"
+            className="rounded-full border border-[var(--surface-border)] px-7 h-12 flex items-center text-sm text-[var(--color-ivory-muted)] hover:border-[var(--color-brass)]/60 hover:text-[var(--color-brass)] transition-colors"
           >
             {t('heroCtaSecondary')}
           </a>
@@ -101,7 +101,7 @@ export function HeroSection() {
               {t('heroStatCountries')}
             </span>
           </div>
-          <div className="w-px h-8 bg-white/10" />
+          <div className="w-px h-8 bg-[var(--surface-2)]" />
           <div className="flex flex-col items-center lg:items-start">
             <span
               className="text-2xl sm:text-3xl font-semibold text-gradient-gold"
@@ -110,7 +110,7 @@ export function HeroSection() {
               {t('heroStatDimensions')}
             </span>
           </div>
-          <div className="w-px h-8 bg-white/10" />
+          <div className="w-px h-8 bg-[var(--surface-2)]" />
           <div className="flex flex-col items-center lg:items-start">
             <span
               className="text-2xl sm:text-3xl font-semibold text-gradient-gold"

@@ -45,7 +45,7 @@ function Section({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-      className="relative z-10 py-14 sm:py-20 border-t border-white/5 scroll-mt-20"
+      className="relative z-10 py-14 sm:py-20 border-t border-[var(--surface-border)] scroll-mt-20"
     >
       <div className="flex items-start gap-4 sm:gap-6 mb-8 sm:mb-12">
         <span
@@ -76,7 +76,7 @@ function Section({
 // Placeholder while the chart chunk (recharts) streams in on first selection.
 function ChartSkeleton() {
   return (
-    <div className="h-[350px] sm:h-[500px] flex flex-col items-center justify-center gap-4 rounded-lg bg-white/[0.03] border border-white/5">
+    <div className="h-[350px] sm:h-[500px] flex flex-col items-center justify-center gap-4 rounded-lg bg-white/[0.03] border border-[var(--surface-border)]">
       <Loader2 className="w-6 h-6 text-[var(--color-brass)] animate-spin" strokeWidth={1.5} />
       <p className="text-xs text-[var(--color-ivory-muted)] tracking-wide">Loading chart…</p>
     </div>
@@ -251,11 +251,11 @@ function App() {
                       >
                         {t('radarChart')}
                       </h2>
-                      <span className="text-[10px] sm:text-xs text-[var(--color-brass)] bg-white/5 px-2.5 py-0.5 rounded-full font-medium border border-white/5">
+                      <span className="text-[10px] sm:text-xs text-[var(--color-brass)] bg-[var(--surface-1)] px-2.5 py-0.5 rounded-full font-medium border border-[var(--surface-border)]">
                         {t('sixDimensionComparison')}
                       </span>
                       {isPair && (
-                        <div className="ml-auto flex items-center rounded-full border border-white/10 p-0.5">
+                        <div className="ml-auto flex items-center rounded-full border border-[var(--surface-border)] p-0.5">
                           {(['bars', 'radar'] as const).map((v) => (
                             <button
                               key={v}
@@ -274,7 +274,7 @@ function App() {
                       <button
                         onClick={handleExportChart}
                         disabled={isExporting}
-                        className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-medium border border-white/10 text-[var(--color-ivory-muted)] hover:text-[var(--color-brass)] hover:border-[var(--color-brass)]/50 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                        className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-medium border border-[var(--surface-border)] text-[var(--color-ivory-muted)] hover:text-[var(--color-brass)] hover:border-[var(--color-brass)]/50 transition-all duration-300 disabled:opacity-50 cursor-pointer"
                         title={t('exportPng')}
                         aria-label={t('exportPng')}
                       >
@@ -332,7 +332,7 @@ function App() {
           desc={t('bilateralAdviceDescription')}
         >
             {/* Framework note */}
-            <div className="mb-4 sm:mb-5 px-4 py-3 bg-white/5 rounded-lg border border-[var(--color-brass)]/15">
+            <div className="mb-4 sm:mb-5 px-4 py-3 bg-[var(--surface-1)] rounded-lg border border-[var(--color-brass)]/15">
               <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] leading-relaxed flex items-start gap-2">
                 <span aria-hidden="true" className="flex-shrink-0">📚</span>
                 <span>
@@ -351,7 +351,7 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="glass-card rounded-lg p-5 sm:p-6 text-center border-l-4 border-white/10"
+                  className="glass-card rounded-lg p-5 sm:p-6 text-center border-l-4 border-[var(--surface-border)]"
                 >
                   <p className="text-sm sm:text-base text-[var(--color-ivory-muted)] flex items-center justify-center gap-3">
                     <span className="text-xl">🌍</span>
@@ -428,7 +428,7 @@ function App() {
                   transition={{ duration: 0.5 }}
                   className="glass-card rounded-lg p-6 sm:p-8"
                 >
-                  <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-white/10 rounded-lg">
+                  <div className="flex flex-col items-center justify-center py-8 sm:py-12 border border-dashed border-[var(--surface-border)] rounded-lg">
                     <span className="text-3xl sm:text-4xl mb-4">💡</span>
                     <p className="text-[var(--color-ivory-muted)] text-sm sm:text-base text-center leading-relaxed whitespace-pre-line">
                       {t('selectSituationAbove')}
@@ -441,7 +441,7 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-12 sm:mt-20 border-t border-white/5 bg-white/5 relative z-10">
+      <footer className="mt-12 sm:mt-20 border-t border-[var(--surface-border)] bg-[var(--surface-1)] relative z-10">
         <div className="max-w-[1140px] mx-auto px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-8">
             {/* Left: Trinos Research Lab */}
@@ -470,7 +470,7 @@ function App() {
               href="https://mediator.trinos.group/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs border border-white/10 rounded-full px-4 py-2 hover:border-[var(--color-brass)]/60 text-[var(--color-ivory-muted)] hover:text-white transition-colors"
+              className="text-xs border border-[var(--surface-border)] rounded-full px-4 py-2 hover:border-[var(--color-brass)]/60 text-[var(--color-ivory-muted)] hover:text-white transition-colors"
             >
               {t('contact')}
             </a>

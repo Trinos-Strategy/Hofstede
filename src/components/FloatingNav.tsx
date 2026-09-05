@@ -68,7 +68,7 @@ export function FloatingNav() {
         isVisible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
       }`}
     >
-      <div className="flex gap-1 rounded-full border border-white/10 bg-[#12172a]/85 backdrop-blur-xl shadow-2xl px-2 py-1.5">
+      <div className="flex gap-1 rounded-full border border-[var(--surface-border)] bg-[var(--panel-glass)] backdrop-blur-xl shadow-2xl px-2 py-1.5">
         {navItems.map((item) => {
           const isActive = activeSection === item.id;
           return (
@@ -78,7 +78,7 @@ export function FloatingNav() {
               onClick={() => scrollToSection(item.id)}
               className={`rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer ${
                 isActive
-                  ? 'bg-white/10 text-[var(--color-brass)]'
+                  ? 'bg-[var(--surface-2)] text-[var(--color-brass)]'
                   : 'text-[var(--color-ivory-muted)] hover:text-white'
               }`}
             >

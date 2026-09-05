@@ -199,7 +199,7 @@ export function CountrySelector({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.85, y: -8 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="country-pill flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold shadow-md border border-white/10"
+              className="country-pill flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold shadow-md border border-[var(--surface-border)]"
               style={{
                 backgroundColor: countryColors[index % countryColors.length].bg,
                 color: countryColors[index % countryColors.length].text,
@@ -256,7 +256,7 @@ export function CountrySelector({
               : t('maxSelectionComplete')
           }
           className={`
-            w-full pl-11 pr-4 h-12 text-sm rounded-lg bg-white/5 border border-white/10
+            w-full pl-11 pr-4 h-12 text-sm rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)]
             placeholder-[var(--color-ivory-muted)]/60
             focus:border-[var(--color-brass)]/60 focus:ring-0 focus:outline-none
             transition-all duration-300
@@ -276,7 +276,7 @@ export function CountrySelector({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className="absolute z-50 w-full mt-2 rounded-xl border border-white/10 bg-[#12172a]/95 backdrop-blur-xl shadow-2xl max-h-[300px] overflow-y-auto"
+            className="absolute z-50 w-full mt-2 rounded-xl border border-[var(--surface-border)] bg-[var(--panel-glass)] backdrop-blur-xl shadow-2xl max-h-[300px] overflow-y-auto"
             ref={optionsListRef}
           >
             {filteredCountries.map((country, index) => {
@@ -289,10 +289,10 @@ export function CountrySelector({
                   onMouseEnter={() => setActiveIndex(index)}
                   className={`
                     w-full px-5 py-3 text-left text-sm flex items-center justify-between
-                    transition-all duration-200 border-b border-white/5 cursor-pointer min-h-[48px]
-                    hover:bg-white/5
+                    transition-all duration-200 border-b border-[var(--surface-border)] cursor-pointer min-h-[48px]
+                    hover:bg-[var(--surface-1)]
                     ${isActive
-                      ? 'bg-white/10 border-l-2 border-l-[var(--color-brass)] pl-4'
+                      ? 'bg-[var(--surface-2)] border-l-2 border-l-[var(--color-brass)] pl-4'
                       : 'bg-transparent'
                     }
                   `}
