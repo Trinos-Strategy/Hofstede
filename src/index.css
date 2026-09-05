@@ -6,18 +6,32 @@
    ============================================ */
 
 :root {
-  /* Core Tokens */
-  --color-midnight: #0A0E1A;
-  --color-night-blue: #141928;
-  --color-brass: #B8960C;
-  --color-brass-light: #D4AF37;
-  --color-ivory: #F5F0E8;
-  --color-ivory-muted: #C8C0B0;
-  --color-sage: #6B8E6B;
+  /* ── Core Tokens · LIGHT (default) ──
+     The .dark class (applied by the flash-prevention script by default)
+     flips every token below to the dark luxury palette. */
+  --color-midnight: #EEF1F7;
+  --color-night-blue: #FFFFFF;
+  --color-brass: #8F7209;
+  --color-brass-light: #B8960C;
+  --color-ivory: #1B2436;
+  --color-ivory-muted: #4E5A70;
+  --color-sage: #4A7350;
   --color-teal: #2D7D9A;
-  --color-coral: #E07B54;
-  --color-glass: rgba(255,255,255,0.06);
-  --color-glass-border: rgba(255,255,255,0.10);
+  --color-coral: #C05F3C;
+  --color-glass: rgba(255,255,255,0.72);
+  --color-glass-border: rgba(15,23,42,0.12);
+
+  /* Semantic surface tokens — components must use these, never raw
+     white/black overlays, so both themes stay legible. */
+  --surface-1: rgba(15,23,42,0.05);
+  --surface-2: rgba(15,23,42,0.09);
+  --surface-border: rgba(15,23,42,0.14);
+  --panel: #FFFFFF;
+  --panel-glass: rgba(255,255,255,0.94);
+  --panel-muted: #F5F3ED;
+  --chip-outline: #FFFFFF;
+  --hairline: rgba(15,23,42,0.10);
+  --shadow-tint: 15,23,42;
 
   --font-heading: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
@@ -114,7 +128,7 @@
   }
 
   .glass-strong {
-    background: rgba(10, 14, 26, 0.85);
+    background: var(--panel-glass);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--color-glass-border);
@@ -129,8 +143,8 @@
 }
 
 .bg-aurora {
-  background: radial-gradient(circle at 10% 20%, rgba(45, 125, 154, 0.08) 0%, transparent 40%),
-              radial-gradient(circle at 90% 80%, rgba(184, 150, 12, 0.06) 0%, transparent 40%),
+  background: radial-gradient(circle at 10% 20%, rgba(45, 125, 154, 0.10) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(184, 150, 12, 0.07) 0%, transparent 40%),
               var(--color-midnight);
 }
 
@@ -857,10 +871,33 @@ a:hover {
 }
 
 /* ============================================
-   Dark Mode Overrides
+   Dark Mode Overrides — the dark luxury palette.
+   .dark is applied to <html> by default (flash script).
    ============================================ */
 
 .dark {
+  --color-midnight: #0A0E1A;
+  --color-night-blue: #141928;
+  --color-brass: #B8960C;
+  --color-brass-light: #D4AF37;
+  --color-ivory: #F5F0E8;
+  --color-ivory-muted: #C8C0B0;
+  --color-sage: #6B8E6B;
+  --color-teal: #2D7D9A;
+  --color-coral: #E07B54;
+  --color-glass: rgba(255,255,255,0.06);
+  --color-glass-border: rgba(255,255,255,0.10);
+
+  --surface-1: rgba(255,255,255,0.06);
+  --surface-2: rgba(255,255,255,0.10);
+  --surface-border: rgba(255,255,255,0.14);
+  --panel: #12172A;
+  --panel-glass: rgba(18,23,42,0.92);
+  --panel-muted: rgba(255,255,255,0.04);
+  --chip-outline: #0A0E1A;
+  --hairline: rgba(255,255,255,0.08);
+  --shadow-tint: 0,0,0;
+
   --ivory-light: #0f172a;
   --ivory: #1e293b;
   --ivory-dark: #334155;
@@ -880,6 +917,29 @@ a:hover {
   --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3);
   --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Light-theme legacy mapping (only effective without .dark) */
+:root {
+  --ivory-light: #eef1f7;
+  --ivory: #ffffff;
+  --ivory-dark: #dbe1ec;
+  --cream: #ffffff;
+
+  --text-primary: #1b2436;
+  --text-secondary: #3a4356;
+  --text-muted: #4e5a70;
+  --text-subtle: #7c8699;
+
+  --charcoal-deep: #101828;
+  --charcoal: #1b2436;
+  --charcoal-light: #3a4356;
+  --charcoal-muted: #525e74;
+
+  --shadow-subtle: 0 1px 3px rgba(15,23,42,0.10);
+  --shadow-card: 0 4px 16px rgba(15,23,42,0.10);
+  --shadow-hover: 0 8px 24px rgba(15,23,42,0.16);
+  --shadow-elevated: 0 12px 32px rgba(15,23,42,0.20);
 }
 
 .dark body {
