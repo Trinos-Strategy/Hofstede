@@ -25,22 +25,51 @@ const DimensionRadar = lazy(() =>
   import('./components/DimensionRadar').then((m) => ({ default: m.DimensionRadar }))
 );
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.1 }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6 }
-  }
-};
+// Editorial scroll-narrative section: numbered eyebrow, serif heading,
+// hairline top border, and a once-only reveal on scroll.
+function Section({
+  id, index, title, desc, children,
+}: {
+  id: string;
+  index: string;
+  title: string;
+  desc?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.section
+      id={id}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+      className="relative z-10 py-14 sm:py-20 border-t border-white/5 scroll-mt-20"
+    >
+      <div className="flex items-start gap-4 sm:gap-6 mb-8 sm:mb-12">
+        <span
+          className="text-[var(--color-brass)] tracking-[0.35em] text-sm pt-2"
+          style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
+        >
+          {index}
+        </span>
+        <div>
+          <h2
+            className="text-3xl sm:text-5xl font-semibold text-balance"
+            style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.02em' }}
+          >
+            {title}
+          </h2>
+          {desc && (
+            <p className="mt-3 text-sm sm:text-base text-[var(--color-ivory-muted)] max-w-2xl">
+              {desc}
+            </p>
+          )}
+        </div>
+      </div>
+      {children}
+    </motion.section>
+  );
+}
 
 // Placeholder while the chart chunk (recharts) streams in on first selection.
 function ChartSkeleton() {
@@ -63,9 +92,6 @@ function App() {
   const [selectedContext, setSelectedContext] = useState<AdviceContext | null>(initialContext);
   const radarContainerRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
-
-  // Section refs for scroll navigation
-  const sidebarRef = useRef<HTMLElement>(null);
 
   // Sync URL when selections change
   useEffect(() => {
@@ -178,48 +204,27 @@ function App() {
       <main className="max-w-[1140px] mx-auto px-4 sm:px-6 py-6 sm:py-12 relative z-10">
         <HeroSection />
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8"
+        {/* ─── 01 · Cultural clusters — full-width bento (old sidebar removed) ─── */}
+        <Section
+          id="clusters"
+          index="01"
+          title={t('culturalClusters')}
         >
-          {/* Left sidebar - Cluster Map */}
-          <motion.aside
-            ref={sidebarRef}
-            variants={itemVariants}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="lg:col-span-3 order-2 lg:order-1"
-            id="cluster-sidebar"
-          >
-            <div className="lg:sticky lg:top-24 space-y-5 sm:space-y-8">
-              <ClusterMap
-                selectedCluster={filterCluster}
-                onClusterSelect={handleClusterSelect}
-              />
-            </div>
-          </motion.aside>
+          <ClusterMap
+            selectedCluster={filterCluster}
+            onClusterSelect={handleClusterSelect}
+          />
+        </Section>
 
-          {/* Main content area */}
-          <div className="lg:col-span-9 space-y-5 sm:space-y-8 order-1 lg:order-2 transition-all duration-300">
+        {/* ─── 02 · Comparison workbench ─── */}
+        <Section
+          id="compare"
+          index="02"
+          title={t('countrySelection')}
+          desc={t('maxCount')}
+        >
             {/* Country selector */}
-            <motion.div variants={itemVariants} id="country-selector" className="glass-card rounded-lg p-4 sm:p-8">
-              <div className="flex flex-col gap-2 mb-4 sm:mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="accent-bar" />
-                  <h2
-                    className="text-lg sm:text-2xl font-bold text-[var(--color-brass)]"
-                    style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
-                  >
-                    {t('countrySelection')}
-                  </h2>
-                  <span className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] tracking-wide uppercase ml-1 sm:ml-2">
-                    {t('maxCount')}
-                  </span>
-                </div>
-                <div className="w-16 h-[1px] bg-gradient-to-r from-[var(--color-brass)] to-transparent mt-1" />
-              </div>
+            <motion.div id="country-selector" className="glass-card rounded-lg p-4 sm:p-8">
               <CountrySelector
                 selectedCountries={selectedCountries}
                 onCountrySelect={handleCountrySelect}
@@ -228,34 +233,8 @@ function App() {
               />
             </motion.div>
 
-            {/* ============================================ */}
-            {/* SECTION 1: Cultural Dimension Comparison */}
-            {/* ============================================ */}
             {selectedCountries.length > 0 && (
-              <motion.div variants={itemVariants} id="dimension-comparison">
-                <div className="flex flex-col gap-2 mb-4 sm:mb-5">
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl sm:text-2xl">📊</span>
-                    <div>
-                      <h2
-                        className="text-lg sm:text-2xl font-bold text-[var(--color-brass)]"
-                        style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
-                      >
-                        {t('cultureDimensionComparison')}
-                      </h2>
-                      <p className="text-xs sm:text-sm text-[var(--color-ivory-muted)] mt-0.5">
-                        {t('compareDimensionsDescription')}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="w-16 h-[1px] bg-gradient-to-r from-[var(--color-brass)] to-transparent mt-1" />
-                </div>
-              </motion.div>
-            )}
-
-            {/* Charts section */}
-            {selectedCountries.length > 0 && (
-              <motion.div variants={itemVariants} className="space-y-5 sm:space-y-8">
+              <div className="space-y-5 sm:space-y-8 scroll-mt-24" id="dimension-comparison">
                 {/* Radar chart - full width with dimension explanations */}
                 <div className="glass-card rounded-lg p-4 sm:p-8">
                   <div className="flex flex-col gap-2 mb-4 sm:mb-6">
@@ -308,48 +287,34 @@ function App() {
                   </div>
                   <DimensionBar countries={selectedCountries} />
                 </div>
-              </motion.div>
+              </div>
             )}
 
             {/* Comparison table */}
             {selectedCountries.length > 0 && (
-              <motion.div variants={itemVariants} id="comparison-table">
+              <div id="comparison-table">
                 <ComparisonTable countries={selectedCountries} />
-              </motion.div>
+              </div>
             )}
+        </Section>
 
-            {/* ============================================ */}
-            {/* SECTION 2: Bilateral Situational Advice */}
-            {/* ============================================ */}
-            <motion.div variants={itemVariants} id="bilateral-advice">
-              <div className="flex flex-col gap-2 mb-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-xl sm:text-2xl">💡</span>
-                  <div>
-                    <h2
-                      className="text-lg sm:text-2xl font-bold text-[var(--color-brass)]"
-                      style={{ fontFamily: "'Cormorant Garamond', serif", letterSpacing: '0.06em' }}
-                    >
-                      {t('bilateralAdvice')}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-[var(--color-ivory-muted)] mt-0.5">
-                      {t('bilateralAdviceDescription')}
-                    </p>
-                  </div>
-                </div>
-                <div className="w-16 h-[1px] bg-gradient-to-r from-[var(--color-brass)] to-transparent mt-1" />
-              </div>
-              {/* Framework note */}
-              <div className="mb-4 sm:mb-5 px-4 py-3 bg-white/5 rounded-lg border border-[var(--color-brass)]/15">
-                <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] leading-relaxed flex items-start gap-2">
-                  <span aria-hidden="true" className="flex-shrink-0">📚</span>
-                  <span>
-                    <span className="font-semibold text-[var(--color-brass)] uppercase tracking-wide">{t('frameworkLabel')}</span>{' '}
-                    {t('frameworkDescription')}
-                  </span>
-                </p>
-              </div>
-            </motion.div>
+        {/* ─── 03 · Bilateral advice ─── */}
+        <Section
+          id="bilateral-advice"
+          index="03"
+          title={t('bilateralAdvice')}
+          desc={t('bilateralAdviceDescription')}
+        >
+            {/* Framework note */}
+            <div className="mb-4 sm:mb-5 px-4 py-3 bg-white/5 rounded-lg border border-[var(--color-brass)]/15">
+              <p className="text-[10px] sm:text-xs text-[var(--color-ivory-muted)] leading-relaxed flex items-start gap-2">
+                <span aria-hidden="true" className="flex-shrink-0">📚</span>
+                <span>
+                  <span className="font-semibold text-[var(--color-brass)] uppercase tracking-wide">{t('frameworkLabel')}</span>{' '}
+                  {t('frameworkDescription')}
+                </span>
+              </p>
+            </div>
 
             {/* Guidance messages based on country count */}
             <AnimatePresence mode="wait">
@@ -404,12 +369,12 @@ function App() {
 
             {/* Context selector - only show when exactly 2 countries */}
             {selectedCountries.length === 2 && (
-              <motion.div variants={itemVariants}>
+              <div>
                 <AdviceContextSelector
                   selectedContext={selectedContext}
                   onContextSelect={handleContextSelect}
                 />
-              </motion.div>
+              </div>
             )}
 
             {/* Bilateral advice */}
@@ -446,9 +411,7 @@ function App() {
                 </motion.div>
               )}
             </AnimatePresence>
-
-          </div>
-        </motion.div>
+        </Section>
       </main>
 
       {/* Footer */}
