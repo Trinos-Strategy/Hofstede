@@ -39,31 +39,17 @@ An interactive, bilingual (Korean / English) visualization tool for comparing cu
 
 ---
 
-## 🔐 Custom Domain & HTTPS (중요 — 현재 HTTPS 미적용 상태)
+## 🔐 Custom Domain & HTTPS (✅ 완료 — 2026-09-05)
 
-이 저장소는 커스텀 도메인 `hofstede.trinos.group`(CNAME → `trinos-strategy.github.io`)을 사용합니다.
+커스텀 도메인 `hofstede.trinos.group`(CNAME → `trinos-strategy.github.io`)이 HTTPS로 서빙됩니다.
 
-**현재 상태(2026-09-04 기준):** GitHub Pages 설정에서 도메인이 **미인증(unverified)** 상태이고
-HTTPS 인증서가 발급되지 않아, `https://hofstede.trinos.group/` 접속 시 인증서 오류
-(`ERR_CERT_COMMON_NAME_INVALID`)가 발생합니다. GitHub은 2025년부터 인증된 도메인에만
-인증서를 발급합니다.
+- 조직 도메인 `trinos.group`: **Verified**
+- 저장소 Pages: **Enforce HTTPS 활성화** (http → https 301 리다이렉트)
+- 인증: Cloudflare TXT `_github-pages-challenge-Trinos-Strategy` 추가로 완료
 
-### 복구 절차 (DNS 관리자 필요 — trinos.group은 Porkbun 관리)
-
-1. 저장소 **Settings → Pages → Custom domain**에 `hofstede.trinos.group`을 다시 입력합니다.
-   GitHub이 인증용 TXT 레코드를 표시합니다. 보통 형식은:
-   - 이름(Host): `_github-pages-challenge-Trinos-Strategy` (조직 소유 저장소의 경우)
-   - 값: GitHub이 표시하는 고유 코드
-2. DNS(Porkbun)에서 위 TXT 레코드를 추가합니다.
-3. Pages 설정으로 돌아와 도메인을 **Verify**합니다. 인증서 발급은 보통 수 분 ~ 1시간 걸립니다.
-4. 인증서가 발급되면 **Enforce HTTPS**를 체크합니다.
-
-DNS 수정 전까지는 `http://hofstede.trinos.group/`(HTTP) 또는
-`https://trinos-strategy.github.io/Hofstede/`로 접속할 수 있습니다.
-
-> 빌드는 `base: './'`(상대 경로)이므로 커스텀 도메인 제거 후 프로젝트 페이지
-> (`/Hofstede/` 경로)에서도 그대로 작동합니다. `public/CNAME` 파일이 커스텀 도메인을
-> 유지하도록 보장합니다.
+> ⚠️ **DNS는 Porkbun이 아니라 Cloudflare에서 관리됩니다** (NS: `gabe.ns.cloudflare.com`, `sydney.ns.cloudflare.com`).
+> 이 도메인의 레코드 추가/변경은 반드시 **Cloudflare 대시보드**에서 하세요. Porkbun에서
+> "기본 네임서버로 변경"을 누르면 Cloudflare 존의 모든 레코드가 끊깁니다.
 
 ---
 
