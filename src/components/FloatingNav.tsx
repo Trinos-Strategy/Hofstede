@@ -64,11 +64,11 @@ export function FloatingNav() {
   return (
     <nav
       aria-label="Quick Navigation"
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 pointer-events-none ${
+      className={`fixed bottom-[calc(env(safe-area-inset-bottom)+0.75rem)] left-1/2 -translate-x-1/2 z-50 transition-all duration-300 pointer-events-none ${
         isVisible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
       }`}
     >
-      <div className="flex gap-1 rounded-full border border-[var(--surface-border)] bg-[var(--panel-glass)] backdrop-blur-xl shadow-2xl px-2 py-1.5">
+      <div className="flex gap-1 rounded-full border border-[var(--surface-border)] bg-[var(--panel-glass)] backdrop-blur-xl shadow-2xl px-2 py-1.5 max-w-[calc(100vw-2rem)] overflow-x-auto whitespace-nowrap scrollbar-none">
         {navItems.map((item) => {
           const isActive = activeSection === item.id;
           return (
@@ -76,7 +76,7 @@ export function FloatingNav() {
               key={item.id}
               type="button"
               onClick={() => scrollToSection(item.id)}
-              className={`rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer ${
+              className={`rounded-full px-3.5 py-2 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium transition-colors duration-200 cursor-pointer ${
                 isActive
                   ? 'bg-[var(--surface-2)] text-[var(--color-brass)]'
                   : 'text-[var(--color-ivory-muted)] hover:text-white'

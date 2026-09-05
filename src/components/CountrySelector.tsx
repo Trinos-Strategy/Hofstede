@@ -236,7 +236,7 @@ export function CountrySelector({
 
       {/* Input Field with Search Icon */}
       <div className="relative w-full">
-        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 flex items-center pointer-events-none">
+        <div className="absolute left-3.5 top-1/2 transform -translate-y-1/2 flex items-center pointer-events-none">
           <Search className="w-4 h-4 text-[var(--color-ivory-muted)]" strokeWidth={1.5} />
         </div>
         <input
@@ -276,7 +276,7 @@ export function CountrySelector({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className="absolute z-50 w-full mt-2 rounded-xl border border-[var(--surface-border)] bg-[var(--panel-glass)] backdrop-blur-xl shadow-2xl max-h-[300px] overflow-y-auto"
+            className="absolute z-50 w-full mt-2 rounded-xl border border-[var(--surface-border)] bg-[var(--panel-glass)] backdrop-blur-xl shadow-2xl max-h-[55vh] overflow-y-auto"
             ref={optionsListRef}
           >
             {filteredCountries.map((country, index) => {
@@ -288,7 +288,7 @@ export function CountrySelector({
                   onClick={() => selectCountry(country)}
                   onMouseEnter={() => setActiveIndex(index)}
                   className={`
-                    w-full px-5 py-3 text-left text-sm flex items-center justify-between
+                    w-full px-5 py-2.5 sm:py-3 text-left text-sm flex items-center justify-between
                     transition-all duration-200 border-b border-[var(--surface-border)] cursor-pointer min-h-[48px]
                     hover:bg-[var(--surface-1)]
                     ${isActive

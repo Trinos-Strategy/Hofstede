@@ -64,7 +64,7 @@ export function VersusPanel({ countries }: VersusPanelProps) {
   return (
     <div className="w-full space-y-6">
       {/* 1) Top summary card */}
-      <div className="glass-card p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="glass-card p-3.5 sm:p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <span className="text-xs uppercase tracking-widest text-[var(--color-brass)] font-semibold">
             {t('vsBiggestGap')}
@@ -85,7 +85,7 @@ export function VersusPanel({ countries }: VersusPanelProps) {
       </div>
 
       {/* Legend with two country names above first row */}
-      <div className="flex items-center justify-between pb-3 border-b border-white/10 px-2">
+      <div className="flex items-center justify-between pb-3 border-b border-[var(--surface-border)] px-2">
         <div className="flex items-center gap-2">
           <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLOR_A }} />
           <span className="text-sm font-semibold text-[var(--color-ivory)]">{nameA}</span>
@@ -100,7 +100,7 @@ export function VersusPanel({ countries }: VersusPanelProps) {
       </div>
 
       {/* 2) 6 Dimension rows */}
-      <div className="space-y-5">
+      <div className="space-y-4 sm:space-y-5">
         {rows.map(({ dim, valA, valB, isHigherA, isHigherB }) => (
           <div key={dim.key} className="space-y-1.5">
             {/* Row header */}
@@ -115,7 +115,7 @@ export function VersusPanel({ countries }: VersusPanelProps) {
                 </span>
                 <span className="text-xs text-[var(--color-brass)] font-medium">({dim.key})</span>
               </div>
-              <span className="text-xs text-[var(--color-ivory-muted)] line-clamp-1 max-w-[50%] text-right">
+              <span className="text-xs text-[var(--color-ivory-muted)] line-clamp-1 max-w-md text-start">
                 {t(descKeys[dim.key])}
               </span>
             </div>
@@ -129,7 +129,7 @@ export function VersusPanel({ countries }: VersusPanelProps) {
                     ▲
                   </span>
                 )}
-                <span className="text-xl font-bold" style={{ color: COLOR_A }}>
+                <span className="text-2xl font-bold" style={{ color: COLOR_A }}>
                   {valA}
                 </span>
               </div>
@@ -164,7 +164,7 @@ export function VersusPanel({ countries }: VersusPanelProps) {
 
               {/* Country B value */}
               <div className="w-14 text-left flex items-center justify-start gap-1 flex-shrink-0">
-                <span className="text-xl font-bold" style={{ color: COLOR_B }}>
+                <span className="text-2xl font-bold" style={{ color: COLOR_B }}>
                   {valB}
                 </span>
                 {isHigherB && (
