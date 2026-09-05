@@ -89,7 +89,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="accent-bar" />
           <h2
-            className="text-base sm:text-lg font-medium text-[#1A1A1A]"
+            className="text-base sm:text-lg font-medium text-[#111111]"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {t('culturalClusters')}
@@ -119,6 +119,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
               e.stopPropagation();
               toggleExpand();
             }}
+            aria-label="클러스터 펼치기/접기"
             className="lg:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg border border-black/10 hover:border-[#B8956A] hover:bg-[#FAFAF8] transition-all duration-500"
             animate={{ rotate: isExpanded ? 180 : 0 }}
             transition={{ duration: 0.3 }}
@@ -132,7 +133,7 @@ export function ClusterMap({ selectedCluster, onClusterSelect }: ClusterMapProps
       <p className="text-[10px] sm:text-xs text-[#555555] mb-4 sm:mb-5 flex items-center gap-2 font-medium">
         <Layers className="w-3 h-3 flex-shrink-0" strokeWidth={1.5} />
         <span className="hidden sm:inline">{t('clickFilterDoubleClickDetails')}</span>
-        <span className="sm:hidden">{t('tapFilterInfoDetails')}</span>
+        <span className="sm:hidden text-[#333333]">{t('tapFilterInfoDetails')}</span>
       </p>
 
       {/* Cluster cards - Always visible on desktop, expandable on mobile */}
