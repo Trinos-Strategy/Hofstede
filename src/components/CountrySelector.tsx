@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search } from 'lucide-react';
+import { X, Search, Share2, Check } from 'lucide-react';
 import type { Country, ClusterType } from '../types';
 import { countries, clusterInfo } from '../data/countries';
 import { useLanguage } from '../i18n';
@@ -68,9 +68,38 @@ export function CountrySelector({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [copied, setCopied] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const optionsListRef = useRef<HTMLDivElement>(null);
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // clipboard 실패 시 fallback 없음 (try/catch로 무시)
+    }
+  };
+
+  useEffect(() => {
+    function handleGlobalKeyDown(e: KeyboardEvent) {
+      if (e.key === '/') {
+        const target = document.activeElement;
+        const isInput =
+          target instanceof HTMLInputElement ||
+          target instanceof HTMLTextAreaElement ||
+          (target as HTMLElement | null)?.isContentEditable;
+        if (!isInput) {
+          e.preventDefault();
+          inputRef.current?.focus();
+        }
+      }
+    }
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -190,48 +219,65 @@ export function CountrySelector({
   return (
     <div className="relative w-full" ref={dropdownRef}>
       {/* Selected Countries Pills ABOVE the input */}
-      <div className="flex flex-wrap gap-2.5 mb-4 min-h-[40px] items-center">
-        <AnimatePresence mode="popLayout">
-          {selectedCountries.map((country, index) => (
-            <motion.div
-              key={country.code}
-              initial={{ opacity: 0, scale: 0.85, y: -8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.85, y: -8 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="country-pill flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold shadow-md border border-[var(--surface-border)]"
-              style={{
-                backgroundColor: countryColors[index % countryColors.length].bg,
-                color: countryColors[index % countryColors.length].text,
-              }}
-            >
-              <span className="text-sm">{getCountryFlag(country.code)}</span>
-              <span className="tracking-wide">
-                {isKorean ? country.nameKo : country.name}
-              </span>
-              <button
-                onClick={() => {
-                  onCountryRemove(country.code);
-                  inputRef.current?.focus();
+      <div className="flex items-center justify-between gap-2.5 mb-4 min-h-[40px]">
+        <div className="flex flex-wrap gap-2.5 items-center flex-1">
+          <AnimatePresence mode="popLayout">
+            {selectedCountries.map((country, index) => (
+              <motion.div
+                key={country.code}
+                initial={{ opacity: 0, scale: 0.85, y: -8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.85, y: -8 }}
+                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                className="country-pill flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold shadow-md border border-[var(--surface-border)]"
+                style={{
+                  backgroundColor: countryColors[index % countryColors.length].bg,
+                  color: countryColors[index % countryColors.length].text,
                 }}
-                className="remove-btn p-0.5 rounded-full hover:bg-white/20 transition-colors duration-200 cursor-pointer flex items-center justify-center ml-1"
-                aria-label={`Remove ${country.name}`}
               >
-                <X className="w-3.5 h-3.5" strokeWidth={2} />
-              </button>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+                <span className="text-sm">{getCountryFlag(country.code)}</span>
+                <span className="tracking-wide">
+                  {isKorean ? country.nameKo : country.name}
+                </span>
+                <button
+                  onClick={() => {
+                    onCountryRemove(country.code);
+                    inputRef.current?.focus();
+                  }}
+                  className="remove-btn p-0.5 rounded-full hover:bg-white/20 transition-colors duration-200 cursor-pointer flex items-center justify-center ml-1"
+                  aria-label={`Remove ${country.name}`}
+                >
+                  <X className="w-3.5 h-3.5" strokeWidth={2} />
+                </button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
 
-        {selectedCountries.length === 0 && (
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-xs text-[var(--color-ivory-muted, #C8C0B0)] italic tracking-wide pl-1"
-          >
-            {t('selectCountry', { max: maxSelections })}
-          </motion.span>
-        )}
+          {selectedCountries.length === 0 && (
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-xs text-[var(--color-ivory-muted, #C8C0B0)] italic tracking-wide pl-1"
+            >
+              {t('selectCountry', { max: maxSelections })}
+            </motion.span>
+          )}
+        </div>
+
+        {/* Share Button */}
+        <button
+          type="button"
+          onClick={handleShare}
+          className="p-2 rounded-full text-[var(--color-ivory-muted)] hover:text-[var(--color-brass)] transition-colors cursor-pointer flex-shrink-0"
+          aria-label={t('shareLink')}
+          title={t('shareLink')}
+        >
+          {copied ? (
+            <Check className="w-4 h-4 text-[var(--color-brass)]" />
+          ) : (
+            <Share2 className="w-4 h-4" />
+          )}
+        </button>
       </div>
 
       {/* Input Field with Search Icon */}
@@ -256,7 +302,7 @@ export function CountrySelector({
               : t('maxSelectionComplete')
           }
           className={`
-            w-full pl-11 pr-4 h-12 text-sm rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)]
+            w-full pl-11 pr-10 h-12 text-sm rounded-lg bg-[var(--surface-1)] border border-[var(--surface-border)]
             placeholder-[var(--color-ivory-muted)]/60
             focus:border-[var(--color-brass)]/60 focus:ring-0 focus:outline-none
             transition-all duration-300
@@ -266,6 +312,11 @@ export function CountrySelector({
             }
           `}
         />
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center pointer-events-none">
+          <kbd className="text-[10px] px-1.5 py-0.5 rounded border border-[var(--surface-border)] bg-[var(--surface-1)] text-[var(--color-ivory-muted)]">
+            /
+          </kbd>
+        </div>
       </div>
 
       {/* Dropdown Container using glass-card styling */}

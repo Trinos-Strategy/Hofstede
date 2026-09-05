@@ -260,6 +260,7 @@ export type TranslationKeys = {
   // PNG Export
   saveChart: string;
   savingChart: string;
+  shareLink: string;
 
   // Error Boundary
   errorTitle: string;
@@ -577,6 +578,7 @@ export const translations: Record<Language, TranslationKeys> = {
     // PNG Export
     saveChart: '차트 저장',
     savingChart: '저장 중...',
+    shareLink: '링크 복사',
 
     // Error Boundary
     errorTitle: '문제가 발생했습니다',
@@ -893,6 +895,7 @@ export const translations: Record<Language, TranslationKeys> = {
     // PNG Export
     saveChart: 'Save Chart',
     savingChart: 'Saving...',
+    shareLink: 'Copy link',
 
     // Error Boundary
     errorTitle: 'Something went wrong',
