@@ -7,9 +7,7 @@ export function HeroSection() {
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
+      initial={false}
       className="relative overflow-hidden w-full py-6 sm:py-12 max-w-[1140px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center"
     >
       {/* Mobile background art overlay */}
@@ -20,6 +18,10 @@ export function HeroSection() {
           className="w-full h-full object-cover opacity-25"
           aria-hidden="true"
           loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          width={1376}
+          height={768}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[var(--color-midnight)]/60 to-[var(--color-midnight)]" />
       </div>
@@ -39,11 +41,10 @@ export function HeroSection() {
           </span>
         </motion.div>
 
-        {/* Main Heading */}
+        {/* Main Heading — no entrance animation: it is the LCP element on
+            mobile and any fade delays the largest paint. */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          initial={false}
           className="text-4xl sm:text-6xl lg:text-7xl font-light tracking-wide leading-[1.15] uppercase text-gradient-gold text-balance"
           style={{
             fontFamily: "'Cormorant Garamond', serif",
