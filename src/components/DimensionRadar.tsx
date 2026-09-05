@@ -112,41 +112,98 @@ const profilePhraseKeys: Record<string, { high: keyof TranslationKeys; low: keyo
   IVR: { high: 'profileHighIVR', low: 'profileLowIVR' },
 };
 
-// ─── Custom Dot (preserved shapes) ───
+// ─── Custom Dot (preserved shapes + halo + value label) ───
 interface CustomDotProps {
   cx?: string | number;
   cy?: string | number;
   markerType: 'circle' | 'square' | 'triangle';
   fill: string;
+  value?: number;
+  countryIndex?: number;
+  countryColor: string;
 }
 
-function CustomDot({ cx = 0, cy = 0, markerType, fill }: CustomDotProps) {
+function CustomDot({
+  cx = 0,
+  cy = 0,
+  markerType,
+  fill,
+  value,
+  countryIndex = 0,
+  countryColor,
+}: CustomDotProps) {
   const x = typeof cx === 'string' ? parseFloat(cx) : cx;
   const y = typeof cy === 'string' ? parseFloat(cy) : cy;
   const size = 5;
-  switch (markerType) {
-    case 'square':
-      return (
-        <rect
-          x={x - size}
-          y={y - size}
-          width={size * 2}
-          height={size * 2}
-          fill={fill}
-          stroke={fill}
-          strokeWidth={1}
-        />
-      );
-    case 'triangle': {
-            const points = `${x},${y - size * 1.2} ${x - size},${y + size * 0.8} ${x + size},${y + size * 0.8}`;
-      return (
-        <polygon points={points} fill={fill} stroke={fill} strokeWidth={1} />
-      );
+
+  const renderMarker = () => {
+    switch (markerType) {
+      case 'square':
+        return (
+          <rect
+            x={x - size}
+            y={y - size}
+            width={size * 2}
+            height={size * 2}
+            fill={fill}
+            stroke={fill}
+            strokeWidth={1}
+          />
+        );
+      case 'triangle': {
+        const points = `${x},${y - size * 1.2} ${x - size},${y + size * 0.8} ${x + size},${y + size * 0.8}`;
+        return (
+          <polygon points={points} fill={fill} stroke={fill} strokeWidth={1} />
+        );
+      }
+      case 'circle':
+      default:
+        return <circle cx={x} cy={y} r={size} fill={fill} stroke={fill} strokeWidth={1} />;
     }
-    case 'circle':
-    default:
-      return <circle cx={x} cy={y} r={size} fill={fill} stroke={fill} strokeWidth={1} />;
+  };
+
+  // value가 undefined면 라벨/헤일로 생략
+  if (value === undefined) {
+    return <g className="pointer-events-none">{renderMarker()}</g>;
   }
+
+  const labelYOffset = -14 - countryIndex * 13;
+
+  return (
+    <g className="pointer-events-none select-none">
+      {/* 마커 바깥에 헤일로: 동일 중심에 circle r=9, fill=none, stroke=국가색, strokeOpacity 0.35, strokeWidth 1 */}
+      <circle
+        cx={x}
+        cy={y}
+        r={9}
+        fill="none"
+        stroke={countryColor}
+        strokeOpacity={0.35}
+        strokeWidth={1}
+      />
+
+      {/* 기존 마커(원/사각/삼각형) */}
+      {renderMarker()}
+
+      {/* 값 라벨: 마커 위쪽에 <text> value 표시 (font-size 10, font-weight 700, fill=국가색, textAnchor=middle, y 오프셋 -14 - (countryIndex * 13)), paintOrder stroke #0A0E1A strokeWidth 3로 외곽선 */}
+      <text
+        x={x}
+        y={y + labelYOffset}
+        textAnchor="middle"
+        dominantBaseline="central"
+        style={{
+          fontSize: '10px',
+          fontWeight: 700,
+          fill: countryColor,
+          paintOrder: 'stroke',
+        }}
+        stroke="#0A0E1A"
+        strokeWidth={3}
+      >
+        {value}
+      </text>
+    </g>
+  );
 }
 interface CustomTickProps {
   x?: string | number;
@@ -614,6 +671,9 @@ export function DimensionRadar({ countries }: DimensionRadarProps) {
                       cy={props.cy}
                       markerType={colorConfig.marker}
                       fill={colorConfig.stroke}
+                      value={typeof props.value === 'number' ? props.value : (props.value != null && !isNaN(Number(props.value)) ? Number(props.value) : undefined)}
+                      countryIndex={index}
+                      countryColor={colorConfig.stroke}
                     />
                   )}
                   isAnimationActive={!shouldReduceMotion}
