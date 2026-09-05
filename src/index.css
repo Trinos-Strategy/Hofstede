@@ -165,19 +165,19 @@
   }
 
   h1 {
-    font-size: 3.5rem;
+    font-size: clamp(2.25rem, 1.2rem + 4vw, 3.75rem);
     font-weight: 500;  /* Slightly lighter for very large text */
     letter-spacing: 0.04em;
   }
 
   h2 {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem);
     font-weight: 600;
     letter-spacing: 0.03em;
   }
 
   h3 {
-    font-size: 1.5rem;
+    font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.5rem);
     font-weight: 600;
   }
 
@@ -213,6 +213,12 @@
 
   a:hover {
     color: var(--gold);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brass-light);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
@@ -314,13 +320,16 @@
 
 /* Gold Button */
 .btn-gold {
-  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark), var(--gold-light));
+  background-size: 150%;
+  background-position: 0% 50%;
+  transition: background-position var(--transition-medium), box-shadow var(--transition-medium);
   color: #FFFFFF;
   border: none;
 }
 
 .btn-gold:hover {
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  background-position: 100% 50%;
   box-shadow: 0 8px 24px rgba(184, 149, 106, 0.25);
 }
 
@@ -945,3 +954,38 @@ a:hover {
 .dark a:hover {
   color: var(--gold);
 }
+
+/* ============================================
+   Modern 2026 Utilities
+   ============================================ */
+
+.card-gradient-border {
+  position: relative;
+  border-radius: var(--radius-medium);
+  isolation: isolate;
+}
+
+.card-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  background: linear-gradient(var(--color-midnight), var(--color-midnight)) padding-box,
+              linear-gradient(135deg, var(--color-brass), transparent) border-box;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glow-gold {
+  transition: box-shadow var(--transition-medium);
+}
+
+.glow-gold:hover {
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.18);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
